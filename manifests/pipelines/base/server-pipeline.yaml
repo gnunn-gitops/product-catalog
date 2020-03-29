@@ -1,0 +1,95 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: server
+spec:
+   workspaces:
+    - name: app-binary
+   resources:
+    - name: source
+      type: git
+   params:
+    - name:  MAVEN_MIRROR_URL
+      default: ""
+    - name: REPLICAS
+      default: "1"
+   tasks:
+    - name: build
+      taskRef:
+        name: maven
+      workspaces:
+        - name: app-binary
+          workspace: app-binary
+      resources:
+        inputs:
+        - name: source
+          resource: source
+      params:
+        - name: MAVEN_MIRROR_URL
+          value: "$(params.MAVEN_MIRROR_URL)"
+    - name: build-image
+      taskRef:
+        name: openshift-client
+        kind: Task
+      workspaces:
+        - name: app-binary
+          workspace: app-binary
+      runAfter:
+        - build
+      params:
+        - name: COMMANDS
+          value: |
+              ls $(workspaces.app-binary.path)
+              oc start-build server --from-dir=$(workspaces.app-binary.path) --wait=true
+    - name: tag-dev-image
+      taskRef:
+        name: openshift-client
+        kind: Task
+      workspaces:
+        - name: app-binary
+          workspace: app-binary
+      runAfter:
+        - build-image
+      params:
+        - name: COMMANDS
+          value: |
+              oc tag product-catalog-cicd/server:latest product-catalog-dev/server:latest
+    - name: deploy-dev
+      taskRef:
+        name: deploy
+        kind: Task
+      runAfter:
+        - tag-dev-image
+      params:
+        - name: NAME
+          value: server
+        - name: NAMESPACE
+          value: product-catalog-dev
+        - name: REPLICAS
+          value: "$(params.REPLICAS)"
+    - name: tag-test-image
+      taskRef:
+        name: openshift-client
+        kind: Task
+      workspaces:
+        - name: app-binary
+          workspace: app-binary
+      runAfter:
+        - deploy-dev
+      params:
+        - name: COMMANDS
+          value: |
+              oc tag product-catalog-dev/server:latest product-catalog-test/server:latest
+    - name: deploy-test
+      taskRef:
+        name: deploy
+        kind: Task
+      runAfter:
+        - tag-test-image
+      params:
+        - name: NAME
+          value: server
+        - name: NAMESPACE
+          value: product-catalog-test
+        - name: REPLICAS
+          value: "$(params.REPLICAS)"

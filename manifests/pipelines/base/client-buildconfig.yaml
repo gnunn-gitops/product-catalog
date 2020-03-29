@@ -1,0 +1,31 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    build: client
+  name: client
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: client:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    binary: {}
+    type: Binary
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: nginx:latest
+        namespace: openshift
+    type: Source
+  triggers:
+  - github:
+      secret: y2t2KXcWSnt0HyCSsMT5
+    type: GitHub
+  - generic:
+      secret: PxSs1na9Rff0ykbrKmQj
+    type: Generic

@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: productdb
+  labels:
+    app: productdb
+    app.kubernetes.io/name: productdb
+    app.kubernetes.io/component: database
+    app.kubernetes.io/part-of: product-catalog
+    app.kubernetes.io/instance: database
+    app.openshift.io/runtime: mariadb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+       name: productdb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        alpha.image.policy.openshift.io/resolve-names: '*'
+      labels:
+        name: productdb
+    spec:
+      containers:
+        - name: productdb
+          image: registry.redhat.io/rhel8/mariadb-103:1
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 3306
+          env:
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: productdb
+                  key: database-user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: productdb
+                  key: database-password
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: productdb
+                  key: database-root-password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: productdb
+                  key: database-name
+          readinessProbe:
+            exec:
+              command:
+              - /bin/sh
+              - -i
+              - -c
+              - MYSQL_PWD="$MYSQL_PASSWORD" mysql -h 127.0.0.1 -u $MYSQL_USER -D $MYSQL_DATABASE
+                -e 'SELECT 1'
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+          livenessProbe:
+            initialDelaySeconds: 30
+            tcpSocket:
+              port: 3306
+            timeoutSeconds: 1
+          volumeMounts:
+          - mountPath: /var/lib/mysql/data
+            name: productdb-data
+          - mountPath: /opt/app-root/src/mysql-init/90-init-data.sh
+            name: productdb-init
+            subPath: 90-init-database.sh
+          - mountPath: /opt/app-root/src/mysql-data/import.sql
+            name: productdb-init
+            subPath: import.sql
+          - mountPath: /opt/app-root/src/mysql-data/schema.sql
+            name: productdb-init
+            subPath: schema.sql
+      volumes:
+      - name: productdb-data
+        persistentVolumeClaim:
+          claimName: productdb
+      - configMap:
+          name: productdb-init
+        name: productdb-init

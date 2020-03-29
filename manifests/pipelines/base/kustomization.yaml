@@ -1,0 +1,37 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: maven-settings
+    files:
+      - configs/settings.xml
+
+resources:
+# Nexus
+- github.com/redhat-canada-gitops/10-devtools//nexus2/base/?ref=master
+# Supporting infra
+- m2-cache-pvc.yaml
+# Tekton tasks
+- task-maven.yaml
+- task-npm.yaml
+- task-oc.yaml
+- task-push-image.yaml
+- task-deploy.yaml
+- condition-push-image.yaml
+# Server pipeline
+- server-imagestream.yaml
+- server-buildconfig.yaml
+- server-pvc.yaml
+- server-git-pipelineresource.yaml
+- server-pipeline.yaml
+- server-pipelinerun.yaml
+# Client pipeline
+- client-imagestream.yaml
+- client-buildconfig.yaml
+- client-pvc.yaml
+- client-git-pipelineresource.yaml
+- client-pipeline.yaml
+- client-pipelinerun.yaml

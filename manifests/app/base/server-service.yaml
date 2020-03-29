@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: server
+  labels:
+    app: server
+    app.kubernetes.io/name: server
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/instance: server
+    app.kubernetes.io/part-of: product-catalog
+spec:
+  ports:
+  - name: http
+    port: 8080
+  selector:
+    name: server
+  sessionAffinity: None
+  type: ClusterIP

@@ -1,0 +1,16 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: server
+  labels:
+    app: server
+    app.kubernetes.io/name: server
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/instance: server
+    app.kubernetes.io/part-of: product-catalog
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: server

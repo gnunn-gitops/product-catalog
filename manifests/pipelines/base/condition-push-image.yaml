@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Condition
+metadata:
+  name: push-image
+spec:
+  params:
+  - name: push
+    type: string
+  check:
+    image: registry.redhat.io/ubi8/ubi-minimal
+    script: |
+      #!/bin/sh
+      if [ "${params.push}" = "true" ]; then
+        echo "Pushing image)"
+        exit 0
+      else
+        echo "Not pushing image"
+        exit 1
+      fi

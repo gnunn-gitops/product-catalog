@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+- ../../base
+
+namespace: product-catalog-test
+
+patchesJson6902:
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: client
+  path: patch-client-deployment.yaml
+
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: server
+  path: patch-server-deployment.yaml

@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: product-catalog-dev
+spec:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: product-catalog
+  source:
+    path: manifests/app/overlays/dev-quay
+    repoURL: https://github.com/gnunn-gitops/product-catalog.git
+    targetRevision: master
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+  sync:
+    comparedTo:
+      destination:
+        namespace: argocd
+        server: https://kubernetes.default.svc
+      source:
+        path: manifests/app/overlays/dev-quay
+        repoURL: https://github.com/gnunn-gitops/product-catalog.git
+        targetRevision: master

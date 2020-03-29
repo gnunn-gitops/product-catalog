@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+- ../../base
+
+resources:
+- server-dest-image-resource.yaml
+- server-src-image-resource.yaml
+- client-dest-image-resource.yaml
+- client-src-image-resource.yaml
+
+patchesStrategicMerge:
+- patch-server-pipeline.yaml
+- patch-client-pipeline.yaml
+- patch-server-pipelinerun.yaml
+- patch-client-pipelinerun.yaml

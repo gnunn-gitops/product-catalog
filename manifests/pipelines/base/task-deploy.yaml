@@ -1,0 +1,23 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: deploy
+spec:
+  inputs:
+    params:
+      - name: NAME
+        type: string
+      - name: REPLICAS
+        type: string
+        default: "1"
+      - name: NAMESPACE
+        type: string
+  steps:
+    - name: run-commands
+      image: quay.io/openshift/origin-cli:latest
+      script: |
+        #!/usr/bin/env bash
+
+        oc rollout restart deployment/$(inputs.params.NAME) -n $(inputs.params.NAMESPACE)
+        oc scale deployment/$(inputs.params.NAME) --replicas=$(inputs.params.REPLICAS) -n $(inputs.params.NAMESPACE)
+        oc rollout status deploy/$(inputs.params.NAME) -n $(inputs.params.NAMESPACE)

@@ -1,0 +1,61 @@
+# Note not currently working, pods constantly terminating and restarting
+# Using DC for now but preserved here to come back to later
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+  annotations:
+    app.openshift.io/connects-to: database
+  labels:
+    app: server
+    app.kubernetes.io/name: server
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/instance: server
+    app.openshift.io/runtime: java
+    app.kubernetes.io/part-of: product-catalog
+spec:
+  selector:
+    matchLabels:
+      name: server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: server
+    spec:
+      containers:
+        - name: server
+          image: image-registry.openshift-image-registry.svc:5000/product-catalog/server:latest
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+            name: http
+          - containerPort: 8443
+            protocol: TCP
+          - containerPort: 8778
+            protocol: TCP
+          volumeMounts:
+          - mountPath: /deployments/config
+            name: config-data
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          readinessProbe:
+              httpGet:
+                path: /health
+                port: 8080
+                scheme: HTTP
+              timeoutSeconds: 1
+              periodSeconds: 10
+              successThreshold: 1
+              failureThreshold: 3
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      volumes:
+      - configMap:
+          name: server
+        name: config-data

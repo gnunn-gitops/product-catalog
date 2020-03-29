@@ -1,0 +1,9 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    build: client
+  name: client
+spec:
+  lookupPolicy:
+    local: false

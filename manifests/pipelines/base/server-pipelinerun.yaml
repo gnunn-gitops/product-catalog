@@ -1,0 +1,22 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: server
+  generateName: server-
+spec:
+  pipelineRef:
+    name: server
+  resources:
+    - name: source
+      resourceRef:
+        name: server
+  params:
+    - name: MAVEN_MIRROR_URL
+      value: http://nexus:8081/content/groups/public/
+      #value: ""
+    - name: REPLICAS
+      value: "2"
+  workspaces:
+  - name: app-binary
+    persistentVolumeClaim:
+      claimName: server-binary

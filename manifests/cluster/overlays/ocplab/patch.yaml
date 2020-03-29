@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client
+  namespace: product-catalog-dev
+data:
+  config.js: |-
+    window.ENV = {
+      "API_URL":"http://server-product-catalog-dev.apps.cluster.ocplab.com",
+      "API_KEY":"	43fbc9b33302db65d58553e27d1679ac"
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client
+  namespace: product-catalog-test
+data:
+  config.js: |-
+    window.ENV = {
+      "API_URL":"http://server-product-catalog-test.apps.cluster.ocplab.com",
+      "API_KEY":"	43fbc9b33302db65d58553e27d1679ac"
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: server
+  namespace: product-catalog-dev
+data:
+  application.properties: |
+    # Product Datasource
+    quarkus.datasource.url=jdbc:mariadb://productdb:3306/productdb
+    quarkus.datasource.driver=org.mariadb.jdbc.Driver
+    quarkus.datasource.username=productdb
+    quarkus.datasource.password=Demo1234
+    quarkus.datasource.min-size=1
+    quarkus.datasource.max-size=5
+    quarkus.hibernate-orm.database.generation=create
+    quarkus.hibernate-orm.sql-load-script=import.sql
+
+    # CORS
+    quarkus.http.cors=true
+    quarkus.http.cors.origins=http://client-product-catalog-dev.apps.cluster.ocplab.com
+
+    # Swagger UI
+    quarkus.swagger-ui.always-include=true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: server
+  namespace: product-catalog-test
+data:
+  application.properties: |
+    # Product Datasource
+    quarkus.datasource.url=jdbc:mariadb://productdb:3306/productdb
+    quarkus.datasource.driver=org.mariadb.jdbc.Driver
+    quarkus.datasource.username=productdb
+    quarkus.datasource.password=Demo1234
+    quarkus.datasource.min-size=1
+    quarkus.datasource.max-size=5
+    quarkus.hibernate-orm.database.generation=create
+    quarkus.hibernate-orm.sql-load-script=import.sql
+
+    # CORS
+    quarkus.http.cors=true
+    quarkus.http.cors.origins=http://client-product-catalog-test.apps.cluster.ocplab.com
+
+    # Swagger UI
+    quarkus.swagger-ui.always-include=true

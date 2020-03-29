@@ -1,0 +1,79 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: maven
+spec:
+  workspaces:
+  - name: app-binary
+  inputs:
+    params:
+    - name: GOALS
+      description: The Maven goals to run
+      type: array
+      default:
+      - "package"
+    - name: MAVEN_MIRROR_URL
+      description: The Maven bucketrepo- mirror
+      type: string
+      default: ""
+    resources:
+    - name: source
+      targetPath: /
+      type: git
+  steps:
+    - name: mvn-settings
+      image: docker.io/maven:3.6.3-jdk-8
+      command:
+        - '/bin/bash'
+        - '-c'
+      args:
+        - |-
+          [[ -f /.m2/settings.xml ]] && \
+          echo 'using existing ${HOME}/.m2/settings.xml' && \
+          cat /.m2/settings.xml && exit 0
+
+          [[ -n '$(inputs.params.MAVEN_MIRROR_URL)' ]] && \
+          cat > /.m2/settings.xml <<EOF
+          <settings>
+            <mirrors>
+              <mirror>
+                <id>mirror.default</id>
+                <name>mirror.default</name>
+                <url>$(inputs.params.MAVEN_MIRROR_URL)</url>
+                <mirrorOf>*</mirrorOf>
+              </mirror>
+            </mirrors>
+          </settings>
+          EOF
+
+          [[ -f /.m2/settings.xml ]] && cat /.m2/settings.xml
+          [[ -f /.m2/settings.xml ]] || echo skipping settings
+      volumeMounts:
+        - name: m2-repository
+          mountPath: /.m2
+        - name: maven-settings
+          mountPath: /.m2/settings.xml
+          subPath: settings.xml
+    - name: mvn-goals
+      image: docker.io/maven:3.6.3-jdk-8
+      command:
+        - /usr/bin/mvn
+      args:
+        - "$(inputs.params.GOALS)"
+      volumeMounts:
+        - name: m2-repository
+          mountPath: /.m2
+    - name: mvn-copy-dist
+      image: docker.io/maven:3.6.3-jdk-8
+      command:
+        - /bin/sh
+        - -c
+      args:
+        - cp -R /workspace/target/*-runner.jar $(workspaces.app-binary.path)
+  volumes:
+    - name: m2-repository
+      persistentVolumeClaim:
+        claimName: m2-cache
+    - name: maven-settings
+      configMap:
+        name: maven-settings

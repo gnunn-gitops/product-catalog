@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: openshift-client
+spec:
+  workspaces:
+  - name: app-binary
+  inputs:
+    params:
+      - name: COMMANDS
+        type: string
+  steps:
+    - name: run-commands
+      image: quay.io/openshift/origin-cli:latest
+      script: |
+        #!/usr/bin/env bash
+        $(inputs.params.COMMANDS)

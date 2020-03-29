@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: client
+  generateName: client-
+spec:
+  pipelineRef:
+    name: client
+  resources:
+    - name: source
+      resourceRef:
+        name: client
+  workspaces:
+  - name: app-binary
+    persistentVolumeClaim:
+      claimName: client-binary
