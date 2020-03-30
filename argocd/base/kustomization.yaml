@@ -5,3 +5,4 @@ resources:
   - product-catalog-project.yaml
   - dev-app.yaml
   - test-app.yaml
+  - pipeline-app.yaml
