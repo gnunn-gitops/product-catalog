@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: product-catalog-cicd
 
 bases:
-- ../../base
+- ../default
 
 patchesStrategicMerge:
 - patch-server-pipelinerun.yaml
