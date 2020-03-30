@@ -1,0 +1,7 @@
+- op: replace
+  path: /spec/source/path
+  value: manifests/cluster/overlays/rhpds/dev
+
+- op: replace
+  path: /spec/sync/comparedTo/source/path
+  value: manifests/cluster/overlays/rhpds/dev
