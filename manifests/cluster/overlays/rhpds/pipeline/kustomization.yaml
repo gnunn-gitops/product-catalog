@@ -6,4 +6,5 @@ bases:
 
 resources:
 - rolebinding.yaml
+- user1-rolebinding.yaml
 - docker-sealed-secret.yaml

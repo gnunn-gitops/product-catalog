@@ -4,5 +4,8 @@ kind: Kustomization
 bases:
 - ../../../../app/overlays/test-quay
 
+resources:
+- user1-rolebinding.yaml
+
 patchesStrategicMerge:
 - patch.yaml
