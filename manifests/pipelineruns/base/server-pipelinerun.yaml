@@ -1,6 +1,8 @@
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineRun
 metadata:
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
   name: server
   generateName: server-
 spec:
