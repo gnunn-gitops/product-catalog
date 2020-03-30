@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: product-catalog-dev
+  name: product-catalog-cicd
 spec:
   destination:
     namespace: argocd

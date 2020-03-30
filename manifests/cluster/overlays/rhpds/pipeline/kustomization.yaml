@@ -4,18 +4,6 @@ kind: Kustomization
 bases:
 - ../../../../pipelines/overlays/registry
 
-generatorOptions:
-  disableNameSuffixHash: true
-
-# Generates docker pull secret from .dockerconfigjson file. An example template is provided
-# in the secrets folder. Take the string "Username:Password", base 64 and replace the base64(USERNAME:PASSWORD) with this.
-# For example in Linux:
-#    echo "MyUsername:MyPassword" | base64 -
-secretGenerator:
-  - name: dest-docker-config
-    type: kubernetes.io/dockerconfigjson
-    files:
-      - secrets/.dockerconfigjson
-
 resources:
 - rolebinding.yaml
+- docker-sealed-secret.yaml

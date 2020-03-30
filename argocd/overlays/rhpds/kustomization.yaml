@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 bases:
-- ../overlays/default
+- ../default
 
 patchesJson6902:
 - target:
@@ -10,11 +10,18 @@ patchesJson6902:
     version: v1alpha1
     kind: Application
     name: product-catalog-dev
-  path: patch-dev-application.yaml
+  path: patch-dev-app.yaml
 
 - target:
     group: argoproj.io
     version: v1alpha1
     kind: Application
     name: product-catalog-test
-  path: patch-test-application.yaml
+  path: patch-test-app.yaml
+
+- target:
+    group: argoproj.io
+    version: v1alpha1
+    kind: Application
+    name: product-catalog-cicd
+  path: patch-pipeline-app.yaml
