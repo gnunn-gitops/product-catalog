@@ -4,6 +4,15 @@ kind: Kustomization
 bases:
 - ../../../../pipelines/overlays/quay
 
+# generatorOptions:
+#   disableNameSuffixHash: true
+
+# secretGenerator:
+#   - name: dest-docker-config
+#     type: kubernetes.io/dockerconfigjson
+#     files:
+#       - secrets/.dockerconfigjson
+
 resources:
 - pipeline-rolebinding.yaml
 - user1-rolebinding.yaml
