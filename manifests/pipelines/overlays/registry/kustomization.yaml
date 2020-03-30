@@ -13,5 +13,3 @@ resources:
 patchesStrategicMerge:
 - patch-server-pipeline.yaml
 - patch-client-pipeline.yaml
-- patch-server-pipelinerun.yaml
-- patch-client-pipelinerun.yaml
