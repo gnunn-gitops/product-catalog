@@ -32,8 +32,10 @@ spec:
     kind: Route
     jsonPointers:
     - /status/ingress
-  - group: tekton.dev/v1alpha1
+  - group: tekton.dev
     kind: PipelineRun
+    jsonPointers:
+     - /
   sync:
     comparedTo:
       destination:
