@@ -15,6 +15,15 @@ spec:
     automated:
       prune: false
       selfHeal: false
+  ignoreDifferences:
+  - group: apps
+    kind: Deployment
+    jsonPointers:
+    - /spec/replicas
+  - group: route.openshift.io
+    kind: Route
+    jsonPointers:
+    - /status/ingress
   sync:
     comparedTo:
       destination:
