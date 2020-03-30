@@ -5,6 +5,6 @@ bases:
 - ../../../../pipelines/overlays/quay
 
 resources:
-- rolebinding.yaml
+- pipeline-rolebinding.yaml
 - user1-rolebinding.yaml
 - docker-sealed-secret.yaml
