@@ -5,3 +5,6 @@ namespace: product-catalog-cicd
 
 bases:
 - ../../base
+
+resources:
+- namespace.yaml
