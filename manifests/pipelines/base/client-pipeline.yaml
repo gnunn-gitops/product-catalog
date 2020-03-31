@@ -57,8 +57,6 @@ spec:
           value: client
         - name: NAMESPACE
           value: product-catalog-dev
-        - name: REPLICAS
-          value: "2"
     - name: tag-test-image
       taskRef:
         name: openshift-client
@@ -83,5 +81,3 @@ spec:
           value: client
         - name: NAMESPACE
           value: product-catalog-test
-        - name: REPLICAS
-          value: "3"

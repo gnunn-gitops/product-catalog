@@ -7,9 +7,6 @@ spec:
     params:
       - name: NAME
         type: string
-      - name: REPLICAS
-        type: string
-        default: "1"
       - name: NAMESPACE
         type: string
   steps:
@@ -19,5 +16,4 @@ spec:
         #!/usr/bin/env bash
 
         oc rollout restart deployment/$(inputs.params.NAME) -n $(inputs.params.NAMESPACE)
-        oc scale deployment/$(inputs.params.NAME) --replicas=$(inputs.params.REPLICAS) -n $(inputs.params.NAMESPACE)
         oc rollout status deploy/$(inputs.params.NAME) -n $(inputs.params.NAMESPACE)

@@ -11,8 +11,6 @@ spec:
    params:
     - name:  MAVEN_MIRROR_URL
       default: ""
-    - name: REPLICAS
-      default: "1"
    tasks:
     - name: build
       taskRef:
@@ -65,8 +63,6 @@ spec:
           value: server
         - name: NAMESPACE
           value: product-catalog-dev
-        - name: REPLICAS
-          value: "$(params.REPLICAS)"
     - name: tag-test-image
       taskRef:
         name: openshift-client
@@ -91,5 +87,3 @@ spec:
           value: server
         - name: NAMESPACE
           value: product-catalog-test
-        - name: REPLICAS
-          value: "$(params.REPLICAS)"
