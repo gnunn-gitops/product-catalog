@@ -27,6 +27,9 @@
       <profiles>
         <profile>
           <id>nexus-internal</id>
+          <activation>
+            <activeByDefault>true</activeByDefault>
+          </activation>
           <properties>
             <repository.snapshots>http://nexus:8081/content/repositories/snapshots</repository.snapshots>
             <repository.releases>http://nexus:8081/content/repositories/releases</repository.releases>

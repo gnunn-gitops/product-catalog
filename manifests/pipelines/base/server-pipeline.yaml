@@ -9,7 +9,7 @@ spec:
     - name: source
       type: git
    params:
-    - name:  MAVEN_MIRROR_URL
+    - name: MAVEN_MIRROR_URL
       default: ""
    tasks:
     - name: build
@@ -23,6 +23,10 @@ spec:
         - name: source
           resource: source
       params:
+        - name: GOALS
+          value:
+            - package
+            - deploy
         - name: MAVEN_MIRROR_URL
           value: "$(params.MAVEN_MIRROR_URL)"
     - name: build-image

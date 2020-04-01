@@ -16,6 +16,10 @@ spec:
       description: The Maven bucketrepo- mirror
       type: string
       default: ""
+    - name: MAVEN_REPO_CREDS_SECRET
+      type: string
+      description: name of the secret holding the maven repo credentials
+      default: maven-repo-creds
     resources:
     - name: source
       targetPath: /
@@ -60,7 +64,18 @@ spec:
         - /usr/bin/mvn
       args:
         - "$(inputs.params.GOALS)"
-      volumeMounts:
+      env:
+      - name: MAVEN_SERVER_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: $(params.MAVEN_REPO_CREDS_SECRET)
+            key: username
+      - name: MAVEN_SERVER_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: $(params.MAVEN_REPO_CREDS_SECRET)
+            key: password
+        volumeMounts:
         - name: m2-repository
           mountPath: /.m2
     - name: mvn-copy-dist
