@@ -68,12 +68,12 @@ spec:
         - name: MAVEN_SERVER_USERNAME
           valueFrom:
             secretKeyRef:
-              name: $(params.MAVEN_REPO_CREDS_SECRET)
+              name: $(input.params.MAVEN_REPO_CREDS_SECRET)
               key: username
         - name: MAVEN_SERVER_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: $(params.MAVEN_REPO_CREDS_SECRET)
+              name: $(input.params.MAVEN_REPO_CREDS_SECRET)
               key: password
       volumeMounts:
         - name: m2-repository
