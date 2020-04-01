@@ -40,9 +40,10 @@
             </sonar.host.url>
           </properties>
         </profile>
-        <activeProfiles>
-          <activeProfile>nexus-internal</activeProfile>
-          <activeProfile>sonar</activeProfile>
-        </activeProfiles>
       </profiles>
+
+      <activeProfiles>
+        <activeProfile>nexus-internal</activeProfile>
+        <activeProfile>sonar</activeProfile>
+      </activeProfiles>
     </settings>

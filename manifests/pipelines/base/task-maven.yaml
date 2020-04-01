@@ -20,6 +20,10 @@ spec:
       type: string
       description: name of the secret holding the maven repo credentials
       default: maven-repo-creds
+    - name: M2_DIRECTORY
+      type: string
+      description: Location of M2 directory, do not change
+      default: /tekton/home/.m2
     resources:
     - name: source
       targetPath: /
@@ -32,12 +36,12 @@ spec:
         - '-c'
       args:
         - |-
-          [[ -f /.m2/settings.xml ]] && \
-          echo 'using existing ${HOME}/.m2/settings.xml' && \
-          cat /.m2/settings.xml && exit 0
+          [[ -f $(inputs.params.M2_DIRECTORY)/settings.xml ]] && \
+          echo 'using existing $(inputs.params.M2_DIRECTORY)/settings.xml' && \
+          cat $(inputs.params.M2_DIRECTORY)/settings.xml && exit 0
 
           [[ -n '$(inputs.params.MAVEN_MIRROR_URL)' ]] && \
-          cat > /.m2/settings.xml <<EOF
+          cat > $(inputs.params.M2_DIRECTORY)/settings.xml <<EOF
           <settings>
             <mirrors>
               <mirror>
@@ -50,13 +54,13 @@ spec:
           </settings>
           EOF
 
-          [[ -f /.m2/settings.xml ]] && cat /.m2/settings.xml
-          [[ -f /.m2/settings.xml ]] || echo skipping settings
+          [[ -f $(inputs.params.M2_DIRECTORY)/settings.xml ]] && cat $(inputs.params.M2_DIRECTORY)/settings.xml
+          [[ -f $(inputs.params.M2_DIRECTORY)/settings.xml ]] || echo skipping settings
       volumeMounts:
         - name: m2-repository
-          mountPath: /.m2
+          mountPath: $(inputs.params.M2_DIRECTORY)
         - name: maven-settings
-          mountPath: /.m2/settings.xml
+          mountPath: $(inputs.params.M2_DIRECTORY)/settings.xml
           subPath: settings.xml
     - name: mvn-goals
       image: docker.io/maven:3.6.3-jdk-8
@@ -77,7 +81,10 @@ spec:
               key: password
       volumeMounts:
         - name: m2-repository
-          mountPath: /.m2
+          mountPath: $(inputs.params.M2_DIRECTORY)
+        - name: maven-settings
+          mountPath: $(inputs.params.M2_DIRECTORY)/settings.xml
+          subPath: settings.xml
     - name: mvn-copy-dist
       image: docker.io/maven:3.6.3-jdk-8
       command:
