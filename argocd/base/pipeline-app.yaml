@@ -8,7 +8,7 @@ spec:
     server: https://kubernetes.default.svc
   project: product-catalog
   source:
-    path: manifests/pipelines/overlays/registry
+    path: cluster/overlays/default/pipeline
     repoURL: https://github.com/gnunn-gitops/product-catalog.git
     targetRevision: master
   syncPolicy:
@@ -38,6 +38,6 @@ spec:
         namespace: argocd
         server: https://kubernetes.default.svc
       source:
-        path: manifests/pipelines/overlays/registry
+        path: cluster/overlays/default/pipeline
         repoURL: https://github.com/gnunn-gitops/product-catalog.git
         targetRevision: master

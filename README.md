@@ -33,7 +33,7 @@ kustomized include:
 Examples of these can be found in the following locations in this repo:
 
 * ArgoCD: If you look in ```/argocd/overlays/rhpds``` you can see how we patch the base items to reference the RHPDS application specific manifests
-* Cluster: Have a look at ```cluster/overlays/rhpds``` for how to create cluster specific manifests for dev, pipeline and test.
+* Cluster: Have a look at ```/cluster/overlays/rhpds``` for how to create cluster specific manifests for dev, pipeline and test.
 
 To load the projects and applications into ArgoCD, assuming it is installed in the argocd directory, use the following command:
 

@@ -1,0 +1,7 @@
+- op: replace
+  path: /spec/source/path
+  value: cluster/overlays/ocplab/test
+
+- op: replace
+  path: /spec/sync/comparedTo/source/path
+  value: cluster/overlays/ocplab/test
