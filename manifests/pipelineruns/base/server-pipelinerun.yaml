@@ -16,8 +16,6 @@ spec:
     - name: MAVEN_MIRROR_URL
       value: http://nexus:8081/content/groups/public/
       #value: ""
-    - name: REPLICAS
-      value: "2"
   workspaces:
   - name: app-binary
     persistentVolumeClaim:

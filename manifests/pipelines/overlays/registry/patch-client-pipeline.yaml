@@ -58,8 +58,6 @@ spec:
           value: client
         - name: NAMESPACE
           value: product-catalog-dev
-        - name: REPLICAS
-          value: "2"
     - name: deploy-test
       taskRef:
         name: deploy
@@ -71,5 +69,3 @@ spec:
           value: client
         - name: NAMESPACE
           value: product-catalog-test
-        - name: REPLICAS
-          value: "3"
