@@ -27,6 +27,10 @@ spec:
       params:
         - name: MAVEN_MIRROR_URL
           value: "$(params.MAVEN_MIRROR_URL)"
+        - name: GOALS
+          value:
+            - "package"
+            - "deploy"
     - name: build-image
       taskRef:
         name: openshift-client
