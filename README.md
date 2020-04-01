@@ -47,7 +47,7 @@ Once the application is installed and synchronized in ArgoCD it looks like the f
 
 The demo uses OpenShift Pipelines to build the client and server images for the application. The demo does not install PipelineRun objects via ArgoCD since these objects are transitory and not meant to be managed by a GitOps tool. To load the initial PipelineRun objects, use the following command:
 
-```oc apply -k manifests/pipelineruns/registry```
+```oc apply -k manifests/pipelineruns/overlays/registry```
 
 To test the CI/CD, you can add a logo to the product catalog. The code to do this is commented out and can be found in the [nav.jsx](https://github.com/gnunn1/quarkus-product-catalog/blob/master/client/src/js/components/layouts/nav.jsx#L45) file.
 
