@@ -27,9 +27,6 @@
       <profiles>
         <profile>
           <id>nexus-internal</id>
-          <activation>
-            <activeByDefault>true</activeByDefault>
-          </activation>
           <properties>
             <repository.snapshots>http://nexus:8081/content/repositories/snapshots</repository.snapshots>
             <repository.releases>http://nexus:8081/content/repositories/releases</repository.releases>
@@ -37,14 +34,15 @@
         </profile>
         <profile>
           <id>sonar</id>
-          <activation>
-            <activeByDefault>true</activeByDefault>
-          </activation>
           <properties>
             <sonar.host.url>
               http://sonarqube:9000
             </sonar.host.url>
           </properties>
         </profile>
+        <activeProfiles>
+          <activeProfile>nexus-internal</activeProfile>
+          <activeProfile>sonar</activeProfile>
+        </activeProfiles>
       </profiles>
     </settings>
