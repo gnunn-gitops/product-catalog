@@ -12,6 +12,11 @@ spec:
       type: array
       default:
       - "package"
+    - name: PROFILES
+      description: The Maven maven profiles to activate, prefix each profile with -P
+      type: array
+      default:
+       - ""
     - name: MAVEN_MIRROR_URL
       description: The Maven bucketrepo- mirror
       type: string

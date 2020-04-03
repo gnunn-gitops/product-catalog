@@ -11,7 +11,8 @@ configMapGenerator:
 
 resources:
 # Nexus
-- github.com/redhat-canada-gitops/10-devtools//nexus2/base/?ref=master
+- github.com/redhat-canada-gitops/10-devtools//nexus2/base
+- github.com/redhat-canada-gitops/10-devtools//sonarqube8/base
 - secrets/maven-repo-creds.yaml
 # Supporting infra
 - m2-cache-pvc.yaml
