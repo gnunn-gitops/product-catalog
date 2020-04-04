@@ -24,7 +24,7 @@ spec:
           resource: source
       params:
         - name: GOALS
-          value: "package deploy"
+          value: "package sonar:sonar deploy"
         - name: PROFILES
           value: "quality"
         - name: MAVEN_MIRROR_URL

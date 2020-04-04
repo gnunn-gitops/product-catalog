@@ -28,7 +28,7 @@ spec:
         - name: MAVEN_MIRROR_URL
           value: "$(params.MAVEN_MIRROR_URL)"
         - name: GOALS
-          value: "sonar:sonar package deploy"
+          value: "package sonar:sonar deploy"
         - name: PROFILES
           value: "quality"
     - name: build-image
