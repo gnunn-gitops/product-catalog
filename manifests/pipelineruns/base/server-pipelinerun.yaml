@@ -16,7 +16,6 @@ spec:
   params:
     - name: MAVEN_MIRROR_URL
       value: http://nexus:8081/content/groups/public/
-      #value: ""
   workspaces:
   - name: app-binary
     persistentVolumeClaim:

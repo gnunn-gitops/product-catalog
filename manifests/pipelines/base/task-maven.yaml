@@ -77,10 +77,6 @@ spec:
           else
             mvn $(inputs.params.GOALS)
           fi
-      # command:
-      #   - /usr/bin/mvn
-      # args:
-      #   - ""
       env:
         - name: MAVEN_SERVER_USERNAME
           valueFrom:
