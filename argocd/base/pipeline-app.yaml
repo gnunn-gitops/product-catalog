@@ -32,12 +32,3 @@ spec:
     kind: Route
     jsonPointers:
     - /status/ingress
-  sync:
-    comparedTo:
-      destination:
-        namespace: argocd
-        server: https://kubernetes.default.svc
-      source:
-        path: cluster/overlays/default/pipeline
-        repoURL: https://github.com/gnunn-gitops/product-catalog.git
-        targetRevision: master
