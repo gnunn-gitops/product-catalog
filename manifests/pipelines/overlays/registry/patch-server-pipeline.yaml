@@ -29,7 +29,7 @@ spec:
           value: "$(params.MAVEN_MIRROR_URL)"
         - name: GOALS
           value: "package deploy"
-        - NAME: PROFILES
+        - name: PROFILES
           value: "quality"
     - name: build-image
       taskRef:
