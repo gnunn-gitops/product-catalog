@@ -24,9 +24,9 @@ spec:
           resource: source
       params:
         - name: GOALS
-          value:
-            - "package"
-            - "deploy"
+          value: "package deploy"
+        - name: PROFILES
+          value: "quality"
         - name: MAVEN_MIRROR_URL
           value: "$(params.MAVEN_MIRROR_URL)"
     - name: build-image
