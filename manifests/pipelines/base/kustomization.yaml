@@ -10,7 +10,7 @@ configMapGenerator:
       - configs/settings.xml
   - name: newman-env
     files:
-      - newman-env.json
+      - configs/newman-env.json
 
 resources:
 # Nexus
