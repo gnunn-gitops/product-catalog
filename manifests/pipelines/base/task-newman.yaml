@@ -15,7 +15,7 @@ spec:
         - 'newman'
       args:
         - run
-        - $(inputs.params.COLLECTION_URL)
+        - $(inputs.params.COLLECTIONS)
         - -e
         - /tekton/home/newman-env.json
         - --bail
