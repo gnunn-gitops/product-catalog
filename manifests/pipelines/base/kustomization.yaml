@@ -8,6 +8,9 @@ configMapGenerator:
   - name: maven-settings
     files:
       - configs/settings.xml
+  - name: newman-env
+    files:
+      - newman-env.json
 
 resources:
 # Nexus

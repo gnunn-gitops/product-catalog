@@ -1,0 +1,29 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: newman
+spec:
+  inputs:
+    params:
+    - name: COLLECTIONS
+      description: The URL of the collections test to run
+      type: string
+  steps:
+    - name: collections-test
+      image: docker.io/postman/newman:latest
+      command:
+        - 'newman'
+      args:
+        - run
+        - $(inputs.params.COLLECTION_URL)
+        - -e
+        - /tekton/home/newman-env.json
+        - --bail
+      volumeMounts:
+        - name: newman-env
+          mountPath: /tekton/home
+          subPath: newman-env.json
+  volumes:
+    - name: newman-env
+      configMap:
+        name: newman-env

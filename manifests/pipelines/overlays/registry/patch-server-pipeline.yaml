@@ -68,14 +68,32 @@ spec:
           value: server
         - name: NAMESPACE
           value: product-catalog-dev
+    - name: dev-test
+      taskRef:
+        name: newman
+        kind: Task
+      runAfter:
+        - deploy-dev
+      params:
+        - name: COLLECTIONS
+          value: https://raw.githubusercontent.com/gnunn-gitops/product-catalog-server/master/tests/product-catalog-server-tests.json
     - name: deploy-test
       taskRef:
         name: deploy
         kind: Task
       runAfter:
-        - deploy-dev
+        - dev-test
       params:
         - name: NAME
           value: server
         - name: NAMESPACE
           value: product-catalog-test
+    - name: test-test
+      taskRef:
+        name: newman
+        kind: Task
+      runAfter:
+        - deploy-test
+      params:
+        - name: COLLECTIONS
+          value: https://raw.githubusercontent.com/gnunn-gitops/product-catalog-server/master/tests/product-catalog-server-tests.json
