@@ -77,6 +77,8 @@ spec:
       params:
         - name: COLLECTIONS
           value: https://raw.githubusercontent.com/gnunn-gitops/product-catalog-server/master/tests/product-catalog-server-tests.json
+        - name: ENVIRONMENT
+          value: newman-dev-env.json
     - name: deploy-test
       taskRef:
         name: deploy
@@ -97,3 +99,5 @@ spec:
       params:
         - name: COLLECTIONS
           value: https://raw.githubusercontent.com/gnunn-gitops/product-catalog-server/master/tests/product-catalog-server-tests.json
+        - name: ENVIRONMENT
+          value: newman-test-env.json

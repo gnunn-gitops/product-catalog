@@ -1,10 +1,10 @@
 {
 	"id": "30c331d4-e961-4606-aecb-5a60e8e15213",
-	"name": "openshift-service",
+	"name": "product-catalog-dev-service",
 	"values": [
 		{
 			"key": "host",
-			"value": "server:8080",
+			"value": "server.product-catalog-dev:8080",
 			"enabled": true
 		},
 		{

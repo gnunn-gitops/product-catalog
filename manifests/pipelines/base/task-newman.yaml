@@ -8,21 +8,23 @@ spec:
     - name: COLLECTIONS
       description: The URL of the collections test to run
       type: string
+    - name: ENVIRONMENT
+      description: The environment file to use from the newman-env configmap
+      default: "newman-env.json"
   steps:
     - name: collections-test
       image: docker.io/postman/newman:latest
       command:
-        - 'newman'
+        - newman
       args:
         - run
         - $(inputs.params.COLLECTIONS)
         - -e
-        - /tekton/home/newman-env.json
+        - /config/$(inputs.params.ENVIRONMENT)
         - --bail
       volumeMounts:
         - name: newman-env
-          mountPath: /tekton/home
-          subPath: newman-env.json
+          mountPath: /config
   volumes:
     - name: newman-env
       configMap:
