@@ -8,4 +8,4 @@ spec:
     - name: revision
       value: master
     - name: url
-      value: https://github.com/gnunn1/product-catalog-server
+      value: https://github.com/gnunn-gitops/product-catalog-server
