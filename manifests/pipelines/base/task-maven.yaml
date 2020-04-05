@@ -97,10 +97,14 @@ spec:
     - name: mvn-copy-dist
       image: docker.io/maven:3.6.3-jdk-8
       command:
-        - /bin/sh
+        - '/bin/bash'
         - -c
       args:
-        - cp -R /workspace/target/*-runner.jar $(workspaces.app-binary.path)
+        -  |-
+          echo "Remove old versions..."
+          rm $(workspaces.app-binary.path)/*
+          echo "Copy new version..."
+          cp -R /workspace/target/*-runner.jar $(workspaces.app-binary.path)
   volumes:
     - name: m2-repository
       persistentVolumeClaim:
