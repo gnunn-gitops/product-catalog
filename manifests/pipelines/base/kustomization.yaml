@@ -25,6 +25,7 @@ resources:
 - task-oc.yaml
 - task-push-image.yaml
 - task-deploy.yaml
+- task-newman.yaml
 - condition-push-image.yaml
 # Server pipeline
 - server-imagestream.yaml
