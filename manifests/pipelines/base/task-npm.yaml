@@ -11,34 +11,53 @@ spec:
         type: git
   steps:
     - name: npm-install
-      image: registry.redhat.io/ubi8/nodejs-10:latest
+      image: quay.io/gnunn/nodejs10-tools:latest
       command:
         - /bin/sh
         - -c
       args:
-        - npm install
+        - npm install --package-lock
       workingDir: /workspace/source
+      volumeMounts:
+        - name: m2-repository
+          mountPath: /opt/app-root/src/node_modules
     - name: build
-      image: registry.redhat.io/ubi8/nodejs-10:latest
+      image: quay.io/gnunn/nodejs10-tools:latest
       command:
         - /bin/sh
         - -c
       args:
         - npm run build
       workingDir: /workspace/source
+      volumeMounts:
+        - name: m2-repository
+          mountPath: /opt/app-root/src/node_modules
     - name: quality
-      image: registry.redhat.io/ubi8/nodejs-10:latest
+      image: quay.io/gnunn/nodejs10-tools:latest
       command:
         - /bin/sh
         - -c
       args:
-        - npm run sonar
+        -  |-
+          mkdir -p coverage
+          mkdir -p reports/dependency-check
+          dependency-check.sh --format ALL -s . --out reports/dependency-check --project "product-catalog-client"
+          npm run sonar
       workingDir: /workspace/source
+      volumeMounts:
+        - name: m2-repository
+          mountPath: /opt/app-root/src/node_modules
+        - name: m2-repository
+          mountPath: /opt/dependency-check/data
     - name: copy-dist
-      image: registry.redhat.io/ubi8/nodejs-10:latest
+      image: quay.io/gnunn/nodejs10-tools:latest
       command:
         - /bin/sh
         - -c
       args:
         - cp -R ./dist/* $(workspaces.app-binary.path)
       workingDir: /workspace/source
+  volumes:
+    - name: npm-cache
+      persistentVolumeClaim:
+        claimName: npm-cache
