@@ -21,6 +21,7 @@ resources:
 # Supporting infra
 - m2-cache-pvc.yaml
 - npm-cache-pvc.yaml
+- dependency-cache-pvc.yaml
 # Tekton tasks
 - task-maven.yaml
 - task-npm.yaml
