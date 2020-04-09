@@ -19,8 +19,8 @@ spec:
         - npm install --package-lock
       workingDir: /workspace/source
       volumeMounts:
-        - name: m2-repository
-          mountPath: /opt/app-root/src/node_modules
+        - name: npm-cache
+          mountPath: /workspace/source/node_modules
     - name: build
       image: quay.io/gnunn/nodejs10-tools:latest
       command:
@@ -30,8 +30,8 @@ spec:
         - npm run build
       workingDir: /workspace/source
       volumeMounts:
-        - name: m2-repository
-          mountPath: /opt/app-root/src/node_modules
+        - name: npm-cache
+          mountPath: /workspace/source/node_modules
     - name: quality
       image: quay.io/gnunn/nodejs10-tools:latest
       command:
@@ -39,15 +39,16 @@ spec:
         - -c
       args:
         -  |-
+          echo ""
           mkdir -p coverage
           mkdir -p reports/dependency-check
           dependency-check.sh --format ALL -s . --out reports/dependency-check --project "product-catalog-client"
           npm run sonar
       workingDir: /workspace/source
       volumeMounts:
-        - name: m2-repository
-          mountPath: /opt/app-root/src/node_modules
-        - name: m2-repository
+        - name: npm-cache
+          mountPath: /workspace/source/node_modules
+        - name: npm-cache
           mountPath: /opt/dependency-check/data
     - name: copy-dist
       image: quay.io/gnunn/nodejs10-tools:latest
