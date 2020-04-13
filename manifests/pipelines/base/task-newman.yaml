@@ -10,7 +10,7 @@ spec:
       type: string
     - name: ENVIRONMENT
       description: The environment file to use from the newman-env configmap
-      default: ""
+      default: "newman-env.json"
   steps:
     - name: collections-test
       image: docker.io/postman/newman:latest
