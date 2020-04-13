@@ -32,12 +32,12 @@ kustomized include:
 
 Examples of these can be found in the following locations in this repo:
 
-* ArgoCD: If you look in ```/argocd/overlays/rhpds``` you can see how we patch the base items to reference the RHPDS application specific manifests
+* ArgoCD: If you look in ```/cluster/overlays/rhpds/argocd``` you can see how we patch the base items to reference the RHPDS application specific manifests
 * Cluster: Have a look at ```/cluster/overlays/rhpds``` for how to create cluster specific manifests for dev, pipeline and test.
 
 To load the projects and applications into ArgoCD, assuming it is installed in the argocd directory, use the following command:
 
-```oc apply -k argocd/overlays/rhpds```
+```oc apply -k cluster/overlays/rhpds/argocd```
 
 Once the application is installed and synchronized in ArgoCD it looks like the following:
 
@@ -57,4 +57,21 @@ Once you make the code change, start the client pipeline (Jenkins or Tekton). No
 
 ### Enterprise Registry
 
-The demo is used and tested primarily with an enterprise Registry. In my case I'm leveraging quay.io though you can use anything. In order to support GitOps with the enterprise registry secret, Bitnami Sealed Secrets are used. When creating your cluster overlay you will need to either provide the secret directly (strongly not recommended), or encrypt your own secret.
+The demo is used and tested primarily with an enterprise Registry. In my case I'm leveraging quay.io though you can use anything. In order to support GitOps with the enterprise registry secret, Bitnami Sealed Secrets are used. When creating your cluster overlay you will need to either provide the secret directly (strongly not recommended), or encrypt your own secret using kubeseal.
+
+An example of creating a standard secret is included in the kustomization file ```cluster/overlays/default/pipeline/kustomization.yaml```. To use it, uncomment the secret generator in the file, you will also need to provide a dockerconfigjson file for the secret similar to below:
+
+```
+{
+	"auths": {
+		"<registry>": {
+		  "auth": "<base64(Username:Password)>"
+		}
+	},
+	"HttpHeaders": {
+		"User-Agent": "Docker-Client/18.09.7 (linux)"
+	}
+}
+```
+
+Replace the ```<base64(Username:Password)>``` with a base64 string of your username and password. Replace ```<registry>``` with your registry name, i.e. ```quay.io``` if using Quay.
