@@ -3,6 +3,8 @@ kind: Pipeline
 metadata:
   name: client
 spec:
+   workspaces:
+    - name: app-binary
    resources:
     - name: source
       type: git
@@ -21,6 +23,15 @@ spec:
         inputs:
         - name: source
           resource: source
+    - name: quality
+      taskRef:
+        name: npm-quality
+      runAfter:
+        - build
+      resources:
+        inputs:
+        - name: source
+          resource: source
     - name: build-image
       taskRef:
         name: openshift-client
@@ -29,7 +40,7 @@ spec:
         - name: app-binary
           workspace: app-binary
       runAfter:
-        - build
+        - quality
       params:
         - name: COMMANDS
           value: |

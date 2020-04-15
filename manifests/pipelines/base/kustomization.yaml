@@ -26,6 +26,7 @@ resources:
 # Tekton tasks
 - task-maven.yaml
 - task-npm.yaml
+- task-npm-quality.yaml
 - task-oc.yaml
 - task-push-image.yaml
 - task-deploy.yaml

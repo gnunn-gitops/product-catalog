@@ -1,0 +1,36 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: npm-quality
+spec:
+  inputs:
+    resources:
+      - name: source
+        type: git
+  steps:
+    - name: quality
+      image: quay.io/gnunn/nodejs10-tools:latest
+      command:
+        - /bin/sh
+        - -c
+      args:
+        -  |-
+          echo "Performing quality check"
+          mkdir -p coverage
+          mkdir -p reports/dependency-check
+          dependency-check.sh --format ALL -s . --out reports/dependency-check --project "product-catalog-client"
+          npm run sonar
+          echo "Quality check complete, see results in sonarqube"
+      workingDir: /workspace/source
+      volumeMounts:
+        - name: npm-cache
+          mountPath: /workspace/source/node_modules
+        - name: dependency-cache
+          mountPath: /opt/dependency-check/data
+  volumes:
+    - name: npm-cache
+      persistentVolumeClaim:
+        claimName: npm-cache
+    - name: dependency-cache
+      persistentVolumeClaim:
+        claimName: dependency-cache

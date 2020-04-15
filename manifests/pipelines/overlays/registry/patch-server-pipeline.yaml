@@ -3,6 +3,8 @@ kind: Pipeline
 metadata:
   name: server
 spec:
+   workspaces:
+    - name: app-binary
    resources:
     - name: source
       type: git
@@ -28,9 +30,9 @@ spec:
         - name: MAVEN_MIRROR_URL
           value: "$(params.MAVEN_MIRROR_URL)"
         - name: GOALS
-          value: "package sonar:sonar deploy"
+          value: "package sonar:sonar deploy install"
         - name: PROFILES
-          value: "quality"
+          value: "quality,copy"
     - name: build-image
       taskRef:
         name: openshift-client
@@ -44,7 +46,9 @@ spec:
         - name: COMMANDS
           value: |
               ls $(workspaces.app-binary.path)
-              oc start-build server --from-dir=$(workspaces.app-binary.path) --wait=true
+              JAR="$(ls $(workspaces.app-binary.path)/*-runner.jar)"
+              echo "Building image with ${JAR}"
+              oc start-build server --from-file=$JAR --wait=true
     - name: promote-image
       taskRef:
         name: push-image

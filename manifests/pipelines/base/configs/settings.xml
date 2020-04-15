@@ -40,10 +40,17 @@
             </sonar.host.url>
           </properties>
         </profile>
+        <profile>
+          <id>pipeline</id>
+            <properties>
+              <binary.output.path>/workspace/app-binary</binary.output.path>
+            </properties>
+        </profile>
       </profiles>
 
       <activeProfiles>
         <activeProfile>nexus-internal</activeProfile>
         <activeProfile>sonar</activeProfile>
+        <activeProfile>pipeline</activeProfile>
       </activeProfiles>
     </settings>

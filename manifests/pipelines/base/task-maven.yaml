@@ -15,6 +15,10 @@ spec:
       description: The Maven maven profiles to activate, comma separated
       type: string
       default: ""
+    - name: ARGUMENTS
+      description: Maven arguments, typically -D switches like -DskipTests
+      type: string
+      default: ""
     - name: MAVEN_MIRROR_URL
       description: The Maven bucketrepo- mirror
       type: string
@@ -72,11 +76,15 @@ spec:
         - '-c'
       args:
         - |-
+          ls -l target
+
           if [[ -z "$(inputs.params.PROFILES)" ]]; then
-            mvn $(inputs.params.GOALS)
+            mvn $(inputs.params.GOALS) $(inputs.params.ARGUMENTS)
           else
-            mvn $(inputs.params.GOALS) -P$(inputs.params.PROFILES)
+            mvn $(inputs.params.GOALS) -P$(inputs.params.PROFILES) $(inputs.params.ARGUMENTS)
           fi
+
+          ls -l target
       env:
         - name: MAVEN_SERVER_USERNAME
           valueFrom:
@@ -94,17 +102,6 @@ spec:
         - name: maven-settings
           mountPath: $(inputs.params.M2_DIRECTORY)/settings.xml
           subPath: settings.xml
-    - name: mvn-copy-dist
-      image: docker.io/maven:3.6.3-jdk-8
-      command:
-        - '/bin/bash'
-        - -c
-      args:
-        -  |-
-          echo "Remove old versions..."
-          rm $(workspaces.app-binary.path)/*
-          echo "Copy new version..."
-          cp -R /workspace/target/*-runner.jar $(workspaces.app-binary.path)
   volumes:
     - name: m2-repository
       persistentVolumeClaim:
