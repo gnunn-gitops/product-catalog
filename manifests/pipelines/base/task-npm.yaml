@@ -9,6 +9,9 @@ spec:
     resources:
       - name: source
         type: git
+  results:
+    - name: short-git-commit-id
+      description: The short commit id from git
   steps:
     - name: npm-install
       image: quay.io/gnunn/nodejs10-tools:latest
@@ -58,6 +61,14 @@ spec:
         - -c
       args:
         - cp -R ./dist/* $(workspaces.app-binary.path)
+      workingDir: /workspace/source
+    - name: output-result
+      image: quay.io/gnunn/nodejs10-tools:latest
+      command:
+        - /bin/sh
+        - -c
+      args:
+        - git rev-parse --short HEAD | tee /tekton/results/short-git-commit-id
       workingDir: /workspace/source
   volumes:
     - name: npm-cache
