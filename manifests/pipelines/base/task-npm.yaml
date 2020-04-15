@@ -68,7 +68,7 @@ spec:
         - /bin/sh
         - -c
       args:
-        - git rev-parse --short HEAD | tee /tekton/results/short-git-commit-id
+        - git rev-parse --short HEAD | tee $(results.short-git-commit-id.path)
       workingDir: /workspace/source
   volumes:
     - name: npm-cache
