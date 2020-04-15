@@ -16,6 +16,7 @@ configMapGenerator:
 resources:
 # Nexus
 - github.com/redhat-canada-gitops/10-devtools//nexus2/base
+# Sonarqube
 - github.com/redhat-canada-gitops/10-devtools//sonarqube8/overlays/plugins
 - secrets/maven-repo-creds.yaml
 # Supporting infra
