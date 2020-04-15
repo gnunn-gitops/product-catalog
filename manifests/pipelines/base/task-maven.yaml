@@ -72,10 +72,10 @@ spec:
         - '-c'
       args:
         - |-
-          if [[ -z "${param// }" ]]; then
-            mvn $(inputs.params.GOALS) -P$(inputs.params.PROFILES)
-          else
+          if [[ -z "$(inputs.params.PROFILES)" ]]; then
             mvn $(inputs.params.GOALS)
+          else
+            mvn $(inputs.params.GOALS) -P$(inputs.params.PROFILES)
           fi
       env:
         - name: MAVEN_SERVER_USERNAME
