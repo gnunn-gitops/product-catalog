@@ -10,8 +10,8 @@ To run the demo locally on your laptop, you will need to have a MySQL or MariaDB
 
 The following repos will need to be cloned:
 
-* [product-catalog-client](https://github.com/gnunn1/product-catalog-client)
-* [product-catalog-server](https://github.com/gnunn1/product-catalog-server)
+* [product-catalog-client](https://github.com/gnunn-gitops/product-catalog-client)
+* [product-catalog-server](https://github.com/gnunn-gitops/product-catalog-server)
 
 
 To run the quarkus application, execute ```mvn quarkus:dev``` from the root directory.
