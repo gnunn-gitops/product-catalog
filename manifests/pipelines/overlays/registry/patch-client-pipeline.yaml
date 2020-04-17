@@ -50,6 +50,9 @@ spec:
       taskRef:
         name: push-image
         kind: Task
+      workspaces:
+        - name: app-binary
+          workspace: app-binary
       runAfter:
         - build-image
       resources:

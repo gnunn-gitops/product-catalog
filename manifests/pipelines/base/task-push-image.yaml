@@ -20,6 +20,19 @@ spec:
         TOKEN="$(oc whoami -t)"
         USER="pipeline"
         skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds="${USER}:${TOKEN}" --dest-authfile=/workspace/dest/.docker/config.json docker://$(inputs.resources.src-image.url) docker://$(inputs.resources.dest-image.url)
+
+        # Below is workaround for execution results not working with non-root images
+        GIT_COMMIT_DIR=$(workspaces.app-binary.path)/git-sha
+
+        if [ -d "$GIT_COMMIT_DIR" ]; then
+          COMMIT_ID=$(cat $GIT_COMMIT_DIR/commit-id)
+          IMAGE=$(inputs.resources.dest-image.url)
+          IMAGE_NAME=${IMAGE%:*}
+          echo "Pushing image with commit id to ${IMAGE_NAME}:${COMMIT_ID}"
+          skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds="${USER}:${TOKEN}" --dest-authfile=/workspace/dest/.docker/config.json docker://$(inputs.resources.src-image.url) docker://$IMAGE_NAME:$COMMIT_ID
+        else
+          echo "No git commit id available"
+        fi
       volumeMounts:
         - name: dest-docker-config
           mountPath: /workspace/dest/.docker/

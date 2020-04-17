@@ -76,15 +76,11 @@ spec:
         - '-c'
       args:
         - |-
-          ls -l target
-
           if [[ -z "$(inputs.params.PROFILES)" ]]; then
             mvn $(inputs.params.GOALS) $(inputs.params.ARGUMENTS)
           else
             mvn $(inputs.params.GOALS) -P$(inputs.params.PROFILES) $(inputs.params.ARGUMENTS)
           fi
-
-          ls -l target
       env:
         - name: MAVEN_SERVER_USERNAME
           valueFrom:
@@ -102,6 +98,15 @@ spec:
         - name: maven-settings
           mountPath: $(inputs.params.M2_DIRECTORY)/settings.xml
           subPath: settings.xml
+    - name: save-commit-sha
+      image: docker.io/maven:3.6.3-jdk-8
+      command:
+        - '/bin/bash'
+        - '-c'
+      args:
+        - |-
+          mkdir -p $(workspaces.app-binary.path)/git-sha
+          git rev-parse --short HEAD | tee $(workspaces.app-binary.path)/git-sha/commit-id
   volumes:
     - name: m2-repository
       persistentVolumeClaim:

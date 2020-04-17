@@ -30,7 +30,7 @@ spec:
         - name: MAVEN_MIRROR_URL
           value: "$(params.MAVEN_MIRROR_URL)"
         - name: GOALS
-          value: "package sonar:sonar deploy install"
+          value: "package sonar:sonar install deploy"
         - name: PROFILES
           value: "quality,copy"
     - name: build-image
@@ -53,6 +53,9 @@ spec:
       taskRef:
         name: push-image
         kind: Task
+      workspaces:
+        - name: app-binary
+          workspace: app-binary
       runAfter:
         - build-image
       resources:
