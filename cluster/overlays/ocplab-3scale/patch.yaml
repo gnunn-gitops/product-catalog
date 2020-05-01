@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+spec:
+  template:
+    spec:
+      containers:
+        - name: server
+          env:
+          - name: CORS_ORIGIN
+            value: http://apicast-prod-product-catalog.apps.cluster.ocplab.com
+          image: quay.io/gnunn/server:latest
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client
+data:
+  config.js: |-
+    window.ENV = {
+      "API_URL":"http://apicast-prod-product-catalog.apps.cluster.ocplab.com",
+      "API_KEY":"18de534a3ed3131245a2ecc7638853c1"
+    }
