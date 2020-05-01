@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: client
-          image: image-registry.openshift-image-registry.svc:5000/product-catalog/client:latest
+          image: quay.io/gnunn/client:latest
           imagePullPolicy: Always
           ports:
           - containerPort: 8080
