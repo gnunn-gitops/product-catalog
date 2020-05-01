@@ -1,0 +1,1079 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+       "title": "Product Catalog API",
+       "contact": {
+          "name": "Product Catalog API Support",
+          "url": "http://demo.com/contact",
+          "email": "techsupport@demo.com"
+       },
+       "license": {
+          "name": "Apache 2.0",
+          "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+       },
+       "version": "1.0.0"
+    },
+    "tags": [
+       {
+          "name": "Authentication",
+          "description": "An API to manage user authentication and authorization"
+       },
+       {
+          "name": "Categories",
+          "description": "An API to manipulate the categories in the catalog"
+       },
+       {
+          "name": "Products",
+          "description": "An API to manipulate the products in the catalog"
+       },
+       {
+          "name": "Users",
+          "description": "An API to manipulate users of the catalog"
+       }
+    ],
+    "paths": {
+       "/api/auth": {
+          "post": {
+             "tags": [
+                "Authentication"
+             ],
+             "summary": "Login",
+             "description": "Authenticate a user",
+             "responses": {
+                "200": {
+                   "description": "OK",
+                   "content": {
+                      "application/json": {
+                         "schema": {
+                            "$ref": "#/components/schemas/LoginResult"
+                         }
+                      }
+                   }
+                }
+             }
+          }
+       },
+       "/api/auth/register": {
+          "post": {
+             "tags": [
+                "Authentication"
+             ],
+             "summary": "Register",
+             "description": "Register a new user",
+             "requestBody": {
+                "content": {
+                   "application/x-www-form-urlencoded": {
+                      "schema": {
+                         "type": "object",
+                         "properties": {
+                            "email": {
+                               "type": "string"
+                            },
+                            "password": {
+                               "type": "string"
+                            },
+                            "password_confirmation": {
+                               "type": "string"
+                            }
+                         }
+                      }
+                   }
+                }
+             },
+             "responses": {
+                "200": {
+                   "description": "OK"
+                }
+             }
+          }
+       },
+       "/api/auth/user": {
+          "get": {
+             "tags": [
+                "Authentication"
+             ],
+             "summary": "Get user",
+             "description": "Get the current user",
+             "responses": {
+                "200": {
+                   "description": "OK",
+                   "content": {
+                      "application/json": {
+                         "schema": {
+                            "$ref": "#/components/schemas/User"
+                         }
+                      }
+                   }
+                }
+             }
+          }
+       },
+       "/api/category": {
+          "get": {
+             "tags": [
+                "Categories"
+             ],
+             "responses": {
+                "200": {
+                   "description": "OK",
+                   "content": {
+                      "application/json": {
+                         "schema": {
+                            "type": "array",
+                            "items": {
+                               "$ref": "#/components/schemas/Category"
+                            }
+                         }
+                      }
+                   }
+                }
+             }
+          },
+          "post": {
+             "tags": [
+                "Categories"
+             ],
+             "summary": "Create category",
+             "description": "Create a new category",
+             "requestBody": {
+                "content": {
+                   "application/json": {
+                      "schema": {
+                         "$ref": "#/components/schemas/Category"
+                      }
+                   }
+                }
+             },
+             "responses": {
+                "200": {
+                   "description": "OK"
+                }
+             }
+          }
+       },
+       "/api/category/{id}": {
+          "get": {
+             "tags": [
+                "Categories"
+             ],
+             "summary": "Get category",
+             "description": "Get specific category by ID",
+             "parameters": [
+                {
+                   "name": "id",
+                   "in": "path",
+                   "required": true,
+                   "schema": {
+                      "format": "int32",
+                      "type": "integer"
+                   }
+                }
+             ],
+             "responses": {
+                "200": {
+                   "description": "OK",
+                   "content": {
+                      "application/json": {
+                         "schema": {
+                            "$ref": "#/components/schemas/Category"
+                         }
+                      }
+                   }
+                }
+             }
+          },
+          "put": {
+             "tags": [
+                "Categories"
+             ],
+             "summary": "Update category",
+             "description": "Update an existing category",
+             "parameters": [
+                {
+                   "name": "id",
+                   "in": "path",
+                   "required": true,
+                   "schema": {
+                      "format": "int32",
+                      "type": "integer"
+                   }
+                }
+             ],
+             "requestBody": {
+                "content": {
+                   "application/json": {
+                      "schema": {
+                         "$ref": "#/components/schemas/Category"
+                      }
+                   }
+                }
+             },
+             "responses": {
+                "200": {
+                   "description": "OK",
+                   "content": {
+                      "application/json": {
+                         "schema": {
+                            "$ref": "#/components/schemas/Category"
+                         }
+                      }
+                   }
+                }
+             }
+          },
+          "delete": {
+             "tags": [
+                "Categories"
+             ],
+             "summary": "Delete category",
+             "description": "Delete a category",
+             "parameters": [
+                {
+                   "name": "id",
+                   "in": "path",
+                   "required": true,
+                   "schema": {
+                      "format": "int32",
+                      "type": "integer"
+                   }
+                }
+             ],
+             "responses": {
+                "200": {
+                   "description": "OK"
+                }
+             }
+          }
+       },
+       "/api/product": {
+          "get": {
+             "tags": [
+                "Products"
+             ],
+             "summary": "Get product list",
+             "description": "Get product list with support for paging and ordering",
+             "parameters": [
+                {
+                   "name": "item_per_page",
+                   "in": "query",
+                   "schema": {
+                      "format": "int32",
+                      "default": "0",
+                      "type": "integer"
+                   }
+                },
+                {
+                   "name": "name",
+                   "in": "query",
+                   "schema": {
+                      "default": "",
+                      "type": "string"
+                   }
+                },
+                {
+                   "name": "order_by",
+                   "in": "query",
+                   "schema": {
+                      "default": "name",
+                      "type": "string"
+                   }
+                },
+                {
+                   "name": "order_type",
+                   "in": "query",
+                   "schema": {
+                      "default": "asc",
+                      "type": "string"
+                   }
+                },
+                {
+                   "name": "page",
+                   "in": "query",
+                   "schema": {
+                      "format": "int32",
+                      "default": "0",
+                      "type": "integer"
+                   }
+                }
+             ],
+             "responses": {
+                "200": {
+                   "description": "OK",
+                   "content": {
+                      "application/json": {
+                         "schema": {
+                            "type": "array",
+                            "items": {
+                               "$ref": "#/components/schemas/Product"
+                            }
+                         }
+                      }
+                   }
+                }
+             }
+          },
+          "post": {
+             "tags": [
+                "Products"
+             ],
+             "summary": "Create product",
+             "description": "Create a new product",
+             "requestBody": {
+                "content": {
+                   "application/x-www-form-urlencoded": {
+                      "schema": {
+                         "type": "object",
+                         "properties": {
+                            "name": {
+                               "type": "string"
+                            },
+                            "description": {
+                               "type": "string"
+                            },
+                            "category_id": {
+                               "format": "int32",
+                               "type": "integer"
+                            },
+                            "price": {
+                               "format": "double",
+                               "type": "number"
+                            }
+                         }
+                      }
+                   }
+                }
+             },
+             "responses": {
+                "200": {
+                   "description": "OK",
+                   "content": {
+                      "application/json": {
+                         "schema": {
+                            "$ref": "#/components/schemas/ProductResult"
+                         }
+                      }
+                   }
+                }
+             }
+          }
+       },
+       "/api/product/count": {
+          "get": {
+             "tags": [
+                "Products"
+             ],
+             "summary": "Get product count",
+             "description": "Get the total count of products available",
+             "responses": {
+                "200": {
+                   "description": "OK"
+                }
+             }
+          }
+       },
+       "/api/product/delete": {
+          "post": {
+             "tags": [
+                "Products"
+             ],
+             "summary": "Delete a set of products",
+             "description": "Delete a set of products as specified by their IDs",
+             "requestBody": {
+                "content": {
+                   "application/x-www-form-urlencoded": {
+                      "schema": {
+                         "type": "object",
+                         "properties": {
+                            "del_ids[]": {
+                               "$ref": "#/components/schemas/ListInteger"
+                            }
+                         }
+                      }
+                   }
+                }
+             },
+             "responses": {
+                "200": {
+                   "description": "OK"
+                }
+             }
+          }
+       },
+       "/api/product/{id}": {
+          "get": {
+             "tags": [
+                "Products"
+             ],
+             "summary": "Get product by ID",
+             "description": "Get specific product by it's ID",
+             "parameters": [
+                {
+                   "name": "id",
+                   "in": "path",
+                   "required": true,
+                   "schema": {
+                      "format": "int32",
+                      "type": "integer"
+                   }
+                }
+             ],
+             "responses": {
+                "200": {
+                   "description": "OK",
+                   "content": {
+                      "application/json": {
+                         "schema": {
+                            "$ref": "#/components/schemas/Product"
+                         }
+                      }
+                   }
+                }
+             }
+          },
+          "put": {
+             "tags": [
+                "Products"
+             ],
+             "summary": "Update product",
+             "description": "Update an existing product",
+             "parameters": [
+                {
+                   "name": "id",
+                   "in": "path",
+                   "required": true,
+                   "schema": {
+                      "format": "int32",
+                      "type": "integer"
+                   }
+                }
+             ],
+             "requestBody": {
+                "content": {
+                   "application/x-www-form-urlencoded": {
+                      "schema": {
+                         "type": "object",
+                         "properties": {
+                            "id": {
+                               "format": "int32",
+                               "type": "integer"
+                            },
+                            "name": {
+                               "type": "string"
+                            },
+                            "description": {
+                               "type": "string"
+                            },
+                            "category_id": {
+                               "format": "int32",
+                               "type": "integer"
+                            },
+                            "price": {
+                               "format": "double",
+                               "type": "number"
+                            }
+                         }
+                      }
+                   }
+                }
+             },
+             "responses": {
+                "200": {
+                   "description": "OK",
+                   "content": {
+                      "application/json": {
+                         "schema": {
+                            "$ref": "#/components/schemas/ProductResult"
+                         }
+                      }
+                   }
+                }
+             }
+          },
+          "delete": {
+             "tags": [
+                "Products"
+             ],
+             "summary": "Delete product",
+             "description": "Delete a single product by ID",
+             "parameters": [
+                {
+                   "name": "id",
+                   "in": "path",
+                   "required": true,
+                   "schema": {
+                      "format": "int32",
+                      "type": "integer"
+                   }
+                }
+             ],
+             "responses": {
+                "200": {
+                   "description": "OK"
+                }
+             }
+          }
+       },
+       "/api/user": {
+          "post": {
+             "tags": [
+                "Users"
+             ],
+             "summary": "Create user",
+             "description": "Create a new user",
+             "requestBody": {
+                "content": {
+                   "application/json": {
+                      "schema": {
+                         "$ref": "#/components/schemas/User"
+                      }
+                   }
+                }
+             },
+             "responses": {
+                "200": {
+                   "description": "OK"
+                }
+             }
+          }
+       },
+       "/api/user/{id}": {
+          "get": {
+             "tags": [
+                "Users"
+             ],
+             "summary": "Get user by ID",
+             "description": "Get specific user by it's ID",
+             "parameters": [
+                {
+                   "name": "id",
+                   "in": "path",
+                   "required": true,
+                   "schema": {
+                      "format": "int32",
+                      "type": "integer"
+                   }
+                }
+             ],
+             "responses": {
+                "200": {
+                   "description": "OK",
+                   "content": {
+                      "application/json": {
+                         "schema": {
+                            "$ref": "#/components/schemas/User"
+                         }
+                      }
+                   }
+                }
+             }
+          },
+          "put": {
+             "tags": [
+                "Users"
+             ],
+             "summary": "Update user",
+             "description": "Update an existing user",
+             "parameters": [
+                {
+                   "name": "id",
+                   "in": "path",
+                   "required": true,
+                   "schema": {
+                      "format": "int32",
+                      "type": "integer"
+                   }
+                }
+             ],
+             "requestBody": {
+                "content": {
+                   "application/json": {
+                      "schema": {
+                         "$ref": "#/components/schemas/User"
+                      }
+                   }
+                }
+             },
+             "responses": {
+                "200": {
+                   "description": "OK",
+                   "content": {
+                      "application/json": {
+                         "schema": {
+                            "$ref": "#/components/schemas/User"
+                         }
+                      }
+                   }
+                }
+             }
+          },
+          "delete": {
+             "tags": [
+                "Users"
+             ],
+             "summary": "Delete user",
+             "description": "Delete a user",
+             "parameters": [
+                {
+                   "name": "id",
+                   "in": "path",
+                   "required": true,
+                   "schema": {
+                      "format": "int32",
+                      "type": "integer"
+                   }
+                }
+             ],
+             "responses": {
+                "200": {
+                   "description": "OK"
+                }
+             }
+          }
+       }
+    },
+    "components": {
+       "schemas": {
+          "Product": {
+             "required": [
+                "category",
+                "name",
+                "price"
+             ],
+             "type": "object",
+             "properties": {
+                "category": {
+                   "allOf": [
+                      {
+                         "$ref": "#/components/schemas/Category"
+                      },
+                      {
+                         "nullable": false
+                      }
+                   ]
+                },
+                "created": {
+                   "$ref": "#/components/schemas/Date1"
+                },
+                "description": {
+                   "type": "string"
+                },
+                "id": {
+                   "format": "int32",
+                   "type": "integer"
+                },
+                "modified": {
+                   "$ref": "#/components/schemas/LocalDateTime"
+                },
+                "name": {
+                   "type": "string",
+                   "nullable": false
+                },
+                "price": {
+                   "format": "double",
+                   "type": "number",
+                   "nullable": false
+                }
+             }
+          },
+          "ProductResource": {
+             "type": "object",
+             "properties": {
+                "count": {
+                   "$ref": "#/components/schemas/Response"
+                }
+             }
+          },
+          "Response": {
+             "type": "object",
+             "properties": {
+                "allowedMethods": {
+                   "$ref": "#/components/schemas/SetString"
+                },
+                "cookies": {
+                   "$ref": "#/components/schemas/MapStringNewCookie"
+                },
+                "date": {
+                   "$ref": "#/components/schemas/Date"
+                },
+                "entity": {
+                   "type": "object"
+                },
+                "entityTag": {
+                   "$ref": "#/components/schemas/EntityTag"
+                },
+                "headers": {
+                   "$ref": "#/components/schemas/MultivaluedMapStringObject"
+                },
+                "language": {
+                   "$ref": "#/components/schemas/Locale"
+                },
+                "lastModified": {
+                   "$ref": "#/components/schemas/Date"
+                },
+                "length": {
+                   "format": "int32",
+                   "type": "integer"
+                },
+                "links": {
+                   "$ref": "#/components/schemas/SetLink"
+                },
+                "location": {
+                   "$ref": "#/components/schemas/URI"
+                },
+                "mediaType": {
+                   "$ref": "#/components/schemas/MediaType"
+                },
+                "metadata": {
+                   "$ref": "#/components/schemas/MultivaluedMapStringObject"
+                },
+                "status": {
+                   "format": "int32",
+                   "type": "integer"
+                },
+                "statusInfo": {
+                   "$ref": "#/components/schemas/StatusType"
+                },
+                "stringHeaders": {
+                   "$ref": "#/components/schemas/MultivaluedMapStringString"
+                }
+             }
+          },
+          "SetString": {
+             "type": "array",
+             "items": {
+                "type": "string"
+             }
+          },
+          "NewCookie": {
+             "type": "object",
+             "properties": {
+                "domain": {
+                   "type": "string"
+                },
+                "name": {
+                   "type": "string"
+                },
+                "path": {
+                   "type": "string"
+                },
+                "value": {
+                   "type": "string"
+                },
+                "version": {
+                   "format": "int32",
+                   "type": "integer"
+                },
+                "comment": {
+                   "type": "string"
+                },
+                "expiry": {
+                   "$ref": "#/components/schemas/Date"
+                },
+                "httpOnly": {
+                   "type": "boolean"
+                },
+                "maxAge": {
+                   "format": "int32",
+                   "type": "integer"
+                },
+                "secure": {
+                   "type": "boolean"
+                }
+             }
+          },
+          "MapStringNewCookie": {
+             "type": "object",
+             "additionalProperties": {
+                "$ref": "#/components/schemas/NewCookie"
+             }
+          },
+          "Date": {
+             "format": "date",
+             "type": "string"
+          },
+          "EntityTag": {
+             "type": "object",
+             "properties": {
+                "value": {
+                   "type": "string"
+                },
+                "weak": {
+                   "type": "boolean"
+                }
+             }
+          },
+          "MultivaluedMapStringObject": {
+             "type": "object",
+             "additionalProperties": {}
+          },
+          "Locale": {
+             "type": "object",
+             "properties": {
+                "country": {
+                   "type": "string"
+                },
+                "displayCountry": {
+                   "type": "string"
+                },
+                "displayLanguage": {
+                   "type": "string"
+                },
+                "displayName": {
+                   "type": "string"
+                },
+                "displayScript": {
+                   "type": "string"
+                },
+                "displayVariant": {
+                   "type": "string"
+                },
+                "extensionKeys": {
+                   "$ref": "#/components/schemas/SetCharacter"
+                },
+                "iSO3Country": {
+                   "type": "string"
+                },
+                "iSO3Language": {
+                   "type": "string"
+                },
+                "language": {
+                   "type": "string"
+                },
+                "script": {
+                   "type": "string"
+                },
+                "unicodeLocaleAttributes": {
+                   "$ref": "#/components/schemas/SetString"
+                },
+                "unicodeLocaleKeys": {
+                   "$ref": "#/components/schemas/SetString"
+                },
+                "variant": {
+                   "type": "string"
+                }
+             }
+          },
+          "Link": {
+             "type": "object",
+             "properties": {
+                "params": {
+                   "$ref": "#/components/schemas/MapStringString"
+                },
+                "rel": {
+                   "type": "string"
+                },
+                "rels": {
+                   "$ref": "#/components/schemas/ListString"
+                },
+                "title": {
+                   "type": "string"
+                },
+                "type": {
+                   "type": "string"
+                },
+                "uri": {
+                   "$ref": "#/components/schemas/URI"
+                },
+                "uriBuilder": {
+                   "$ref": "#/components/schemas/UriBuilder"
+                }
+             }
+          },
+          "SetLink": {
+             "type": "array",
+             "items": {
+                "$ref": "#/components/schemas/Link"
+             }
+          },
+          "URI": {
+             "format": "uri",
+             "type": "string"
+          },
+          "MediaType": {
+             "type": "object",
+             "properties": {
+                "parameters": {
+                   "$ref": "#/components/schemas/MapStringString"
+                },
+                "subtype": {
+                   "type": "string"
+                },
+                "type": {
+                   "type": "string"
+                },
+                "wildcardSubtype": {
+                   "type": "boolean"
+                },
+                "wildcardType": {
+                   "type": "boolean"
+                }
+             }
+          },
+          "StatusType": {
+             "type": "object",
+             "properties": {
+                "family": {
+                   "$ref": "#/components/schemas/Family"
+                },
+                "reasonPhrase": {
+                   "type": "string"
+                },
+                "statusCode": {
+                   "format": "int32",
+                   "type": "integer"
+                }
+             }
+          },
+          "MultivaluedMapStringString": {
+             "type": "object",
+             "additionalProperties": {
+                "type": "string"
+             }
+          },
+          "Family": {
+             "enum": [
+                "CLIENT_ERROR",
+                "INFORMATIONAL",
+                "OTHER",
+                "REDIRECTION",
+                "SERVER_ERROR",
+                "SUCCESSFUL"
+             ],
+             "type": "string"
+          },
+          "MapStringString": {
+             "type": "object",
+             "additionalProperties": {
+                "type": "string"
+             }
+          },
+          "ListString": {
+             "type": "array",
+             "items": {
+                "type": "string"
+             }
+          },
+          "UriBuilder": {
+             "type": "object"
+          },
+          "SetCharacter": {
+             "type": "array",
+             "items": {
+                "format": "byte",
+                "type": "string"
+             }
+          },
+          "Category": {
+             "required": [
+                "id",
+                "name"
+             ],
+             "type": "object",
+             "properties": {
+                "created": {
+                   "$ref": "#/components/schemas/Date1"
+                },
+                "description": {
+                   "type": "string"
+                },
+                "id": {
+                   "format": "int32",
+                   "type": "integer",
+                   "nullable": false
+                },
+                "modified": {
+                   "$ref": "#/components/schemas/LocalDateTime"
+                },
+                "name": {
+                   "type": "string",
+                   "nullable": false
+                }
+             }
+          },
+          "Date1": {
+             "format": "date",
+             "type": "string"
+          },
+          "LocalDateTime": {
+             "format": "date-time",
+             "type": "string"
+          },
+          "ProductResult": {
+             "type": "object",
+             "properties": {
+                "message": {
+                   "type": "string"
+                },
+                "product": {
+                   "$ref": "#/components/schemas/Product"
+                },
+                "success": {
+                   "type": "boolean"
+                },
+                "this$0": {
+                   "$ref": "#/components/schemas/ProductResource"
+                }
+             }
+          },
+          "ListInteger": {
+             "$ref": "#/components/schemas/ListInteger"
+          },
+          "User": {
+             "type": "object",
+             "properties": {
+                "createdAt": {
+                   "$ref": "#/components/schemas/LocalDateTime"
+                },
+                "email": {
+                   "type": "string"
+                },
+                "id": {
+                   "format": "int32",
+                   "type": "integer"
+                },
+                "iterations": {
+                   "format": "int32",
+                   "type": "integer"
+                },
+                "passwordHash": {
+                   "type": "string"
+                },
+                "salt": {
+                   "type": "string"
+                }
+             }
+          },
+          "AuthResource": {
+             "type": "object"
+          },
+          "SecureUser": {
+             "type": "object",
+             "properties": {
+                "createdAt": {
+                   "$ref": "#/components/schemas/LocalDateTime"
+                },
+                "email": {
+                   "type": "string"
+                },
+                "this$0": {
+                   "$ref": "#/components/schemas/AuthResource"
+                }
+             }
+          },
+          "LoginResult": {
+             "type": "object",
+             "properties": {
+                "message": {
+                   "type": "string"
+                },
+                "this$0": {
+                   "$ref": "#/components/schemas/AuthResource"
+                },
+                "user": {
+                   "$ref": "#/components/schemas/SecureUser"
+                }
+             }
+          }
+       }
+    }
+ }
