@@ -6,7 +6,7 @@ spec:
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
-  project: product-catalog
+  project: apps-product-catalog
   source:
     path: manifests/app/overlays/test-quay
     repoURL: https://github.com/gnunn-gitops/product-catalog.git
