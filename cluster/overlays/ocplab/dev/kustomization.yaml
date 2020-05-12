@@ -4,8 +4,5 @@ kind: Kustomization
 bases:
 - ../../../../manifests/app/overlays/dev-quay
 
-# resources:
-# - user1-rolebinding.yaml
-
 patchesStrategicMerge:
 - patch.yaml

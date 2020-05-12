@@ -6,9 +6,6 @@ namespace: product-catalog-dev
 bases:
 - ../../base
 
-# resources:
-# - namespace.yaml
-
 patchesJson6902:
 - target:
     group: apps
