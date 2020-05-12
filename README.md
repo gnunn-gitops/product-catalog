@@ -35,6 +35,8 @@ Examples of these can be found in the following locations in this repo:
 * ArgoCD: If you look in ```/cluster/overlays/rhpds/argocd``` you can see how we patch the base items to reference the RHPDS application specific manifests
 * Cluster: Have a look at ```/cluster/overlays/rhpds``` for how to create cluster specific manifests for dev, pipeline and test.
 
+The infrastructure (namespaces/rolebindings) are in the [product-catalog-infra](https://github.com/gnunn-gitops/product-catalog-infra) repository. Add the application/projects there to ArgoCD first to create the namespaces and rolebindings. Otherwise you can create the namespaces manually.
+
 To load the projects and applications into ArgoCD, assuming it is installed in the argocd directory, use the following command:
 
 ```oc apply -k cluster/overlays/rhpds/argocd```
