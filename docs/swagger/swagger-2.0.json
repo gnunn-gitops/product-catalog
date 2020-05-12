@@ -1,0 +1,1050 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "contact": {
+      "email": "techsupport@demo.com",
+      "name": "Product Catalog API Support",
+      "url": "http://demo.com/contact"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "title": "Product Catalog API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/auth": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/LoginResult"
+            }
+          }
+        },
+        "tags": [
+          "Authentication"
+        ],
+        "description": "Authenticate a user",
+        "summary": "Login"
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "password",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "password_confirmation",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "Authentication"
+        ],
+        "description": "Register a new user",
+        "summary": "Register"
+      }
+    },
+    "/api/auth/user": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "tags": [
+          "Authentication"
+        ],
+        "description": "Get the current user",
+        "summary": "Get user"
+      }
+    },
+    "/api/category": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Category"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Categories"
+        ]
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "Categories"
+        ],
+        "description": "Create a new category",
+        "summary": "Create category"
+      }
+    },
+    "/api/category/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "Categories"
+        ],
+        "description": "Delete a category",
+        "summary": "Delete category"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        },
+        "tags": [
+          "Categories"
+        ],
+        "description": "Get specific category by ID",
+        "summary": "Get category"
+      },
+      "put": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        },
+        "tags": [
+          "Categories"
+        ],
+        "description": "Update an existing category",
+        "summary": "Update category"
+      }
+    },
+    "/api/product": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "default": "0",
+            "format": "int32",
+            "in": "query",
+            "name": "item_per_page",
+            "type": "integer"
+          },
+          {
+            "default": "",
+            "in": "query",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "default": "name",
+            "in": "query",
+            "name": "order_by",
+            "type": "string"
+          },
+          {
+            "default": "asc",
+            "in": "query",
+            "name": "order_type",
+            "type": "string"
+          },
+          {
+            "default": "0",
+            "format": "int32",
+            "in": "query",
+            "name": "page",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "items": {
+                "$ref": "#/definitions/Product"
+              },
+              "type": "array"
+            }
+          }
+        },
+        "tags": [
+          "Products"
+        ],
+        "description": "Get product list with support for paging and ordering",
+        "summary": "Get product list"
+      },
+      "post": {
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "format": "int32",
+            "in": "formData",
+            "name": "category_id",
+            "type": "integer"
+          },
+          {
+            "format": "double",
+            "in": "formData",
+            "name": "price",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ProductResult"
+            }
+          }
+        },
+        "tags": [
+          "Products"
+        ],
+        "description": "Create a new product",
+        "summary": "Create product"
+      }
+    },
+    "/api/product/count": {
+      "get": {
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "Products"
+        ],
+        "description": "Get the total count of products available",
+        "summary": "Get product count"
+      }
+    },
+    "/api/product/delete": {
+      "post": {
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "del_ids[]"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "Products"
+        ],
+        "description": "Delete a set of products as specified by their IDs",
+        "summary": "Delete a set of products"
+      }
+    },
+    "/api/product/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "Products"
+        ],
+        "description": "Delete a single product by ID",
+        "summary": "Delete product"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        },
+        "tags": [
+          "Products"
+        ],
+        "description": "Get specific product by it's ID",
+        "summary": "Get product by ID"
+      },
+      "put": {
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "format": "int32",
+            "in": "formData",
+            "name": "id",
+            "type": "integer"
+          },
+          {
+            "in": "formData",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "format": "int32",
+            "in": "formData",
+            "name": "category_id",
+            "type": "integer"
+          },
+          {
+            "format": "double",
+            "in": "formData",
+            "name": "price",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ProductResult"
+            }
+          }
+        },
+        "tags": [
+          "Products"
+        ],
+        "description": "Update an existing product",
+        "summary": "Update product"
+      }
+    },
+    "/api/user": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "Users"
+        ],
+        "description": "Create a new user",
+        "summary": "Create user"
+      }
+    },
+    "/api/user/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "Users"
+        ],
+        "description": "Delete a user",
+        "summary": "Delete user"
+      },
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ],
+        "description": "Get specific user by it's ID",
+        "summary": "Get user by ID"
+      },
+      "put": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "format": "int32",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ],
+        "description": "Update an existing user",
+        "summary": "Update user"
+      }
+    }
+  },
+  "definitions": {
+    "AuthResource": {
+      "type": "object"
+    },
+    "Category": {
+      "properties": {
+        "created": {
+          "$ref": "#/definitions/Date1"
+        },
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "format": "int32",
+          "nullable": false,
+          "type": "integer"
+        },
+        "modified": {
+          "$ref": "#/definitions/LocalDateTime"
+        },
+        "name": {
+          "nullable": false,
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "type": "object"
+    },
+    "Date": {
+      "format": "date",
+      "type": "string"
+    },
+    "Date1": {
+      "format": "date",
+      "type": "string"
+    },
+    "EntityTag": {
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "weak": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "Family": {
+      "enum": [
+        "CLIENT_ERROR",
+        "INFORMATIONAL",
+        "OTHER",
+        "REDIRECTION",
+        "SERVER_ERROR",
+        "SUCCESSFUL"
+      ],
+      "type": "string"
+    },
+    "Link": {
+      "properties": {
+        "params": {
+          "$ref": "#/definitions/MapStringString"
+        },
+        "rel": {
+          "type": "string"
+        },
+        "rels": {
+          "$ref": "#/definitions/ListString"
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "uri": {
+          "$ref": "#/definitions/URI"
+        },
+        "uriBuilder": {
+          "$ref": "#/definitions/UriBuilder"
+        }
+      },
+      "type": "object"
+    },
+    "ListInteger": {
+      "$ref": "#/definitions/ListInteger"
+    },
+    "ListString": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "LocalDateTime": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "Locale": {
+      "properties": {
+        "country": {
+          "type": "string"
+        },
+        "displayCountry": {
+          "type": "string"
+        },
+        "displayLanguage": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "displayScript": {
+          "type": "string"
+        },
+        "displayVariant": {
+          "type": "string"
+        },
+        "extensionKeys": {
+          "$ref": "#/definitions/SetCharacter"
+        },
+        "iSO3Country": {
+          "type": "string"
+        },
+        "iSO3Language": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "script": {
+          "type": "string"
+        },
+        "unicodeLocaleAttributes": {
+          "$ref": "#/definitions/SetString"
+        },
+        "unicodeLocaleKeys": {
+          "$ref": "#/definitions/SetString"
+        },
+        "variant": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "LoginResult": {
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "this$0": {
+          "$ref": "#/definitions/AuthResource"
+        },
+        "user": {
+          "$ref": "#/definitions/SecureUser"
+        }
+      },
+      "type": "object"
+    },
+    "MapStringNewCookie": {
+      "additionalProperties": {
+        "$ref": "#/definitions/NewCookie"
+      },
+      "type": "object"
+    },
+    "MapStringString": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "MediaType": {
+      "properties": {
+        "parameters": {
+          "$ref": "#/definitions/MapStringString"
+        },
+        "subtype": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "wildcardSubtype": {
+          "type": "boolean"
+        },
+        "wildcardType": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "MultivaluedMapStringObject": {
+      "additionalProperties": {},
+      "type": "object"
+    },
+    "MultivaluedMapStringString": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "NewCookie": {
+      "properties": {
+        "comment": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "string"
+        },
+        "expiry": {
+          "$ref": "#/definitions/Date"
+        },
+        "httpOnly": {
+          "type": "boolean"
+        },
+        "maxAge": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "secure": {
+          "type": "boolean"
+        },
+        "value": {
+          "type": "string"
+        },
+        "version": {
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "Product": {
+      "properties": {
+        "category": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Category"
+            },
+            {
+              "nullable": false
+            }
+          ]
+        },
+        "created": {
+          "$ref": "#/definitions/Date1"
+        },
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "modified": {
+          "$ref": "#/definitions/LocalDateTime"
+        },
+        "name": {
+          "nullable": false,
+          "type": "string"
+        },
+        "price": {
+          "format": "double",
+          "nullable": false,
+          "type": "number"
+        }
+      },
+      "required": [
+        "category",
+        "name",
+        "price"
+      ],
+      "type": "object"
+    },
+    "ProductResource": {
+      "properties": {
+        "count": {
+          "$ref": "#/definitions/Response"
+        }
+      },
+      "type": "object"
+    },
+    "ProductResult": {
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "product": {
+          "$ref": "#/definitions/Product"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "this$0": {
+          "$ref": "#/definitions/ProductResource"
+        }
+      },
+      "type": "object"
+    },
+    "Response": {
+      "properties": {
+        "allowedMethods": {
+          "$ref": "#/definitions/SetString"
+        },
+        "cookies": {
+          "$ref": "#/definitions/MapStringNewCookie"
+        },
+        "date": {
+          "$ref": "#/definitions/Date"
+        },
+        "entity": {
+          "type": "object"
+        },
+        "entityTag": {
+          "$ref": "#/definitions/EntityTag"
+        },
+        "headers": {
+          "$ref": "#/definitions/MultivaluedMapStringObject"
+        },
+        "language": {
+          "$ref": "#/definitions/Locale"
+        },
+        "lastModified": {
+          "$ref": "#/definitions/Date"
+        },
+        "length": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "links": {
+          "$ref": "#/definitions/SetLink"
+        },
+        "location": {
+          "$ref": "#/definitions/URI"
+        },
+        "mediaType": {
+          "$ref": "#/definitions/MediaType"
+        },
+        "metadata": {
+          "$ref": "#/definitions/MultivaluedMapStringObject"
+        },
+        "status": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "statusInfo": {
+          "$ref": "#/definitions/StatusType"
+        },
+        "stringHeaders": {
+          "$ref": "#/definitions/MultivaluedMapStringString"
+        }
+      },
+      "type": "object"
+    },
+    "SecureUser": {
+      "properties": {
+        "createdAt": {
+          "$ref": "#/definitions/LocalDateTime"
+        },
+        "email": {
+          "type": "string"
+        },
+        "this$0": {
+          "$ref": "#/definitions/AuthResource"
+        }
+      },
+      "type": "object"
+    },
+    "SetCharacter": {
+      "items": {
+        "format": "byte",
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "SetLink": {
+      "items": {
+        "$ref": "#/definitions/Link"
+      },
+      "type": "array"
+    },
+    "SetString": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "StatusType": {
+      "properties": {
+        "family": {
+          "$ref": "#/definitions/Family"
+        },
+        "reasonPhrase": {
+          "type": "string"
+        },
+        "statusCode": {
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "URI": {
+      "format": "uri",
+      "type": "string"
+    },
+    "UriBuilder": {
+      "type": "object"
+    },
+    "User": {
+      "properties": {
+        "createdAt": {
+          "$ref": "#/definitions/LocalDateTime"
+        },
+        "email": {
+          "type": "string"
+        },
+        "id": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "iterations": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "passwordHash": {
+          "type": "string"
+        },
+        "salt": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "tags": [
+    {
+      "description": "An API to manage user authentication and authorization",
+      "name": "Authentication"
+    },
+    {
+      "description": "An API to manipulate the categories in the catalog",
+      "name": "Categories"
+    },
+    {
+      "description": "An API to manipulate the products in the catalog",
+      "name": "Products"
+    },
+    {
+      "description": "An API to manipulate users of the catalog",
+      "name": "Users"
+    }
+  ],
+  "x-components": {}
+}
