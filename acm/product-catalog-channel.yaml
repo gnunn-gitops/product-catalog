@@ -1,0 +1,9 @@
+apiVersion: apps.open-cluster-management.io/v1
+kind: Channel
+metadata:
+  name: product-catalog
+  labels:
+    app: product-catalog
+spec:
+  type: GitHub
+  pathname: https://github.com/gnunn-gitops/product-catalog

@@ -1,0 +1,15 @@
+ apiVersion: apps.open-cluster-management.io/v1
+ kind: Subscription
+ metadata:
+   name: product-catalog
+   labels:
+     app: product-catalog
+   annotations:
+     apps.open-cluster-management.io/github-path: /manifests/app/overlays/dev-quay
+     apps.open-cluster-management.io/github-branch: master
+ spec:
+   channel: acm-applications/product-catalog
+   placement:
+     placementRef:
+       kind: PlacementRule
+       name: dev-clusters
