@@ -1,0 +1,8 @@
+- op: replace
+  path: /spec/channel
+  value: acm-applications/product-catalog-dev
+- op: add
+  path: /metadata/annotations
+  value:
+    apps.open-cluster-management.io/github-path: /manifests/app/overlays/dev-quay
+    apps.open-cluster-management.io/github-branch: master

@@ -1,0 +1,11 @@
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: product-catalog-cicd
+spec:
+  clusterReplicas: 1
+  clusterConditions:
+    - type: OK
+  clusterSelector:
+    matchLabels:
+      environment: Dev
