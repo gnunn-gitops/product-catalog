@@ -1,4 +1,4 @@
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: server
@@ -8,8 +8,12 @@ spec:
    resources:
     - name: source
       type: git
+    - name: internal-image
+      type: image
+    - name: repository-image
+      type: image
    params:
-    - name: MAVEN_MIRROR_URL
+    - name:  MAVEN_MIRROR_URL
       default: ""
    tasks:
     - name: build
@@ -23,12 +27,12 @@ spec:
         - name: source
           resource: source
       params:
-        - name: GOALS
-          value: "package sonar:sonar deploy"
-        - name: PROFILES
-          value: "quality"
         - name: MAVEN_MIRROR_URL
           value: "$(params.MAVEN_MIRROR_URL)"
+        - name: GOALS
+          value: "package sonar:sonar install deploy"
+        - name: PROFILES
+          value: "quality,copy"
     - name: build-image
       taskRef:
         name: openshift-client
@@ -42,52 +46,65 @@ spec:
         - name: COMMANDS
           value: |
               ls $(workspaces.app-binary.path)
-              oc start-build server --from-dir=$(workspaces.app-binary.path) --wait=true
-    - name: tag-dev-image
+              JAR="$(ls $(workspaces.app-binary.path)/*-runner.jar)"
+              echo "Building image with ${JAR}"
+              oc start-build server --from-file=$JAR --wait=true
+    - name: promote-image
       taskRef:
-        name: openshift-client
+        name: push-image
         kind: Task
       workspaces:
         - name: app-binary
           workspace: app-binary
       runAfter:
         - build-image
-      params:
-        - name: COMMANDS
-          value: |
-              oc tag product-catalog-cicd/server:latest product-catalog-dev/server:latest
+      resources:
+        inputs:
+        - name: src-image
+          resource: internal-image
+        - name: dest-image
+          resource: repository-image
     - name: deploy-dev
       taskRef:
         name: deploy
         kind: Task
       runAfter:
-        - tag-dev-image
+        - promote-image
       params:
         - name: NAME
           value: server
         - name: NAMESPACE
           value: product-catalog-dev
-    - name: tag-test-image
+    - name: dev-test
       taskRef:
-        name: openshift-client
+        name: newman
         kind: Task
-      workspaces:
-        - name: app-binary
-          workspace: app-binary
       runAfter:
         - deploy-dev
       params:
-        - name: COMMANDS
-          value: |
-              oc tag product-catalog-dev/server:latest product-catalog-test/server:latest
+        - name: COLLECTION
+          value: https://raw.githubusercontent.com/gnunn-gitops/product-catalog-server/master/tests/product-catalog-server-tests.json
+        - name: ENVIRONMENT
+          value: newman-dev-env.json
     - name: deploy-test
       taskRef:
         name: deploy
         kind: Task
       runAfter:
-        - tag-test-image
+        - dev-test
       params:
         - name: NAME
           value: server
         - name: NAMESPACE
           value: product-catalog-test
+    - name: test-test
+      taskRef:
+        name: newman
+        kind: Task
+      runAfter:
+        - deploy-test
+      params:
+        - name: COLLECTION
+          value: https://raw.githubusercontent.com/gnunn-gitops/product-catalog-server/master/tests/product-catalog-server-tests.json
+        - name: ENVIRONMENT
+          value: newman-test-env.json

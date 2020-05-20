@@ -15,14 +15,19 @@ configMapGenerator:
 
 resources:
 # Nexus
-- github.com/redhat-canada-gitops/catalog//nexus2/base
+- github.com/redhat-canada-gitops/catalog//nexus2/base?ref=master
 # Sonarqube
-- github.com/redhat-canada-gitops/catalog//sonarqube8/overlays/plugins
+- github.com/redhat-canada-gitops/catalog//sonarqube8/overlays/plugins?ref=master
 - secrets/maven-repo-creds.yaml
 # Supporting infra
 - m2-cache-pvc.yaml
 - npm-cache-pvc.yaml
 - dependency-cache-pvc.yaml
+# Image resources
+- server-dest-image-resource.yaml
+- server-src-image-resource.yaml
+- client-dest-image-resource.yaml
+- client-src-image-resource.yaml
 # Tekton tasks
 - task-maven.yaml
 - task-npm.yaml
