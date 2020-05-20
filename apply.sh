@@ -1,0 +1,1 @@
+oc apply -k cluster/overlays/ocplab/argocd
