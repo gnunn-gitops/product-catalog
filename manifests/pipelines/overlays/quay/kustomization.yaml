@@ -7,8 +7,5 @@ bases:
 
 namespace: product-catalog-cicd
 
-resources:
-- docker-dest-secret.yaml
-
 patchesStrategicMerge:
   - patch-image-resources.yaml
