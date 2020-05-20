@@ -5,10 +5,9 @@ metadata:
 spec:
   workspaces:
   - name: app-binary
-  inputs:
-    params:
-      - name: COMMANDS
-        type: string
+  params:
+    - name: COMMANDS
+      type: string
   steps:
     - name: run-commands
       image: quay.io/openshift/origin-cli:latest

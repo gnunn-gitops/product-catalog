@@ -6,6 +6,7 @@ spec:
   workspaces:
   - name: app-binary
   resources:
+    inputs:
     - name: source
       type: git
   # results:

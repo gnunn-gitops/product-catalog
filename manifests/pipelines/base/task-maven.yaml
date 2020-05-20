@@ -1,4 +1,4 @@
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: maven
@@ -31,9 +31,10 @@ spec:
     description: Location of M2 directory, do not change
     default: /tekton/home/.m2
   resources:
-  - name: source
-    targetPath: /
-    type: git
+    inputs:
+    - name: source
+      targetPath: /
+      type: git
   steps:
     - name: mvn-settings
       image: docker.io/maven:3.6.3-jdk-8

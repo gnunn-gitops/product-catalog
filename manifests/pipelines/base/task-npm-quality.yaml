@@ -4,6 +4,7 @@ metadata:
   name: npm-quality
 spec:
   resources:
+    inputs:
     - name: source
       type: git
   steps:
