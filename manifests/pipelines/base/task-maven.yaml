@@ -5,36 +5,35 @@ metadata:
 spec:
   workspaces:
   - name: app-binary
-  inputs:
-    params:
-    - name: GOALS
-      description: The Maven goals to run, space spearated
-      type: string
-      default: "package"
-    - name: PROFILES
-      description: The Maven maven profiles to activate, comma separated
-      type: string
-      default: ""
-    - name: ARGUMENTS
-      description: Maven arguments, typically -D switches like -DskipTests
-      type: string
-      default: ""
-    - name: MAVEN_MIRROR_URL
-      description: The Maven bucketrepo- mirror
-      type: string
-      default: ""
-    - name: MAVEN_REPO_CREDS_SECRET
-      type: string
-      description: name of the secret holding the maven repo credentials
-      default: maven-repo-creds
-    - name: M2_DIRECTORY
-      type: string
-      description: Location of M2 directory, do not change
-      default: /tekton/home/.m2
-    resources:
-    - name: source
-      targetPath: /
-      type: git
+  params:
+  - name: GOALS
+    description: The Maven goals to run, space spearated
+    type: string
+    default: "package"
+  - name: PROFILES
+    description: The Maven maven profiles to activate, comma separated
+    type: string
+    default: ""
+  - name: ARGUMENTS
+    description: Maven arguments, typically -D switches like -DskipTests
+    type: string
+    default: ""
+  - name: MAVEN_MIRROR_URL
+    description: The Maven bucketrepo- mirror
+    type: string
+    default: ""
+  - name: MAVEN_REPO_CREDS_SECRET
+    type: string
+    description: name of the secret holding the maven repo credentials
+    default: maven-repo-creds
+  - name: M2_DIRECTORY
+    type: string
+    description: Location of M2 directory, do not change
+    default: /tekton/home/.m2
+  resources:
+  - name: source
+    targetPath: /
+    type: git
   steps:
     - name: mvn-settings
       image: docker.io/maven:3.6.3-jdk-8

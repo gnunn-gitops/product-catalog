@@ -1,16 +1,15 @@
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: push-image
 spec:
   workspaces:
   - name: app-binary
-  inputs:
-    resources:
-      - name: src-image
-        type: image
-      - name: dest-image
-        type: image
+  resources:
+    - name: src-image
+      type: image
+    - name: dest-image
+      type: image
   steps:
     - name: run-commands
       image: quay.io/gnunn/skopeo:latest

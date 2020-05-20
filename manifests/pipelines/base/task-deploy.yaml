@@ -1,14 +1,13 @@
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: deploy
 spec:
-  inputs:
-    params:
-      - name: NAME
-        type: string
-      - name: NAMESPACE
-        type: string
+  params:
+    - name: NAME
+      type: string
+    - name: NAMESPACE
+      type: string
   steps:
     - name: run-commands
       image: quay.io/openshift/origin-cli:latest

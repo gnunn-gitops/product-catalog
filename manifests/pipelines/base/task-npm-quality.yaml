@@ -1,12 +1,11 @@
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: npm-quality
 spec:
-  inputs:
-    resources:
-      - name: source
-        type: git
+  resources:
+    - name: source
+      type: git
   steps:
     - name: quality
       image: quay.io/gnunn/nodejs10-tools:latest

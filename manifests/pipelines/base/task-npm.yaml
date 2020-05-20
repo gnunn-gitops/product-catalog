@@ -1,14 +1,13 @@
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: npm
 spec:
   workspaces:
   - name: app-binary
-  inputs:
-    resources:
-      - name: source
-        type: git
+  resources:
+    - name: source
+      type: git
   # results:
   #   - name: short-git-commit-id
   #     description: The short commit id from git
