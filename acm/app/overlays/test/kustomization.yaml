@@ -5,7 +5,7 @@ namespace: product-catalog-test
 nameSuffix: -test
 
 commonLabels:
-  app: product-catalog-dev
+  app: product-catalog-test
 
 bases:
 - ../../base

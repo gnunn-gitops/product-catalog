@@ -4,4 +4,4 @@ metadata:
   annotations:
     openshift.io/description: Project for test environment of product catalog application
     openshift.io/display-name:  Product Catalog Test
-  name: product-catalog-test
+  name: product-catalog

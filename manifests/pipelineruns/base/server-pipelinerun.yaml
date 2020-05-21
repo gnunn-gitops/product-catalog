@@ -1,4 +1,4 @@
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
   annotations:
@@ -13,6 +13,12 @@ spec:
     - name: source
       resourceRef:
         name: server
+    - name: internal-image
+      resourceRef:
+        name: server-src-image
+    - name: repository-image
+      resourceRef:
+        name: server-dest-image
   params:
     - name: MAVEN_MIRROR_URL
       value: http://nexus:8081/content/groups/public/

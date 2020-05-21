@@ -1,6 +1,9 @@
 - op: replace
   path: /spec/channel
-  value: acm-applications/product-catalog-test
+  value: product-catalog-test/product-catalog-test
+- op: replace
+  path: /spec/placement/placementRef/name
+  value: product-catalog-test
 - op: add
   path: /metadata/annotations
   value:

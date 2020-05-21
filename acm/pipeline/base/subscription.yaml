@@ -6,8 +6,8 @@
      apps.open-cluster-management.io/github-path: /cluster/overlays/default/pipeline
      apps.open-cluster-management.io/github-branch: master
  spec:
-  channel: acm-applications/product-catalog-cicd
+  channel: product-catalog-cicd/product-catalog-cicd
   placement:
     placementRef:
       kind: PlacementRule
-      name: dev-clusters
+      name: product-catalog-cicd

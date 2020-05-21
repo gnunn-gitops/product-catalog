@@ -6,7 +6,7 @@
     #  apps.open-cluster-management.io/github-path: /manifests/app/overlays/dev-quay
     #  apps.open-cluster-management.io/github-branch: master
  spec:
-  channel: acm-applications/product-catalog
+  channel: product-catalog/product-catalog
   placement:
     placementRef:
       kind: PlacementRule

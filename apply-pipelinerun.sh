@@ -1,1 +1,1 @@
-oc apply -k manifests/pipelineruns/overlays/registry
+oc apply -k manifests/pipelineruns/overlays/default
