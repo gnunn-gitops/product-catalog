@@ -5,6 +5,10 @@ namespace: product-catalog-cicd
 
 bases:
 - ../../base
+# Nexus
+- github.com/redhat-canada-gitops/catalog//nexus2/base
+# Sonarqube
+- github.com/redhat-canada-gitops/catalog//sonarqube8/overlays/plugins
 
 # resources:
 # - namespace.yaml
