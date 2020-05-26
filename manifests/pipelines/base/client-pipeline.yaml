@@ -3,16 +3,17 @@ kind: Pipeline
 metadata:
   name: client
 spec:
-   workspaces:
+  workspaces:
     - name: app-binary
-   resources:
+  resources:
     - name: source
       type: git
-    - name: internal-image
-      type: image
-    - name: repository-image
-      type: image
-   tasks:
+  params:
+    - name: image_dest_url
+      type: string
+      description: External registry location to copy image to
+      default: quay.io/gnunn/client:latest
+  tasks:
     - name: build
       taskRef:
         name: npm
@@ -21,8 +22,8 @@ spec:
           workspace: app-binary
       resources:
         inputs:
-        - name: source
-          resource: source
+          - name: source
+            resource: source
     - name: quality
       taskRef:
         name: npm-quality
@@ -30,8 +31,8 @@ spec:
         - build
       resources:
         inputs:
-        - name: source
-          resource: source
+          - name: source
+            resource: source
     - name: build-image
       taskRef:
         name: openshift-client
@@ -44,8 +45,8 @@ spec:
       params:
         - name: COMMANDS
           value: |
-              ls $(workspaces.app-binary.path)
-              oc start-build client --from-dir=$(workspaces.app-binary.path) --wait=true
+            ls $(workspaces.app-binary.path)
+            oc start-build client --from-dir=$(workspaces.app-binary.path) --wait=true
     - name: promote-image
       taskRef:
         name: push-image
@@ -55,12 +56,11 @@ spec:
           workspace: app-binary
       runAfter:
         - build-image
-      resources:
-        inputs:
+      params:
         - name: src-image
-          resource: internal-image
+          value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/client:latest
         - name: dest-image
-          resource: repository-image
+          value: $(params.image_dest_url)
     - name: deploy-dev
       taskRef:
         name: deploy

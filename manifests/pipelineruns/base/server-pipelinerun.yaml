@@ -13,12 +13,6 @@ spec:
     - name: source
       resourceRef:
         name: server
-    - name: internal-image
-      resourceRef:
-        name: server-src-image
-    - name: repository-image
-      resourceRef:
-        name: server-dest-image
   params:
     - name: MAVEN_MIRROR_URL
       value: http://nexus:8081/content/groups/public/

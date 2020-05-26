@@ -23,11 +23,6 @@ resources:
 - m2-cache-pvc.yaml
 - npm-cache-pvc.yaml
 - dependency-cache-pvc.yaml
-# Image resources
-- server-dest-image-resource.yaml
-- server-src-image-resource.yaml
-- client-dest-image-resource.yaml
-- client-src-image-resource.yaml
 # Tekton tasks
 - task-maven.yaml
 - task-npm.yaml

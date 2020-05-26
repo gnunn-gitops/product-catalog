@@ -3,19 +3,19 @@ kind: Pipeline
 metadata:
   name: server
 spec:
-   workspaces:
+  workspaces:
     - name: app-binary
-   resources:
+  resources:
     - name: source
       type: git
-    - name: internal-image
-      type: image
-    - name: repository-image
-      type: image
-   params:
-    - name:  MAVEN_MIRROR_URL
+  params:
+    - name: MAVEN_MIRROR_URL
       default: ""
-   tasks:
+    - name: image_dest_url
+      type: string
+      description: External registry location to copy image to
+      default: quay.io/gnunn/server:latest
+  tasks:
     - name: build
       taskRef:
         name: maven
@@ -24,8 +24,8 @@ spec:
           workspace: app-binary
       resources:
         inputs:
-        - name: source
-          resource: source
+          - name: source
+            resource: source
       params:
         - name: MAVEN_MIRROR_URL
           value: "$(params.MAVEN_MIRROR_URL)"
@@ -45,10 +45,10 @@ spec:
       params:
         - name: COMMANDS
           value: |
-              ls $(workspaces.app-binary.path)
-              JAR="$(ls $(workspaces.app-binary.path)/*-runner.jar)"
-              echo "Building image with ${JAR}"
-              oc start-build server --from-file=$JAR --wait=true
+            ls $(workspaces.app-binary.path)
+            JAR="$(ls $(workspaces.app-binary.path)/*-runner.jar)"
+            echo "Building image with ${JAR}"
+            oc start-build server --from-file=$JAR --wait=true
     - name: promote-image
       taskRef:
         name: push-image
@@ -58,12 +58,11 @@ spec:
           workspace: app-binary
       runAfter:
         - build-image
-      resources:
-        inputs:
+      params:
         - name: src-image
-          resource: internal-image
+          value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/server:latest
         - name: dest-image
-          resource: repository-image
+          value: $(params.image_dest_url)
     - name: deploy-dev
       taskRef:
         name: deploy

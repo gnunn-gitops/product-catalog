@@ -6,6 +6,3 @@ bases:
 - ../../overlays/default
 
 namespace: product-catalog-cicd
-
-patchesStrategicMerge:
-  - patch-image-resources.yaml
