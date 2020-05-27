@@ -22,7 +22,8 @@ spec:
       annotations:
         argocd.argoproj.io/compare-options: IgnoreExtraneous
         argocd.argoproj.io/sync-options: Prune=false
-      name: client-webhook
+      labels:
+        tekton.dev/pipeline: client
       generateName: client-webhook-
     spec:
       pipelineRef:
