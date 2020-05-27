@@ -3,6 +3,7 @@ kind: Kustomization
 
 bases:
 - ../../../../manifests/pipelines/overlays/quay
+- ../../../../manifests/triggers/overlays/default
 
 # generatorOptions:
 #   disableNameSuffixHash: true
