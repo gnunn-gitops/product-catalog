@@ -1,0 +1,37 @@
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: client
+spec:
+  params:
+  - name: gitrevision
+    description: The git revision
+    default: master
+  - name: gitrepositoryurl
+    description: The git repository url
+  - name: message
+    description: The message to print
+    default: This is the default message
+  - name: contenttype
+    description: The Content-Type of the event
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      annotations:
+        argocd.argoproj.io/compare-options: IgnoreExtraneous
+        argocd.argoproj.io/sync-options: Prune=false
+      name: client-webhook
+      generateName: client-webhook-
+    spec:
+      pipelineRef:
+        name: client
+      resources:
+        - name: source
+          resourceRef:
+            name: client
+      workspaces:
+      - name: app-binary
+        persistentVolumeClaim:
+          claimName: client-binary

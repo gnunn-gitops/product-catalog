@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- triggerbinding.yaml
+- server-eventlistener.yaml
+- server-triggertemplate.yaml
+- client-eventlistener.yaml
+- client-triggertemplate.yaml
