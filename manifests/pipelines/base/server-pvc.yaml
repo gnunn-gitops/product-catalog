@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: server-binary
+  name: server-source
 spec:
   resources:
     requests:

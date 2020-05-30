@@ -3,10 +3,8 @@ kind: Task
 metadata:
   name: npm-quality
 spec:
-  resources:
-    inputs:
-    - name: source
-      type: git
+  workspaces:
+  - name: source
   steps:
     - name: quality
       image: quay.io/gnunn/nodejs10-tools:latest
@@ -21,10 +19,10 @@ spec:
           dependency-check.sh --format ALL -s . --out reports/dependency-check --project "product-catalog-client"
           npm run sonar
           echo "Quality check complete, see results in sonarqube"
-      workingDir: /workspace/source
+      workingDir: $(workspaces.source.path)
       volumeMounts:
         - name: npm-cache
-          mountPath: /workspace/source/node_modules
+          mountPath: $(workspaces.source.path)/node_modules
         - name: dependency-cache
           mountPath: /opt/dependency-check/data
   volumes:

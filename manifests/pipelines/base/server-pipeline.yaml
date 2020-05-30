@@ -4,28 +4,43 @@ metadata:
   name: server
 spec:
   workspaces:
-    - name: app-binary
-  resources:
-    - name: source
-      type: git
+    - name: git-source
   params:
+    - name: git_revision
+      type: string
+      default: master
+    - name: git_url
+      type: string
+      default: https://github.com/gnunn-gitops/product-catalog-server
     - name: MAVEN_MIRROR_URL
       default: ""
     - name: image_dest_url
       type: string
       description: External registry location to copy image to
-      default: quay.io/gnunn/server:latest
+      default: quay.io/gnunn/server
   tasks:
+    - name: clone
+      taskRef:
+        name: git-clone
+        kind: ClusterTask
+      workspaces:
+        - name: output
+          workspace: git-source
+      params:
+        - name: url
+          value: "$(params.git_url)"
+        - name: revision
+          value: "$(params.git_revision)"
+        - name: deleteExisting
+          value: "true"
     - name: build
       taskRef:
         name: maven
       workspaces:
-        - name: app-binary
-          workspace: app-binary
-      resources:
-        inputs:
-          - name: source
-            resource: source
+        - name: source
+          workspace: git-source
+      runAfter:
+        - clone
       params:
         - name: MAVEN_MIRROR_URL
           value: "$(params.MAVEN_MIRROR_URL)"
@@ -35,27 +50,20 @@ spec:
           value: "quality,copy"
     - name: build-image
       taskRef:
-        name: openshift-client
-        kind: Task
+        name: binary-s2i
       workspaces:
-        - name: app-binary
-          workspace: app-binary
+        - name: source
+          workspace: git-source
       runAfter:
         - build
       params:
-        - name: COMMANDS
-          value: |
-            ls $(workspaces.app-binary.path)
-            JAR="$(ls $(workspaces.app-binary.path)/*-runner.jar)"
-            echo "Building image with ${JAR}"
-            oc start-build server --from-file=$JAR --wait=true
+        - name: file
+          value: "$(workspaces.source.path)/target/*-runner.jar"
+        - name: buildconfig
+          value: server
     - name: promote-image
       taskRef:
         name: push-image
-        kind: Task
-      workspaces:
-        - name: app-binary
-          workspace: app-binary
       runAfter:
         - build-image
       params:
@@ -63,10 +71,11 @@ spec:
           value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/server:latest
         - name: dest-image
           value: $(params.image_dest_url)
+        - name: dest-additional-tag
+          value: $(tasks.clone.results.commit)
     - name: deploy-dev
       taskRef:
         name: deploy
-        kind: Task
       runAfter:
         - promote-image
       params:
@@ -77,7 +86,6 @@ spec:
     - name: dev-test
       taskRef:
         name: newman
-        kind: Task
       runAfter:
         - deploy-dev
       params:
@@ -88,7 +96,6 @@ spec:
     - name: deploy-test
       taskRef:
         name: deploy
-        kind: Task
       runAfter:
         - dev-test
       params:
@@ -99,7 +106,6 @@ spec:
     - name: test-test
       taskRef:
         name: newman
-        kind: Task
       runAfter:
         - deploy-test
       params:

@@ -27,7 +27,7 @@ resources:
 - task-maven.yaml
 - task-npm.yaml
 - task-npm-quality.yaml
-- task-oc.yaml
+- task-binary-s2i.yaml
 - task-push-image.yaml
 - task-deploy.yaml
 - task-newman.yaml
@@ -36,11 +36,9 @@ resources:
 - server-imagestream.yaml
 - server-buildconfig.yaml
 - server-pvc.yaml
-- server-git-pipelineresource.yaml
 - server-pipeline.yaml
 # Client pipeline
 - client-imagestream.yaml
 - client-buildconfig.yaml
 - client-pvc.yaml
-- client-git-pipelineresource.yaml
 - client-pipeline.yaml

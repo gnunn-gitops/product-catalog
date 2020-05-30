@@ -3,34 +3,29 @@ kind: Task
 metadata:
   name: push-image
 spec:
-  workspaces:
-  - name: app-binary
   params:
   - name: src-image
     type: string
   - name: dest-image
     type: string
+  - name: dest-additional-tag
+    type: string
+    default: ""
   steps:
     - name: run-commands
       image: quay.io/gnunn/skopeo:latest
       script: |
         #!/usr/bin/env bash
-        echo "Copying image docker://$(params.src-image) to docker://$(params.dest-image)"
         TOKEN="$(oc whoami -t)"
         USER="pipeline"
-        skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds="${USER}:${TOKEN}" --dest-authfile=/workspace/dest/.docker/config.json docker://$(params.src-image) docker://$(params.dest-image)
 
-        # Below is workaround for execution results not working with non-root images
-        GIT_COMMIT_DIR=$(workspaces.app-binary.path)/git-sha
+        echo "Copying image docker://$(params.src-image) to docker://$(params.dest-image):latest"
+        skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds="${USER}:${TOKEN}" --dest-authfile=/workspace/dest/.docker/config.json docker://$(params.src-image) docker://$(params.dest-image):latest
 
-        if [ -d "$GIT_COMMIT_DIR" ]; then
-          COMMIT_ID=$(cat $GIT_COMMIT_DIR/commit-id)
-          IMAGE=$(params.dest-image)
-          IMAGE_NAME=${IMAGE%:*}
-          echo "Pushing image with commit id to ${IMAGE_NAME}:${COMMIT_ID}"
-          skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds="${USER}:${TOKEN}" --dest-authfile=/workspace/dest/.docker/config.json docker://$(params.src-image) docker://$IMAGE_NAME:$COMMIT_ID
-        else
-          echo "No git commit id available"
+        if [ "$(params.dest-additional-tag)" != "" ];
+        then
+          echo "Copying image docker://$(params.src-image) to docker://$(params.dest-image):$(params.dest-additional-tag)"
+          skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds="${USER}:${TOKEN}" --dest-authfile=/workspace/dest/.docker/config.json docker://$(params.src-image) docker://$(params.dest-image):$(params.dest-additional-tag)
         fi
       volumeMounts:
         - name: dest-docker-config

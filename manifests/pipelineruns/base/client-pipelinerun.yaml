@@ -9,11 +9,7 @@ metadata:
 spec:
   pipelineRef:
     name: client
-  resources:
-    - name: source
-      resourceRef:
-        name: client
   workspaces:
-  - name: app-binary
+  - name: git-source
     persistentVolumeClaim:
-      claimName: client-binary
+      claimName: client-source

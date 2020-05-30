@@ -9,14 +9,10 @@ metadata:
 spec:
   pipelineRef:
     name: server
-  resources:
-    - name: source
-      resourceRef:
-        name: server
   params:
     - name: MAVEN_MIRROR_URL
       value: http://nexus:8081/content/groups/public/
   workspaces:
-  - name: app-binary
+  - name: git-source
     persistentVolumeClaim:
-      claimName: server-binary
+      claimName: server-source

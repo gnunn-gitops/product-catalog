@@ -4,7 +4,7 @@ metadata:
   name: maven
 spec:
   workspaces:
-  - name: app-binary
+  - name: source
   params:
   - name: GOALS
     description: The Maven goals to run, space spearated
@@ -30,11 +30,6 @@ spec:
     type: string
     description: Location of M2 directory, do not change
     default: /tekton/home/.m2
-  resources:
-    inputs:
-    - name: source
-      targetPath: /
-      type: git
   steps:
     - name: mvn-settings
       image: docker.io/maven:3.6.3-jdk-8
@@ -43,31 +38,31 @@ spec:
         - '-c'
       args:
         - |-
-          [[ -f $(inputs.params.M2_DIRECTORY)/settings.xml ]] && \
-          echo 'using existing $(inputs.params.M2_DIRECTORY)/settings.xml' && \
-          cat $(inputs.params.M2_DIRECTORY)/settings.xml && exit 0
+          [[ -f $(params.M2_DIRECTORY)/settings.xml ]] && \
+          echo 'using existing $(params.M2_DIRECTORY)/settings.xml' && \
+          cat $(params.M2_DIRECTORY)/settings.xml && exit 0
 
-          [[ -n '$(inputs.params.MAVEN_MIRROR_URL)' ]] && \
-          cat > $(inputs.params.M2_DIRECTORY)/settings.xml <<EOF
+          [[ -n '$(params.MAVEN_MIRROR_URL)' ]] && \
+          cat > $(params.M2_DIRECTORY)/settings.xml <<EOF
           <settings>
             <mirrors>
               <mirror>
                 <id>mirror.default</id>
                 <name>mirror.default</name>
-                <url>$(inputs.params.MAVEN_MIRROR_URL)</url>
+                <url>$(params.MAVEN_MIRROR_URL)</url>
                 <mirrorOf>*</mirrorOf>
               </mirror>
             </mirrors>
           </settings>
           EOF
 
-          [[ -f $(inputs.params.M2_DIRECTORY)/settings.xml ]] && cat $(inputs.params.M2_DIRECTORY)/settings.xml
-          [[ -f $(inputs.params.M2_DIRECTORY)/settings.xml ]] || echo skipping settings
+          [[ -f $(params.M2_DIRECTORY)/settings.xml ]] && cat $(params.M2_DIRECTORY)/settings.xml
+          [[ -f $(params.M2_DIRECTORY)/settings.xml ]] || echo skipping settings
       volumeMounts:
         - name: m2-repository
-          mountPath: $(inputs.params.M2_DIRECTORY)
+          mountPath: $(params.M2_DIRECTORY)
         - name: maven-settings
-          mountPath: $(inputs.params.M2_DIRECTORY)/settings.xml
+          mountPath: $(params.M2_DIRECTORY)/settings.xml
           subPath: settings.xml
     - name: mvn-goals
       image: docker.io/maven:3.6.3-jdk-8
@@ -76,37 +71,29 @@ spec:
         - '-c'
       args:
         - |-
-          if [[ -z "$(inputs.params.PROFILES)" ]]; then
-            mvn $(inputs.params.GOALS) $(inputs.params.ARGUMENTS)
+          if [[ -z "$(params.PROFILES)" ]]; then
+            mvn $(params.GOALS) $(params.ARGUMENTS)
           else
-            mvn $(inputs.params.GOALS) -P$(inputs.params.PROFILES) $(inputs.params.ARGUMENTS)
+            mvn $(params.GOALS) -P$(params.PROFILES) $(params.ARGUMENTS)
           fi
+      workingDir: $(workspaces.source.path)
       env:
         - name: MAVEN_SERVER_USERNAME
           valueFrom:
             secretKeyRef:
-              name: $(inputs.params.MAVEN_REPO_CREDS_SECRET)
+              name: $(params.MAVEN_REPO_CREDS_SECRET)
               key: username
         - name: MAVEN_SERVER_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: $(inputs.params.MAVEN_REPO_CREDS_SECRET)
+              name: $(params.MAVEN_REPO_CREDS_SECRET)
               key: password
       volumeMounts:
         - name: m2-repository
-          mountPath: $(inputs.params.M2_DIRECTORY)
+          mountPath: $(params.M2_DIRECTORY)
         - name: maven-settings
-          mountPath: $(inputs.params.M2_DIRECTORY)/settings.xml
+          mountPath: $(params.M2_DIRECTORY)/settings.xml
           subPath: settings.xml
-    - name: save-commit-sha
-      image: docker.io/maven:3.6.3-jdk-8
-      command:
-        - '/bin/bash'
-        - '-c'
-      args:
-        - |-
-          mkdir -p $(workspaces.app-binary.path)/git-sha
-          git rev-parse --short HEAD | tee $(workspaces.app-binary.path)/git-sha/commit-id
   volumes:
     - name: m2-repository
       persistentVolumeClaim:

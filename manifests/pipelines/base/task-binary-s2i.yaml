@@ -1,0 +1,38 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: binary-s2i
+spec:
+  workspaces:
+  - name: source
+  params:
+    - name: directory
+      description: The sub-directory to use for the wildcard build
+      type: string
+      default: ""
+    - name: file
+      description: The file to use for the s2i binary build, can be a wildcard. If it resolves to multiple files the first one is used
+      type: string
+      default: ""
+    - name: buildconfig
+      type: string
+  steps:
+    - name: s2i-build
+      image: quay.io/openshift/origin-cli:latest
+      script: |
+        #!/usr/bin/env bash
+
+        if [[ "$(params.directory)" == "" && "$(params.file)" == "" ]]
+        then
+          echo "The task must have either directory or file parameters set"
+          exit 1
+        fi
+
+        if [ "$(params.directory)" != "" ];
+        then
+          oc start-build $(params.buildconfig) --from-dir=$(params.directory) --wait=true
+        else
+          FILE_PATH="$(ls $(params.file))"
+          echo "Using file ${FILE_PATH} for binary build"
+          oc start-build $(params.buildconfig) --from-file="${FILE_PATH}" --wait=true
+        fi

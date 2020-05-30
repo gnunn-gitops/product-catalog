@@ -4,14 +4,7 @@ metadata:
   name: npm
 spec:
   workspaces:
-  - name: app-binary
-  resources:
-    inputs:
-    - name: source
-      type: git
-  # results:
-  #   - name: short-git-commit-id
-  #     description: The short commit id from git
+  - name: source
   steps:
     - name: npm-install
       image: quay.io/gnunn/nodejs10-tools:latest
@@ -20,10 +13,10 @@ spec:
         - -c
       args:
         - npm install --package-lock
-      workingDir: /workspace/source
+      workingDir: $(workspaces.source.path)
       volumeMounts:
         - name: npm-cache
-          mountPath: /workspace/source/node_modules
+          mountPath: $(workspaces.source.path)/node_modules
     - name: build
       image: quay.io/gnunn/nodejs10-tools:latest
       command:
@@ -31,10 +24,10 @@ spec:
         - -c
       args:
         - npm run build
-      workingDir: /workspace/source
+      workingDir: $(workspaces.source.path)
       volumeMounts:
         - name: npm-cache
-          mountPath: /workspace/source/node_modules
+          mountPath: $(workspaces.source.path)/node_modules
     - name: quality
       image: quay.io/gnunn/nodejs10-tools:latest
       command:
@@ -48,10 +41,10 @@ spec:
           dependency-check.sh --format ALL -s . --out reports/dependency-check --project "product-catalog-client"
           npm run sonar
           echo "Quality check complete, see results in sonarqube"
-      workingDir: /workspace/source
+      workingDir: $(workspaces.source.path)
       volumeMounts:
         - name: npm-cache
-          mountPath: /workspace/source/node_modules
+          mountPath: $(workspaces.source.path)/node_modules
         - name: dependency-cache
           mountPath: /opt/dependency-check/data
     - name: copy-dist
@@ -60,8 +53,8 @@ spec:
         - /bin/sh
         - -c
       args:
-        - cp -R ./dist/* $(workspaces.app-binary.path)
-      workingDir: /workspace/source
+        - cp -R ./dist/* $(workspaces.source.path)
+      workingDir: $(workspaces.source.path)
     - name: save-commit-sha
       image: docker.io/maven:3.6.3-jdk-8
       command:
@@ -69,17 +62,9 @@ spec:
         - '-c'
       args:
         - |-
-          mkdir -p $(workspaces.app-binary.path)/git-sha
-          git rev-parse --short HEAD | tee $(workspaces.app-binary.path)/git-sha/commit-id
-      workingDir: /workspace/source
-    # - name: output-result
-    #   image: quay.io/gnunn/nodejs10-tools:latest
-    #   command:
-    #     - /bin/sh
-    #     - -c
-    #   args:
-    #     - git rev-parse --short HEAD | tee $(results.short-git-commit-id.path)
-    #   workingDir: /workspace/source
+          mkdir -p $(workspaces.source.path)/git-sha
+          git rev-parse --short HEAD | tee $(workspaces.source.path)/git-sha/commit-id
+      workingDir: $(workspaces.source.path)
   volumes:
     - name: npm-cache
       persistentVolumeClaim:
