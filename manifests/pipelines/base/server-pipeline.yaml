@@ -45,9 +45,51 @@ spec:
         - name: MAVEN_MIRROR_URL
           value: "$(params.MAVEN_MIRROR_URL)"
         - name: GOALS
-          value: "package sonar:sonar install deploy"
+          value: "package"
+        - name: ARGUMENTS
+          value: "-DskipTests"
+    - name: unit-test
+      taskRef:
+        name: maven
+      workspaces:
+        - name: source
+          workspace: git-source
+      runAfter:
+        - build
+      params:
+        - name: MAVEN_MIRROR_URL
+          value: "$(params.MAVEN_MIRROR_URL)"
+        - name: GOALS
+          value: "test"
+    - name: quality
+      taskRef:
+        name: maven
+      workspaces:
+        - name: source
+          workspace: git-source
+      runAfter:
+        - build
+      params:
+        - name: MAVEN_MIRROR_URL
+          value: "$(params.MAVEN_MIRROR_URL)"
+        - name: GOALS
+          value: "sonar:sonar"
         - name: PROFILES
-          value: "quality,copy"
+          value: "quality"
+    - name: install-nexus
+      taskRef:
+        name: maven
+      workspaces:
+        - name: source
+          workspace: git-source
+      runAfter:
+        - unit-test
+        - quality
+      params:
+        - name: MAVEN_MIRROR_URL
+          value: "$(params.MAVEN_MIRROR_URL)"
+        - name: GOALS
+          value: "install"
     - name: build-image
       taskRef:
         name: binary-s2i
@@ -55,7 +97,8 @@ spec:
         - name: source
           workspace: git-source
       runAfter:
-        - build
+        - unit-test
+        - quality
       params:
         - name: file
           value: "$(workspaces.source.path)/target/*-runner.jar"
@@ -66,6 +109,7 @@ spec:
         name: push-image
       runAfter:
         - build-image
+        - install-nexus
       params:
         - name: src-image
           value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/server:latest
