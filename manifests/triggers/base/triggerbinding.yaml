@@ -5,9 +5,9 @@ metadata:
   name: github-triggerbinding
 spec:
   params:
-  - name: gitrevision
-    value: $(body.head_commit.id)
-  - name: gitrepositoryurl
-    value: $(body.repository.url)
-  - name: contenttype
-    value: $(header.Content-Type)
+    - name: git-revision
+      value: $(body.head_commit.id)
+    - name: git-url
+      value: $(body.repository.url)
+    - name: content-type
+      value: $(header.Content-Type)
