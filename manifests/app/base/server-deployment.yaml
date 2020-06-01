@@ -13,6 +13,7 @@ metadata:
     app.kubernetes.io/instance: server
     app.openshift.io/runtime: quarkus
     app.kubernetes.io/part-of: product-catalog
+    test: test
 spec:
   selector:
     matchLabels:
