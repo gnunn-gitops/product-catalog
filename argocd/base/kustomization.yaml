@@ -4,4 +4,5 @@ kind: Kustomization
 resources:
 - dev-app.yaml
 - test-app.yaml
+- prod-app.yaml
 - pipeline-app.yaml
