@@ -95,21 +95,3 @@ spec:
           value: client
         - name: NAMESPACE
           value: product-catalog-test
-    # - name: prod-pr-deploy
-    #   taskRef:
-    #     name: patch-image-tag-and-pr
-    #     kind: Task
-    #   runAfter:
-    #     - clone
-    #   workspaces:
-    #     - name: source
-    #       workspace: git-source
-    #   params:
-    #     - name: dest-tag
-    #       value: $(tasks.clone.results.commit)
-    #     - name: filename
-    #       value: cluster/overlays/ocplab/prod/patch-server-deployment.yaml
-    #     - name: review-links
-    #       value: |-
-    #         Image Vulnerabilities: https://$(image_dest_url):$(tasks.clone.results.commit)
-    #         Sonarqube Results: http://sonarqube-product-catalog-cicd.apps.cluster.ocplab.com/dashboard?id=com.redhat.demo%3Aproduct-catalog-client
