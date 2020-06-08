@@ -42,6 +42,6 @@ resources:
 - client-imagestream.yaml
 - client-buildconfig.yaml
 - client-pvc.yaml
-- client-manifest-pvc.yaml
+- client-manifest-source-pvc.yaml
 - client-pipeline.yaml
 - client-pipeline-prod.yaml

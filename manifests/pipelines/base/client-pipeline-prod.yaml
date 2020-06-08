@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: client
+  name: client-prod
 spec:
   workspaces:
     - name: git-source
