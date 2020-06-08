@@ -31,6 +31,7 @@ resources:
 - task-push-image.yaml
 - task-deploy.yaml
 - task-newman.yaml
+- task-patch-image-tag-pr.yaml
 - condition-push-image.yaml
 # Server pipeline
 - server-imagestream.yaml

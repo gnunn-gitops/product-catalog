@@ -71,6 +71,8 @@ spec:
           value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/client:latest
         - name: dest-image
           value: $(params.image_dest_url)
+        - name: dest-additional-tag
+          value: $(tasks.clone.results.commit)
     - name: deploy-dev
       taskRef:
         name: deploy
@@ -93,3 +95,14 @@ spec:
           value: client
         - name: NAMESPACE
           value: product-catalog-test
+    # - name: prod-pr-deploy
+    #   taskRef:
+    #     name: patch-image-tag-and-pr
+    #     kind: Task
+    #   runAfter:
+    #     - deploy-test
+    #   params:
+    #     - name: dest-tag
+    #       value: $(tasks.clone.results.commit)
+    #     - name: filename
+    #       value: cluster/overlays/ocplab/prod/patch-server-deployment.yaml

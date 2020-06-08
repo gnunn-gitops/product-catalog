@@ -18,3 +18,10 @@ patchesJson6902:
     kind: Application
     name: product-catalog-test
   path: patch-test-app.yaml
+
+- target:
+    group: argoproj.io
+    version: v1alpha1
+    kind: Application
+    name: product-catalog-prod
+  path: patch-prod-app.yaml

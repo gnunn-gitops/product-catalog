@@ -1,0 +1,38 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: patch-image-tag-and-pr
+spec:
+  workspaces:
+  - name: source
+  params:
+  - name: src-tag
+    type: string
+    default: latest
+    description: The source tag in the file to replace
+  - name: dest-tag
+    type: string
+    description: The new tag to replace it with
+  - name: filename
+    type: string
+    description: The filename in which to update the tag
+  - name: review-links
+    type: string
+    default: ""
+    description: A list of links that should be reviewed prior to approving PR
+  steps:
+    - name: run-commands
+      image: quay.io/gnunn/github-hub:latest
+      script: |
+        #!/usr/bin/env bash
+
+        # Create new branch
+        git checkout -b "push-$(params.dest-tag)" --track origin/master
+
+        # Replace image tag
+        sed -i -e 's/:$(params.src-tag)/:$(params.dest-tag)/g' $(params.filename)
+
+        git commit -m "Production image update to $(params.dest-tag)"
+
+        hub pull-request -m "Update image to $(params.dest-tag)" -m "$(params.review-links)"
+      workingDir: $(workspaces.source.path)
