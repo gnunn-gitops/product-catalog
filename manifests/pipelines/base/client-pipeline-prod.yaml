@@ -11,7 +11,7 @@ spec:
       default: master
     - name: git_url
       type: string
-      default: https://github.com/gnunn-gitops/product-catalog-client
+      default: https://github.com/gnunn-gitops/product-catalog
     - name: image_dest_url
       type: string
       description: External registry location to copy image to
