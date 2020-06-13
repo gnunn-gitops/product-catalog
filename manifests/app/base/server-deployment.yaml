@@ -26,6 +26,9 @@ spec:
     spec:
       containers:
         - name: server
+          env:
+            - name: JAVA_OPTIONS
+              value: -Dquarkus.kubernetes-config.enabled=true
           image: image-registry.openshift-image-registry.svc:5000/product-catalog/server:latest
           imagePullPolicy: Always
           ports:
@@ -36,9 +39,6 @@ spec:
             protocol: TCP
           - containerPort: 8778
             protocol: TCP
-          volumeMounts:
-          - mountPath: /deployments/config
-            name: config-data
           livenessProbe:
             httpGet:
               path: /health
@@ -56,7 +56,3 @@ spec:
               failureThreshold: 3
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
-      volumes:
-      - configMap:
-          name: server
-        name: config-data
