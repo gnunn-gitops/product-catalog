@@ -28,7 +28,9 @@ spec:
         - name: server
           env:
             - name: JAVA_OPTIONS
-              value: -Dquarkus.kubernetes-config.enabled=true
+              value: >-
+                -Dquarkus.kubernetes-config.enabled=true
+                -Dquarkus.kubernetes-config.config-maps=server
           image: image-registry.openshift-image-registry.svc:5000/product-catalog/server:latest
           imagePullPolicy: Always
           ports:
