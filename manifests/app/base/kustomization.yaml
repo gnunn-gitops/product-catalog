@@ -20,6 +20,7 @@ configMapGenerator:
     - configs/schema.sql
 
 resources:
+  - default-view-rolebinding.yaml
   - db-pvc.yaml
   - db-secret.yaml
   - db-service.yaml
