@@ -5,11 +5,11 @@ metadata:
     prometheus: k8s
   name: prometheus
 spec:
-  alerting:
-    alertmanagers:
-      - name: alertmanager-main
-        namespace: openshift-monitoring
-        port: web
+  # alerting:
+  #   alertmanagers:
+  #     - name: alertmanager-main
+  #       namespace: openshift-monitoring
+  #       port: web
   replicas: 1
   ruleSelector: {}
   securityContext: {}
