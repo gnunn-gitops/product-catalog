@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  labels:
+    prometheus: k8s
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+  name: prometheus
+spec:
+  alerting:
+    alertmanagers:
+      - name: alertmanager-main
+        namespace: openshift-monitoring
+        port: web
+  replicas: 1
+  ruleSelector: {}
+  securityContext: {}
+  serviceAccountName: prometheus-k8s
+  serviceMonitorSelector: {}

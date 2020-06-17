@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: product-catalog-monitoring
+
+bases:
+- ../../base
+
+patchesJson6902:
+- target:
+    group: operators.coreos.com
+    version: v1
+    kind: OperatorGroup
+    name: monitoring
+  path: namespace-patch.yaml
