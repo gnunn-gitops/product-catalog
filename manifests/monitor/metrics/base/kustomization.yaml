@@ -7,3 +7,4 @@ resources:
 - prometheus-quarkus-sm.yaml
 - prometheus-route.yaml
 - grafana-ds.yaml
+- grafana-server-dashboard.yaml
