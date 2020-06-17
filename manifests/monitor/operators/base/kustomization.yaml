@@ -4,5 +4,3 @@ resources:
 - operator-group.yaml
 - prometheus-subscription.yaml
 - grafana-subscription.yaml
-- prometheus.yaml
-- grafana.yaml
