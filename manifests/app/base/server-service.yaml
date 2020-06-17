@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/component: backend
     app.kubernetes.io/instance: server
     app.kubernetes.io/part-of: product-catalog
+    quarkus-prometheus: "true"
 spec:
   ports:
   - name: http

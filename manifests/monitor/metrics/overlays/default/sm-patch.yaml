@@ -13,3 +13,4 @@ spec:
      quarkus-prometheus: "true"
   endpoints:
   - port: http
+    path: /metrics
