@@ -6,4 +6,5 @@ resources:
 - test-app.yaml
 - prod-app.yaml
 - pipeline-app.yaml
-- monitor-app.yaml
+- monitor-metrics-app.yaml
+- monitor-operators-app.yaml

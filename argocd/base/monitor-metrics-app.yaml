@@ -1,14 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: product-catalog-monitor
+  name: product-catalog-monitor-metrics
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
   project: apps-product-catalog
   source:
-    path: cluster/overlays/default/monitor
+    path: manifests/monitor/metrics/overlays/default
     repoURL: https://github.com/gnunn-gitops/product-catalog.git
     targetRevision: master
   syncPolicy:

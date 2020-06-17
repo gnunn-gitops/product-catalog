@@ -2,8 +2,6 @@ apiVersion: integreatly.org/v1alpha1
 kind: GrafanaDataSource
 metadata:
   name: prometheus
-  annotations:
-    argocd.argoproj.io/sync-wave: "20"
 spec:
   name: prometheus.yaml
   datasources:

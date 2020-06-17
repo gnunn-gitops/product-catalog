@@ -2,8 +2,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: quarkus
-  annotations:
-    argocd.argoproj.io/sync-wave: "20"
 spec:
   selector:
     matchLabels:

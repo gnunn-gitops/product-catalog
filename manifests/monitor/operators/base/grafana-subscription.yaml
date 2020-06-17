@@ -2,7 +2,6 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: grafana
-  argocd.argoproj.io/sync-wave: "-10"
 spec:
   channel: alpha
   installPlanApproval: Automatic
