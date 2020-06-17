@@ -3,7 +3,7 @@ kind: OperatorGroup
 metadata:
   annotations:
     olm.providedAPIs: Alertmanager.v1.monitoring.coreos.com,Grafana.v1alpha1.integreatly.org,GrafanaDashboard.v1alpha1.integreatly.org,GrafanaDataSource.v1alpha1.integreatly.org,PodMonitor.v1.monitoring.coreos.com,Prometheus.v1.monitoring.coreos.com,PrometheusRule.v1.monitoring.coreos.com,ServiceMonitor.v1.monitoring.coreos.com
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "-10"
   name: monitor
 spec:
   targetNamespaces:

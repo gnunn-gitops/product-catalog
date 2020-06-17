@@ -3,7 +3,7 @@ kind: Subscription
 metadata:
   name: prometheus
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "-10"
 spec:
   channel: beta
   installPlanApproval: Automatic
