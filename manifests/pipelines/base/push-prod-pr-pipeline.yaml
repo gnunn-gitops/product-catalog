@@ -58,7 +58,7 @@ spec:
       params:
         - name: commands
           value: |
-            yq manifests/app/overlays/prod-quay/patch-client-deployment.yaml [0].value $(params.image_dest_url):$(params.image_dest_tag)
+            yq cluster/overlays/$(cluster)/prod/patch-client-deployment.yaml [0].value $(params.image_dest_url):$(params.image_dest_tag)
     - name: commit-and-push
       taskRef:
         name: git

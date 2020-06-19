@@ -1,0 +1,22 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-options: Prune=false
+  name: push-prod-pr
+  generateName: push-prod-pr-
+spec:
+  pipelineRef:
+    name: push-prod-pr
+  params:
+    - name: image_dest_tag
+      value: ce2786cf0f8c6bb2fa10e142703161568358e74c
+    - name: image_dest_url
+      value: quay.io/gnunn/client
+    - name: cluster
+      value: ocplab
+  workspaces:
+  - name: git-source
+    persistentVolumeClaim:
+      claimName: client-manifest-source

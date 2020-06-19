@@ -15,4 +15,4 @@ spec:
       image: mikefarah/yq:3.3.2
       script: |
         #!/usr/bin/env bash
-        $(params.COMMANDS)
+        $(params.commands)
