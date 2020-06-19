@@ -14,5 +14,5 @@ spec:
       workingDir: $(workspaces.source.path)
       image: mikefarah/yq:3.3.2
       script: |
-        #!/usr/bin/env bash
+        #!/usr/bin/env sh
         $(params.commands)

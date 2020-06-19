@@ -40,6 +40,8 @@ spec:
     - name: branch
       taskRef:
         name: git
+      runAfter:
+        - clone
       workspaces:
         - name: source
           workspace: git-source
@@ -58,10 +60,12 @@ spec:
       params:
         - name: commands
           value: |
-            yq cluster/overlays/$(cluster)/prod/patch-client-deployment.yaml [0].value $(params.image_dest_url):$(params.image_dest_tag)
+            yq w -i cluster/overlays/$(params.cluster)/prod/patch-client-deployment.yaml [0].value $(params.image_dest_url):$(params.image_dest_tag)
     - name: commit-and-push
       taskRef:
         name: git
+      runAfter:
+        - patch
       workspaces:
         - name: source
           workspace: git-source
@@ -75,7 +79,7 @@ spec:
         name: task-create-pr
         kind: Task
       runAfter:
-        - clone
+        - commit-and-push
       workspaces:
         - name: source
           workspace: git-source

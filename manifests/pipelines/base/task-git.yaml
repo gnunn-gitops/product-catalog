@@ -14,5 +14,5 @@ spec:
     workingDir: $(workspaces.source.path)
     image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.12.1
     script: |
-      #!/usr/bin/env bash
+      #!/usr/bin/env sh
       $(params.commands)
