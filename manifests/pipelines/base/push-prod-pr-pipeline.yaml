@@ -81,10 +81,10 @@ spec:
           workspace: git-source
       params:
         - name: title
-          value: Update image to $(params.dest-tag)
+          value: Update image to $(params.image-dest-tag)
         - name: body
           value: |-
             Please review the following links before accepting the PR:
 
-            Image Vulnerabilities: https://$(dest_image_url):$(tasks.clone.results.commit)
+            Image Vulnerabilities: https://$(params.dest_image_url):$(params.image-dest-tag)
             Sonarqube Results: http://sonarqube-product-catalog-cicd.apps.cluster.ocplab.com/dashboard?id=com.redhat.demo%3Aproduct-catalog-client
