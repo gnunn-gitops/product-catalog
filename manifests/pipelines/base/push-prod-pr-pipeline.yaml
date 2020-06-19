@@ -1,0 +1,90 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: push-prod-pr
+spec:
+  workspaces:
+    - name: git-source
+  params:
+    - name: git_revision
+      type: string
+      default: master
+    - name: git_url
+      type: string
+      default: https://github.com/gnunn-gitops/product-catalog
+    - name: image_dest_url
+      type: string
+      description: External registry location of image to push without tag
+      default: quay.io/gnunn/client
+    - name: image_dest_tag
+      type: string
+      description: Tag of image to push to production
+    - name: cluster
+      type: string
+      description: Cluster to push to
+  tasks:
+    - name: clone
+      taskRef:
+        name: git-clone
+        kind: ClusterTask
+      workspaces:
+        - name: output
+          workspace: git-source
+      params:
+        - name: url
+          value: "$(params.git_url)"
+        - name: revision
+          value: "$(params.git_revision)"
+        - name: deleteExisting
+          value: "true"
+    - name: branch
+      taskRef:
+        name: git
+      workspaces:
+        - name: source
+          workspace: git-source
+      params:
+        - name: commands
+          value: |
+            git checkout -b push-$(image_dest_tag)
+    - name: patch
+      taskRef:
+        name: yq
+      runAfter:
+        - branch
+      workspaces:
+        - name: source
+          workspace: git-source
+      params:
+        - name: commands
+          value: |
+            yq manifests/app/overlays/prod-quay/patch-client-deployment.yaml [0].value $(params.image_dest_url):$(params.image_dest_tag)
+    - name: commit-and-push
+      taskRef:
+        name: git
+      workspaces:
+        - name: source
+          workspace: git-source
+      params:
+        - name: commands
+          value: |
+            git commit -m 'Pushing image $(params.image_dest_url):$(params.image_dest_tag)' to production
+            git push origin push-$(image_dest_tag)
+    - name: prod-pr-deploy
+      taskRef:
+        name: task-create-pr
+        kind: Task
+      runAfter:
+        - clone
+      workspaces:
+        - name: source
+          workspace: git-source
+      params:
+        - name: title
+          value: Update image to $(params.dest-tag)
+        - name: body
+          value: |-
+            Please review the following links before accepting the PR:
+
+            Image Vulnerabilities: https://$(dest_image_url):$(tasks.clone.results.commit)
+            Sonarqube Results: http://sonarqube-product-catalog-cicd.apps.cluster.ocplab.com/dashboard?id=com.redhat.demo%3Aproduct-catalog-client

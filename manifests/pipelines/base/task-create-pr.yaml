@@ -1,0 +1,44 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: task-create-pr
+spec:
+  workspaces:
+  - name: source
+  params:
+  - name: title
+    type: string
+    description: PR Title
+  - name: body
+    type: string
+    default: ""
+    description: The body of the PR request
+  - name: github-secret
+    type: string
+    default: github
+    description: "The name of the secret that has your github username and token"
+  steps:
+    - name: run-commands
+      image: docker.io/michaelin/github-cli:latest
+      script: |
+        #!/usr/bin/env bash
+
+        # git create PR
+        gh pr create -t "$(params.title)" -b "$(params.review-links)"
+      workingDir: $(workspaces.source.path)
+      env:
+        - name: GITHUB_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: $(params.github-secret)
+              key: password
+        - name: GITHUB_USER
+          valueFrom:
+            secretKeyRef:
+              name: $(params.github-secret)
+              key: username
+        - name: GITHUB_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: $(params.github-secret)
+              key: email

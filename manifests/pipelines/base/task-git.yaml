@@ -1,0 +1,18 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: git
+spec:
+  workspaces:
+    - name: source
+  params:
+    - name: command
+      type: string
+      description: The set of commands to run
+  steps:
+  - name: git
+    workingDir: $(workspaces.source.path)
+    image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.12.1
+    script: |
+      #!/usr/bin/env bash
+      $(params.COMMANDS)
