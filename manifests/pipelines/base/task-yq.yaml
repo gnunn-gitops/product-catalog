@@ -6,7 +6,7 @@ spec:
   workspaces:
     - name: source
   params:
-    - name: command
+    - name: commands
       type: string
       description: The set of commands to run
   steps:

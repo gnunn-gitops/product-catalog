@@ -15,4 +15,4 @@ spec:
     image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.12.1
     script: |
       #!/usr/bin/env bash
-      $(params.COMMANDS)
+      $(params.commands)
