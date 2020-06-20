@@ -4,8 +4,8 @@ metadata:
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
     argocd.argoproj.io/sync-options: Prune=false
-  name: push-prod-pr
-  generateName: push-prod-pr-
+  name: client-push-prod-pr
+  generateName: client-push-prod-pr-
 spec:
   pipelineRef:
     name: push-prod-pr
@@ -16,6 +16,8 @@ spec:
       value: quay.io/gnunn/client
     - name: cluster
       value: ocplab
+    - name: app
+      value: client
   workspaces:
   - name: git-source
     persistentVolumeClaim:

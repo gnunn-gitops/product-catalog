@@ -22,6 +22,9 @@ spec:
     - name: cluster
       type: string
       description: Cluster to push to
+    - name: app
+      type: string
+      description: Either 'server' or 'client'
   tasks:
     - name: clone
       taskRef:
@@ -60,8 +63,8 @@ spec:
       params:
         - name: commands
           value: |
-            yq w -i cluster/overlays/$(params.cluster)/prod/patch-client-deployment.yaml [0].value $(params.image_dest_url):$(params.image_dest_tag)
-    - name: commit-and-push
+            yq w -i cluster/overlays/$(params.cluster)/prod/patch-$(app)-deployment.yaml [0].value $(params.image_dest_url):$(params.image_dest_tag)
+    - name: commit
       taskRef:
         name: git
       runAfter:
@@ -73,13 +76,12 @@ spec:
         - name: commands
           value: |
             git commit -m 'Pushing image $(params.image_dest_url):$(params.image_dest_tag)' to production
-            git push origin push-$(image_dest_tag)
     - name: prod-pr-deploy
       taskRef:
         name: task-create-pr
         kind: Task
       runAfter:
-        - commit-and-push
+        - commit
       workspaces:
         - name: source
           workspace: git-source
