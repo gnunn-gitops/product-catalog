@@ -1,3 +1,3 @@
 - op: replace
   path: /spec/template/spec/containers/0/image
-  value: quay.io/gnunn/client:latest
+  value: quay.io/gnunn/client:ce2786cf0f8c6bb2fa10e142703161568358e74c
