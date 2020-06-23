@@ -7,6 +7,7 @@ metadata:
   name: client-push-prod-pr
   generateName: client-push-prod-pr-
 spec:
+  serviceAccountName: github-pipeline
   pipelineRef:
     name: push-prod-pr
   params:

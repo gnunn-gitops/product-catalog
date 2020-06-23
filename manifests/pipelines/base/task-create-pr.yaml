@@ -23,9 +23,6 @@ spec:
       script: |
         #!/usr/bin/env bash
 
-        # push change
-        git push origin master
-
         # git create PR
         gh pr create -t "$(params.title)" -b "$(params.body)"
       workingDir: $(workspaces.source.path)

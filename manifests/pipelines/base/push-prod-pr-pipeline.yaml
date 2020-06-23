@@ -51,7 +51,7 @@ spec:
       params:
         - name: commands
           value: |
-            git checkout -b push-$(image_dest_tag)
+            git checkout -b push-$(params.image_dest_tag)
     - name: patch
       taskRef:
         name: yq
@@ -63,7 +63,7 @@ spec:
       params:
         - name: commands
           value: |
-            yq w -i cluster/overlays/$(params.cluster)/prod/patch-$(app)-deployment.yaml [0].value $(params.image_dest_url):$(params.image_dest_tag)
+            yq w -i cluster/overlays/$(params.cluster)/prod/patch-$(params.app)-deployment.yaml [0].value $(params.image_dest_url):$(params.image_dest_tag)
     - name: commit
       taskRef:
         name: git
@@ -75,7 +75,11 @@ spec:
       params:
         - name: commands
           value: |
-            git commit -m 'Pushing image $(params.image_dest_url):$(params.image_dest_tag)' to production
+            git status
+            cat ~/.gitconfig
+            git config --global user.email "pipeline@redhat.com"
+            git add -u
+            git commit -m 'Pushing image $(params.image_dest_url):$(params.image_dest_tag) to production'
     - name: prod-pr-deploy
       taskRef:
         name: task-create-pr
@@ -93,4 +97,4 @@ spec:
             Please review the following links before accepting the PR:
 
             Image Vulnerabilities: https://$(params.image_dest_url):$(params.image_dest_tag)
-            Sonarqube Results: http://sonarqube-product-catalog-cicd.apps.cluster.ocplab.com/dashboard?id=com.redhat.demo%3Aproduct-catalog-client
+            Sonarqube Results: http://sonarqube-product-catalog-cicd.apps.cluster.ocplab.com/dashboard?id=product-catalog-$(params.app)
