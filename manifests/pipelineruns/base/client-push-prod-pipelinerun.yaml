@@ -22,4 +22,4 @@ spec:
   workspaces:
   - name: git-source
     persistentVolumeClaim:
-      claimName: client-manifest-source
+      claimName: manifest-source

@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1alpha1
 kind: Condition
 metadata:
-  name: push-image
+  name: push-to-prod
 spec:
   params:
   - name: push
@@ -11,9 +11,9 @@ spec:
     script: |
       #!/bin/sh
       if [ "${params.push}" = "true" ]; then
-        echo "Pushing image)"
+        echo "Pushing to prod)"
         exit 0
       else
-        echo "Not pushing image"
+        echo "Not pushing to prod"
         exit 1
       fi

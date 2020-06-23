@@ -18,6 +18,10 @@ spec:
       type: string
       description: External registry location to copy image to
       default: quay.io/gnunn/server
+    - name: push-to-prod
+      description: "Set to true if you want the pipeline to create a PR to push to prod"
+      type: string
+      default: "false"
   tasks:
     - name: clone
       taskRef:
@@ -157,3 +161,18 @@ spec:
           value: https://raw.githubusercontent.com/gnunn-gitops/product-catalog-server/master/tests/product-catalog-server-tests.json
         - name: ENVIRONMENT
           value: newman-test-env.json
+    - name: create-prod-pr
+      taskRef:
+        name: tkn
+        kind: Task
+      conditions:
+        - conditionRef: "push-to-prod"
+          params:
+            - name: "push"
+              value: "$(params.push-to-prod)"
+      runAfter:
+        - test-test
+      params:
+        - name: commands
+          value: |
+            tkn pipeline start push-prod-pr --prefix-name server -p image_dest_tag=$(tasks.clone.results.commit) -p image_dest_url=quay.io/gnunn/server -p cluster=ocplab -p app=server -s github-pipeline -w name=git-source,claimName=manifest-source

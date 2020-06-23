@@ -23,6 +23,7 @@ resources:
 - m2-cache-pvc.yaml
 - npm-cache-pvc.yaml
 - dependency-cache-pvc.yaml
+- manifest-pvc.yaml
 # Tekton tasks
 - task-git.yaml
 - task-yq.yaml
@@ -34,7 +35,9 @@ resources:
 - task-deploy.yaml
 - task-newman.yaml
 - task-create-pr.yaml
-- condition-push-image.yaml
+- task-tekton.yaml
+# Tekton conditions
+- condition-push-prod.yaml
 # Server pipeline
 - server-imagestream.yaml
 - server-buildconfig.yaml
@@ -44,7 +47,6 @@ resources:
 - client-imagestream.yaml
 - client-buildconfig.yaml
 - client-pvc.yaml
-- client-manifest-pvc.yaml
 - client-pipeline.yaml
 # Push to prod pipeline
 - push-prod-pr-pipeline.yaml

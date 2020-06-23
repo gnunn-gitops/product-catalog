@@ -1,0 +1,15 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: tkn
+spec:
+  params:
+    - name: commands
+      type: string
+      description: The tkn commands to run
+  steps:
+    - name: tkn
+      image: gcr.io/tekton-releases/dogfooding/tkn
+      script: |
+        #!/usr/bin/env sh
+        $(params.commands)
