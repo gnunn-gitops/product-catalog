@@ -15,7 +15,6 @@ spec:
     - name: image_dest_url
       type: string
       description: External registry location of image to push without tag
-      default: quay.io/gnunn/client
     - name: image_dest_tag
       type: string
       description: Tag of image to push to production
