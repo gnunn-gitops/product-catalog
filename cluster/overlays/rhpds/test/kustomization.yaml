@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 bases:
-- ../../../../manifests/app/overlays/test-quay
+- ../../../../environments/overlays/test
 
 resources:
 - user1-rolebinding.yaml
