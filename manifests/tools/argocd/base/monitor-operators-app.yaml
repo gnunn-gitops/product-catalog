@@ -10,7 +10,7 @@ spec:
     server: https://kubernetes.default.svc
   project: apps-product-catalog
   source:
-    path: manifests/monitor/operators/overlays/default
+    path: manifests/app/operators/base
     repoURL: https://github.com/gnunn-gitops/product-catalog.git
     targetRevision: master
   syncPolicy:
