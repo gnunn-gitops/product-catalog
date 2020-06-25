@@ -1,3 +1,3 @@
 - op: replace
   path: /spec/source/path
-  value: cluster/overlays/ocplab/prod
+  value: clusters/overlays/ocplab/cicd
