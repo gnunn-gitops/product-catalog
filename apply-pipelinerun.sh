@@ -1,1 +1,2 @@
-oc apply -k manifests/pipelineruns/overlays/default
+oc apply -k manifests/tekton/pipelineruns/client/base
+oc apply -k manifests/tekton/pipelineruns/server/base
