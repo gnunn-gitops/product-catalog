@@ -30,8 +30,8 @@ patchesJson6902:
     group: argoproj.io
     version: v1alpha1
     kind: Application
-    name: product-catalog-prod
-  path: patch-prod-app.yaml
+    name: product-catalog-cicd
+  path: patch-cicd-app.yaml
 
 - target:
     group: argoproj.io

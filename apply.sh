@@ -1,1 +1,1 @@
-oc apply -k cluster/overlays/ocplab/argocd
+oc apply -k clusters/overlays/ocplab/tools/argocd

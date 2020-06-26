@@ -35,6 +35,13 @@ patchesJson6902:
     group: argoproj.io
     version: v1alpha1
     kind: Application
+    name: product-catalog-cicd
+  path: patch-project.yaml
+
+- target:
+    group: argoproj.io
+    version: v1alpha1
+    kind: Application
     name: product-catalog-monitor-operators
   path: patch-project.yaml
 
