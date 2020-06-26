@@ -1,3 +1,6 @@
 - op: replace
   path: /spec/project
   value: product-catalog
+- op: replace
+  path: /spec/source/targetRevision
+  value: refactor
