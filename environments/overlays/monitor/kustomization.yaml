@@ -3,5 +3,9 @@ kind: Kustomization
 
 namespace: product-catalog-monitor
 
-resources:
-- namespace.yaml
+bases:
+- ../../../manifests/app/prometheus/base
+- ../../../manifests/app/grafana/base
+
+patchesStrategicMerge:
+  - sm-patch.yaml
