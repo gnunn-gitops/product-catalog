@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: product-catalog-cicd
+
+bases:
+# Nexus
+- github.com/redhat-canada-gitops/catalog//nexus2/base
+# Sonarqube
+- github.com/redhat-canada-gitops/catalog//sonarqube8/overlays/plugins
+- ../../../manifests/tekton/tasks/base
+- ../../../manifests/tekton/pipelines/client/base
+- ../../../manifests/tekton/pipelines/server/base
+- ../../../manifests/tekton/pipelines/push-prod-pr/base
+- ../../../manifests/tekton/triggers/base
+
+resources:
+- namespace.yaml

@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+generatorOptions:
+  disableNameSuffixHash: true
+  labels:
+    app.kubernetes.io/part-of: product-catalog
+
+configMapGenerator:
+- name: client
+  files:
+    - config/config.js
+
+resources:
+  - client-service.yaml
+  - client-route.yaml
+  - client-deployment.yaml

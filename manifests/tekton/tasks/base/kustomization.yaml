@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+resources:
+# Supporting infra
+- m2-cache-pvc.yaml
+- npm-cache-pvc.yaml
+- dependency-cache-pvc.yaml
+# Tekton tasks
+- task-git.yaml
+- task-yq.yaml
+- task-maven.yaml
+- task-npm.yaml
+- task-npm-quality.yaml
+- task-binary-s2i.yaml
+- task-push-image.yaml
+- task-deploy.yaml
+- task-newman.yaml
+- task-create-pr.yaml
+- task-tekton.yaml

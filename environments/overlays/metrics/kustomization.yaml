@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: product-catalog-monitor
+
+bases:
+- ../../../manifests/app/prometheus/base
+- ../../../manifests/app/grafana/base
+
+patchesStrategicMerge:
+  - sm-patch.yaml

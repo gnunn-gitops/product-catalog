@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: product-catalog-monitor-operators
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
+spec:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: apps-product-catalog
+  source:
+    path: manifests/app/operators/base
+    repoURL: https://github.com/gnunn-gitops/product-catalog.git
+    targetRevision: master
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+  ignoreDifferences:
+  - group: apps
+    kind: Deployment
+    jsonPointers:
+    - /spec/replicas
+  - group: route.openshift.io
+    kind: Route
+    jsonPointers:
+    - /status/ingress
