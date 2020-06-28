@@ -4,7 +4,7 @@ This is an OpenShift demo showing how to do GitOps in a kubernetes way using too
 
 ![alt text](https://raw.githubusercontent.com/gnunn-gitops/product-catalog/master/docs/img/screenshot.png)
 
-The topology view in OpenSHift shows the three tiers of the application:
+The topology view in OpenShift shows the three tiers of the application:
 
 ![alt text](https://raw.githubusercontent.com/gnunn-gitops/product-catalog/master/docs/img/topology.png)
 
@@ -52,6 +52,8 @@ The demo uses a pipeline called ```push-prod-pr``` that creates a pull request i
 
 Note that OpenShift Pipelines currently shows conditions which are not met as failed steps in the pipeline so don't be alarmed that client and server pipelines appear to be failing when ```push-to-prod``` is set to false.
 
+To execute the pipelines you will need to create pipelinerun objects, base versions are available in ```manifests/tekton/pipelineruns```. A script is also available at ```scripts/apply-pipelineruns.sh``` to load the client and server pipelineruns however you will need to modify the pipelineruns to reflect your cluster and enterprise registry.
+
 ### Enterprise Registry
 
 The demo is used and tested primarily with an enterprise registry, in my case I use quay.io. See the [product-catalog-template](https://github.com/gnunn-gitops/product-catalog-template) for more information on this.
@@ -63,3 +65,5 @@ The demo uses the git commit hash to tag the client and server images in the reg
 A basic monitoring system is installed as part of the demo, it deploys prometheus and grafana into the ```product-catalog-monitor``` namespace along with a simple dashboard for the server application. The dashboard tracks JVM metrics as well as API calls to the server, with no load the API call metrics will be flat and that is normal:
 
 ![alt text](https://raw.githubusercontent.com/gnunn-gitops/product-catalog/master/docs/img/monitoring.png)
+
+There's a sample siege script that can be used to drive some load if desired under scripts, you will need to update the script to reflect the endpoints in your cluster.
