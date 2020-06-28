@@ -1,8 +1,12 @@
 ### Introduction
 
-This is an OpenShift demo showing how to do GitOps in a kubernetes way using tools like [ArgoCD](https://argoproj.github.io/argo-cd/) and [Kustomize](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/). The demo application is a product catalog using React for the front-end with Quarkus providing APIs as the back-end. The back-end was originally written in PHP and then ported to Quarkus.
+This is an OpenShift demo showing how to do GitOps in a kubernetes way using tools like [ArgoCD](https://argoproj.github.io/argo-cd/) and [Kustomize](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/). The demo application is a three tier application using React for the front-end with Quarkus providing APIs as the back-end. The back-end was originally written in PHP and then ported to Quarkus. The application itself is a simple product catalog:
 
 ![alt text](https://raw.githubusercontent.com/gnunn-gitops/product-catalog/master/docs/img/screenshot.png)
+
+The topology view in OpenSHift shows the three tiers of the application:
+
+![alt text](https://raw.githubusercontent.com/gnunn-gitops/product-catalog/master/docs/img/topology.png)
 
 ### Running demo locally
 
@@ -24,28 +28,13 @@ This application makes heavy use of Kustomize and ArgoCD to deploy the applicati
 you will need to create a new repo and setup Kustomize overlays that point to this repo. Since Kustomize supports referencing remote resources you do not need
 to fork this repo, a new one will suffice.
 
-There are two overlays you will need to create, one for argocd and one for the manifests representing the application and pipeline. Some of things that will need to be
-kustomized include:
+In order to make this easier, a [product-catalog-template](https://github.com/gnunn-gitops/product-catalog-template) repo is available that you can fork. It includes detailed instructions with regards to pre-requisities and what needs to be modified to deploy the demo in your own cluster.
 
-* The application URLs on your cluster so that the client and server can communicate with each other
-* The argocd Application objects to reference your Kustomize overlays for the application
-
-Examples of these can be found in the following locations in this repo:
-
-* ArgoCD: If you look in ```/cluster/overlays/rhpds/argocd``` you can see how we patch the base items to reference the RHPDS application specific manifests
-* Cluster: Have a look at ```/cluster/overlays/rhpds``` for how to create cluster specific manifests for dev, pipeline and test.
-
-The infrastructure (namespaces/rolebindings) are in the [product-catalog-infra](https://github.com/gnunn-gitops/product-catalog-infra) repository. Add the application/projects there to ArgoCD first to create the namespaces and rolebindings. Otherwise you can create the namespaces manually.
-
-To load the projects and applications into ArgoCD, assuming it is installed in the argocd directory, use the following command:
-
-```oc apply -k cluster/overlays/rhpds/argocd```
-
-Once the application is installed and synchronized in ArgoCD it looks like the following:
+Once deployed in your cluster under ArgoCD it should appear as follows:
 
 ![alt text](https://raw.githubusercontent.com/gnunn-gitops/product-catalog/master/docs/img/argocd.png)
 
-### Test CI/CD
+### Test CI/CD Pipelines
 
 The demo uses OpenShift Pipelines to build the client and server images for the application. The demo does not install PipelineRun objects via ArgoCD since these objects are transitory and not meant to be managed by a GitOps tool. To load the initial PipelineRun objects, use the following command:
 
@@ -57,23 +46,20 @@ Once you make the code change, start the client pipeline (Jenkins or Tekton). No
 
 ![alt text](https://raw.githubusercontent.com/gnunn-gitops/product-catalog/master/docs/img/tekton-rerun.png)
 
+### Test Prod Pipeline
+
+The demo uses a pipeline called ```push-prod-pr``` that creates a pull request in github. When the pull request is merged ArgoCD will see the change in git and automatically deploy the updated image for you. The client and server pipelines can run the push-prod-pr automatically if you set the ```push-to-prod``` parameter to true to have it trigger the pipeline automatically. The default for this parameter is false.
+
+Note that OpenShift Pipelines currently shows conditions which are not met as failed steps in the pipeline so don't be alarmed that client and server pipelines appear to be failing when ```push-to-prod``` is set to false.
+
 ### Enterprise Registry
 
-The demo is used and tested primarily with an enterprise Registry. In my case I'm leveraging quay.io though you can use anything. In order to support GitOps with the enterprise registry secret, Bitnami Sealed Secrets are used. When creating your cluster overlay you will need to either provide the secret directly (strongly not recommended), or encrypt your own secret using kubeseal.
+The demo is used and tested primarily with an enterprise registry, in my case I use quay.io. See the [product-catalog-template](https://github.com/gnunn-gitops/product-catalog-template) for more information on this.
 
-An example of creating a standard secret is included in the kustomization file ```cluster/overlays/default/pipeline/kustomization.yaml```. To use it, uncomment the secret generator in the file, you will also need to provide a dockerconfigjson file for the secret similar to below:
+The demo uses the git commit hash to tag the client and server images in the registry, when using quay.io it is highly recommended to deploy the Container Security Operator so that quay vulnerability scans are shown. From a demo perspective, I find showing how older images have more vulnerabilities highlights the benefits of using Red Hat base images.
 
-```
-{
-	"auths": {
-		"<registry>": {
-		  "auth": "<base64(Username:Password)>"
-		}
-	},
-	"HttpHeaders": {
-		"User-Agent": "Docker-Client/18.09.7 (linux)"
-	}
-}
-```
+### Monitoring
 
-Replace the ```<base64(Username:Password)>``` with a base64 string of your username and password. Replace ```<registry>``` with your registry name, i.e. ```quay.io``` if using Quay.
+A basic monitoring system is installed as part of the demo, it deploys prometheus and grafana into the ```product-catalog-monitor``` namespace along with a simple dashboard for the server application. The dashboard tracks JVM metrics as well as API calls to the server, with no load the API call metrics will be flat and that is normal:
+
+![alt text](https://raw.githubusercontent.com/gnunn-gitops/product-catalog/master/docs/img/monitoring.png)
