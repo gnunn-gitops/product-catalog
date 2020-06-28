@@ -16,5 +16,3 @@ bases:
 
 resources:
 - namespace.yaml
-- docker-sealed-secret.yaml
-- github-sealed-secret.yaml

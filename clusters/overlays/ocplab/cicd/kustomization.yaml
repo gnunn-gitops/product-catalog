@@ -4,10 +4,17 @@ kind: Kustomization
 bases:
 - ../../../../environments/overlays/cicd
 
+# generatorOptions:
+#   disableNameSuffixHash: true
+
+# secretGenerator:
+#   - name: dest-docker-config
+#     type: kubernetes.io/dockerconfigjson
+#     files:
+#       - secrets/.dockerconfigjson
+
 resources:
 - pipeline-rolebinding.yaml
 - user1-rolebinding.yaml
-
-patchesStrategicMerge:
-  - docker-sealed-secret.yaml
-  - github-sealed-secret.yaml
+- docker-sealed-secret.yaml
+- github-sealed-secret.yaml
