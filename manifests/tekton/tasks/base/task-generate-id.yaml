@@ -1,0 +1,26 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: generate-id
+spec:
+  workspaces:
+    - name: source
+  results:
+  - description: The short commit SHA that was fetched by this Task
+    name: short-commit
+  - description: Unique build identifier
+    name: build-uid
+  steps:
+  - name: generate
+    workingDir: $(workspaces.source.path)
+    image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.12.1
+    script: |
+      #!/usr/bin/env sh
+
+      # Get short commit
+      export SHORT_SHA=$(git rev-parse --short HEAD)
+      echo -n "$SHORT_SHA" > $(results.short-commit.path)
+
+      # Generate uinque UID
+      export BUILD_UID=$(printf '%s ' $(date) | cksum | cut -f -1 -d ' ')
+      echo -n "$BUILD_UID" > $(results.build-uid.path)

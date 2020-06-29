@@ -21,3 +21,4 @@ resources:
 - task-newman.yaml
 - task-create-pr.yaml
 - task-tekton.yaml
+- task-generate-id.yaml

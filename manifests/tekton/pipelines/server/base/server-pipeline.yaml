@@ -37,6 +37,14 @@ spec:
           value: "$(params.git_revision)"
         - name: deleteExisting
           value: "true"
+    - name: generate-id
+      taskRef:
+        name: generate-id
+      runAfter:
+        - clone
+      workspaces:
+        - name: source
+          workspace: git-source
     - name: build
       taskRef:
         name: maven
@@ -44,7 +52,7 @@ spec:
         - name: source
           workspace: git-source
       runAfter:
-        - clone
+        - generate-id
       params:
         - name: MAVEN_MIRROR_URL
           value: "$(params.MAVEN_MIRROR_URL)"
@@ -120,7 +128,7 @@ spec:
         - name: dest-image
           value: $(params.image_dest_url)
         - name: dest-additional-tag
-          value: $(tasks.clone.results.commit)
+          value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
     - name: deploy-dev
       taskRef:
         name: deploy
@@ -175,4 +183,4 @@ spec:
       params:
         - name: commands
           value: |
-            tkn pipeline start push-prod-pr --prefix-name server -p image_dest_tag=$(tasks.clone.results.commit) -p image_dest_url=quay.io/gnunn/server -p cluster=ocplab -p app=server -s github-pipeline -w name=git-source,claimName=manifest-source
+            tkn pipeline start push-prod-pr --prefix-name server -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/server -p cluster=ocplab -p app=server -s github-pipeline -w name=git-source,claimName=manifest-source
