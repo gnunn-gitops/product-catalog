@@ -38,11 +38,14 @@ Once deployed in your cluster under ArgoCD it should appear as follows:
 
 The demo uses OpenShift Pipelines to build the client and server images for the application. The demo does not install PipelineRun objects via ArgoCD since these objects are transitory and not meant to be managed by a GitOps tool. To load the initial PipelineRun objects, use the following command:
 
-```oc apply -k manifests/pipelineruns/overlays/registry```
+```
+oc apply -k manifests/tekton/pipelineruns/client/base
+oc apply -k manifests/tekton/pipelineruns/server/base
+```
 
-To test the CI/CD, you can add a logo to the product catalog. The code to do this is commented out and can be found in the [nav.jsx](https://github.com/gnunn1/quarkus-product-catalog/blob/master/client/src/js/components/layouts/nav.jsx#L45) file.
+To test the pipelines are actually taking changes, you can add a logo to the product catalog. The code to do this is commented out and can be found in the [nav.jsx](https://github.com/gnunn1/quarkus-product-catalog/blob/master/client/src/js/components/layouts/nav.jsx#L45) file.
 
-Once you make the code change, start the client pipeline (Jenkins or Tekton). Note that in Tekton the GUI does not support creating a new PipelineRunTask with a workspace, if you want to drive it from a GUI go into the PipelineRuns and simple rerun an existing one.
+Once you make the code change, start the client pipeline. Note that in OpenShift Pipelines the GUI does not support creating a new PipelineRunTask with a workspace, if you want to drive it from a GUI go into the PipelineRuns and simple rerun an existing one.
 
 ![alt text](https://raw.githubusercontent.com/gnunn-gitops/product-catalog/master/docs/img/tekton-rerun.png)
 
