@@ -5,9 +5,9 @@ namespace: product-catalog-cicd
 
 bases:
 # Nexus
-- github.com/redhat-canada-gitops/catalog//nexus2/base
+- https://github.com/redhat-canada-gitops/catalog/nexus2/base
 # Sonarqube
-- github.com/redhat-canada-gitops/catalog//sonarqube8/overlays/plugins
+- https://github.com/redhat-canada-gitops/catalog/sonarqube8/overlays/plugins
 - ../../../manifests/tekton/tasks/base
 - ../../../manifests/tekton/pipelines/client/base
 - ../../../manifests/tekton/pipelines/server/base
