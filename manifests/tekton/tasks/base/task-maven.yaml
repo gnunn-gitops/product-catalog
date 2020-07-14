@@ -32,7 +32,7 @@ spec:
     default: /tekton/home/.m2
   steps:
     - name: mvn-settings
-      image: docker.io/maven:3.6.3-jdk-8
+      image: docker.io/maven:3.6.3-jdk-11
       command:
         - '/bin/bash'
         - '-c'
