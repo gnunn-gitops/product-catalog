@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: product-catalog-3scale
+
+bases:
+- ../../../manifests/app/database/base
+- ../../../manifests/app/server/base
+- ../../../manifests/app/client/base
+- https://github.com/redhat-canada-gitops/catalog/apicast/overlays/default
+
+resources:
+- namespace.yaml
+
+patchesJson6902:
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: client
+  path: patch-client-deployment.yaml
+
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: server
+  path: patch-server-deployment.yaml

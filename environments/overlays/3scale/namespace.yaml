@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/description: Project for 3scale demo with product catalog application
+    openshift.io/display-name:  Product Catalog 3scale
+  name: product-catalog-3scale
