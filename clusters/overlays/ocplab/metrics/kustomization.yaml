@@ -6,3 +6,4 @@ bases:
 
 resources:
 - prometheus-role-binding.yaml
+- user1-rolebinding.yaml
