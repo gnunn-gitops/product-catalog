@@ -65,7 +65,7 @@ spec:
           mountPath: $(params.M2_DIRECTORY)/settings.xml
           subPath: settings.xml
     - name: mvn-goals
-      image: docker.io/maven:3.6.3-jdk-8
+      image: docker.io/maven:3.6.3-jdk-11
       command:
         - '/bin/bash'
         - '-c'
