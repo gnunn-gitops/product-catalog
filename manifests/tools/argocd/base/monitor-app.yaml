@@ -1,9 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: product-catalog-monitor-metrics
-  annotations:
-    argocd.argoproj.io/sync-wave: "10"
+  name: product-catalog-monitor
 spec:
   destination:
     namespace: argocd

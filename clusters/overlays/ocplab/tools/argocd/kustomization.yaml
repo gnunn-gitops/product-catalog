@@ -37,5 +37,5 @@ patchesJson6902:
     group: argoproj.io
     version: v1alpha1
     kind: Application
-    name: product-catalog-monitor-metrics
-  path: patch-metrics-app.yaml
+    name: product-catalog-monitor
+  path: patch-monitor-app.yaml

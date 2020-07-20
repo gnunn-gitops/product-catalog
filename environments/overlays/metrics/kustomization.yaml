@@ -12,7 +12,7 @@ resources:
 - namespace.yaml
 
 patchesStrategicMerge:
-  - sm-patch.yaml
+- sm-patch.yaml
 
 patchesJson6902:
 - target:
