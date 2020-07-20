@@ -4,8 +4,20 @@ kind: Kustomization
 namespace: product-catalog-monitor
 
 bases:
+- ../../../manifests/app/operators/base
 - ../../../manifests/app/prometheus/base
 - ../../../manifests/app/grafana/base
 
+resources:
+- namespace.yaml
+
 patchesStrategicMerge:
   - sm-patch.yaml
+
+patchesJson6902:
+- target:
+    group: operators.coreos.com
+    version: v1
+    kind: OperatorGroup
+    name: monitor
+  path: namespace-patch.yaml

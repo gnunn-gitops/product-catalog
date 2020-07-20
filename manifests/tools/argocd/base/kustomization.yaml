@@ -7,4 +7,3 @@ resources:
 - prod-app.yaml
 - pipeline-app.yaml
 - monitor-metrics-app.yaml
-- monitor-operators-app.yaml

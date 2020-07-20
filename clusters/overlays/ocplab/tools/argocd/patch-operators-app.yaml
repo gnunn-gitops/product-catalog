@@ -1,3 +1,0 @@
-- op: replace
-  path: /spec/source/path
-  value: environments/overlays/operators

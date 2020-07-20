@@ -39,10 +39,3 @@ patchesJson6902:
     kind: Application
     name: product-catalog-monitor-metrics
   path: patch-metrics-app.yaml
-
-- target:
-    group: argoproj.io
-    version: v1alpha1
-    kind: Application
-    name: product-catalog-monitor-operators
-  path: patch-operators-app.yaml
