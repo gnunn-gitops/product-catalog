@@ -9,7 +9,7 @@ spec:
         - name: server
           env:
           - name: CORS_ORIGIN
-            value: http://client-product-catalog-test.apps.cluster-vic-a894.vic-a894.example.opentlc.com
+            value: http://client-product-catalog-test.apps.cluster-vic-39e7.vic-39e7.example.opentlc.com
           image: quay.io/gnunn/server:latest
 ---
 apiVersion: v1
@@ -19,6 +19,6 @@ metadata:
 data:
   config.js: |-
     window.ENV = {
-      "API_URL":"http://server-product-catalog-test.apps.cluster-vic-a894.vic-a894.example.opentlc.com",
+      "API_URL":"http://server-product-catalog-test.apps.cluster-vic-39e7.vic-39e7.example.opentlc.com
       "API_KEY":"	43fbc9b33302db65d58553e27d1679ac"
     }

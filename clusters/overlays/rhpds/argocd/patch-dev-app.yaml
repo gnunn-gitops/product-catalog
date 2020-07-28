@@ -1,7 +1,0 @@
-- op: replace
-  path: /spec/source/path
-  value: cluster/overlays/rhpds/dev
-
-- op: replace
-  path: /spec/sync/comparedTo/source/path
-  value: cluster/overlays/rhpds/dev
