@@ -8,7 +8,7 @@ spec:
     type: string
   - name: dest-image
     type: string
-  - name: dest-additional-tag
+  - name: dest-tags
     type: string
     default: ""
   steps:
@@ -19,13 +19,18 @@ spec:
         TOKEN="$(oc whoami -t)"
         USER="pipeline"
 
-        echo "Copying image docker://$(params.src-image) to docker://$(params.dest-image):latest"
-        skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds="${USER}:${TOKEN}" --dest-authfile=/workspace/dest/.docker/config.json docker://$(params.src-image) docker://$(params.dest-image):latest
+        # echo "Copying image docker://$(params.src-image) to docker://$(params.dest-image):latest"
+        # skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds="${USER}:${TOKEN}" --dest-authfile=/workspace/dest/.docker/config.json docker://$(params.src-image) docker://$(params.dest-image):latest
 
-        if [ "$(params.dest-additional-tag)" != "" ];
+        if [ "$(params.dest-tags)" != "" ];
         then
-          echo "Copying image docker://$(params.src-image) to docker://$(params.dest-image):$(params.dest-additional-tag)"
-          skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds="${USER}:${TOKEN}" --dest-authfile=/workspace/dest/.docker/config.json docker://$(params.src-image) docker://$(params.dest-image):$(params.dest-additional-tag)
+
+          tags=$(params.dest-tags)
+          for i in ${tags//,/ }
+          do
+            echo "Copying image docker://$(params.src-image) to docker://$(params.dest-image):$i"
+            skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds="${USER}:${TOKEN}" --dest-authfile=/workspace/dest/.docker/config.json docker://$(params.src-image) docker://$(params.dest-image):$i
+          done
         fi
       volumeMounts:
         - name: dest-docker-config

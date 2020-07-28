@@ -1,11 +1,8 @@
 - op: replace
-  path: /spec/channel
-  value: product-catalog-dev/product-catalog-dev
-- op: replace
   path: /spec/placement/placementRef/name
   value: product-catalog-dev
 - op: add
   path: /metadata/annotations
   value:
-    apps.open-cluster-management.io/github-path: /manifests/app/overlays/dev-quay
+    apps.open-cluster-management.io/github-path: /clusters/overlays/rhpds/dev
     apps.open-cluster-management.io/github-branch: master

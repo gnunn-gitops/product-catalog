@@ -6,6 +6,5 @@ commonLabels:
 
 resources:
 - application.yaml
-- channel.yaml
 - placement-rule.yaml
 - subscription.yaml

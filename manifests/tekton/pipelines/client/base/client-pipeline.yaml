@@ -72,36 +72,59 @@ spec:
           value: "$(workspaces.source.path)/dist"
         - name: buildconfig
           value: client
-    - name: promote-image
+    - name: tag-image
+      taskRef:
+        name: openshift-client
+        type: ClusterTask
+      runAfter:
+        - build-image
+      params:
+        - name: script
+          value: |
+            oc tag client:latest client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+    - name: tag-dev-image
       taskRef:
         name: push-image
         kind: Task
       runAfter:
-        - build-image
+        - tag-image
       params:
         - name: src-image
-          value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/client:latest
+          value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
         - name: dest-image
           value: $(params.image_dest_url)
-        - name: dest-additional-tag
-          value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+        - name: dest-additional-tags
+          value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid),dev
     - name: deploy-dev
       taskRef:
         name: deploy
         kind: Task
       runAfter:
-        - promote-image
+        - tag-dev-image
       params:
         - name: NAME
           value: client
         - name: NAMESPACE
           value: product-catalog-dev
+    - name: tag-test-image
+      taskRef:
+        name: push-image
+        kind: Task
+      runAfter:
+        - deploy-dev
+      params:
+        - name: src-image
+          value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+        - name: dest-image
+          value: $(params.image_dest_url)
+        - name: dest-additional-tags
+          value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid),test,latest
     - name: deploy-test
       taskRef:
         name: deploy
         kind: Task
       runAfter:
-        - deploy-dev
+        - tag-test-image
       params:
         - name: NAME
           value: client

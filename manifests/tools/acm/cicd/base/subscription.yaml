@@ -3,10 +3,10 @@
  metadata:
    name: product-catalog-cicd
    annotations:
-     apps.open-cluster-management.io/github-path: /cluster/overlays/default/pipeline
+     apps.open-cluster-management.io/github-path: /clusters/overlays/rhpds/cicd/
      apps.open-cluster-management.io/github-branch: master
  spec:
-  channel: product-catalog-cicd/product-catalog-cicd
+  channel: product-catalog-ch/product-catalog
   placement:
     placementRef:
       kind: PlacementRule

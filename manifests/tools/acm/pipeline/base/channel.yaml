@@ -1,9 +1,0 @@
-apiVersion: apps.open-cluster-management.io/v1
-kind: Channel
-metadata:
-  name: product-catalog-cicd
-  labels:
-    app: product-catalog-cicd
-spec:
-  type: GitHub
-  pathname: https://github.com/gnunn-gitops/product-catalog

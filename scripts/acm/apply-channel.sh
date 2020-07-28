@@ -1,0 +1,1 @@
+oc apply -k ../../manifests/tools/acm/channel/base/

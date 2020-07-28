@@ -4,8 +4,6 @@ metadata:
   name: product-catalog
 spec:
   clusterReplicas: 1
-  clusterConditions:
-    - type: OK
   clusterSelector:
     matchLabels:
-      environment: Dev
+      environment: dev
