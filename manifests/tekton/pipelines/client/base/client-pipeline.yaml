@@ -75,7 +75,7 @@ spec:
     - name: tag-image
       taskRef:
         name: openshift-client
-        type: ClusterTask
+        kind: ClusterTask
       runAfter:
         - build-image
       params:
