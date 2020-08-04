@@ -79,10 +79,10 @@ spec:
       runAfter:
         - build-image
       params:
-        - name: script
+        - name: SCRIPT
           value: |
             oc tag client:latest client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
-    - name: tag-dev-image
+    - name: push-dev-image
       taskRef:
         name: push-image
         kind: Task
@@ -93,20 +93,20 @@ spec:
           value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
         - name: dest-image
           value: $(params.image_dest_url)
-        - name: dest-additional-tags
+        - name: dest-tags
           value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid),dev
     - name: deploy-dev
       taskRef:
         name: deploy
         kind: Task
       runAfter:
-        - tag-dev-image
+        - push-dev-image
       params:
         - name: NAME
           value: client
         - name: NAMESPACE
           value: product-catalog-dev
-    - name: tag-test-image
+    - name: push-test-image
       taskRef:
         name: push-image
         kind: Task
@@ -117,14 +117,14 @@ spec:
           value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
         - name: dest-image
           value: $(params.image_dest_url)
-        - name: dest-additional-tags
+        - name: dest-tags
           value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid),test,latest
     - name: deploy-test
       taskRef:
         name: deploy
         kind: Task
       runAfter:
-        - tag-test-image
+        - push-test-image
       params:
         - name: NAME
           value: client

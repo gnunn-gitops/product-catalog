@@ -116,24 +116,35 @@ spec:
           value: "$(workspaces.source.path)/target/*-runner.jar"
         - name: buildconfig
           value: server
-    - name: promote-image
+    - name: tag-image
       taskRef:
-        name: push-image
+        name: openshift-client
+        kind: ClusterTask
       runAfter:
         - build-image
+      params:
+        - name: SCRIPT
+          value: |
+            oc tag server:latest server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+    - name: push-dev-image
+      taskRef:
+        name: push-image
+        kind: Task
+      runAfter:
+        - tag-image
         - install-nexus
       params:
         - name: src-image
-          value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/server:latest
+          value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
         - name: dest-image
           value: $(params.image_dest_url)
-        - name: dest-additional-tag
-          value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+        - name: dest-tags
+          value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid),dev
     - name: deploy-dev
       taskRef:
         name: deploy
       runAfter:
-        - promote-image
+        - push-dev-image
       params:
         - name: NAME
           value: server
@@ -149,11 +160,24 @@ spec:
           value: https://raw.githubusercontent.com/gnunn-gitops/product-catalog-server/master/tests/product-catalog-server-tests.json
         - name: ENVIRONMENT
           value: newman-dev-env.json
+    - name: push-test-image
+      taskRef:
+        name: push-image
+        kind: Task
+      runAfter:
+        - dev-test
+      params:
+        - name: src-image
+          value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+        - name: dest-image
+          value: $(params.image_dest_url)
+        - name: dest-tags
+          value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid),test,latest
     - name: deploy-test
       taskRef:
         name: deploy
       runAfter:
-        - dev-test
+        - push-test-image
       params:
         - name: NAME
           value: server
