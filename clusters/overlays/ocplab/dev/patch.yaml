@@ -10,7 +10,6 @@ spec:
           env:
           - name: CORS_ORIGIN
             value: http://client-product-catalog-dev.apps.cluster.ocplab.com
-          image: quay.io/gnunn/server:latest
 ---
 apiVersion: v1
 kind: ConfigMap
