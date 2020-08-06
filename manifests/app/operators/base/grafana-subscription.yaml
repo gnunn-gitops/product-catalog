@@ -5,7 +5,7 @@ metadata:
 spec:
   channel: alpha
   installPlanApproval: Automatic
-  name: grafana
+  name: grafana-operator
   source: community-operators
   sourceNamespace: openshift-marketplace
   startingCSV: grafana-operator.v3.5.0
