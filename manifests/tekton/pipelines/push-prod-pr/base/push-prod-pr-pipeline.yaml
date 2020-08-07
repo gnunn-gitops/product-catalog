@@ -62,7 +62,7 @@ spec:
       params:
         - name: commands
           value: |
-            yq w -i cluster/overlays/$(params.cluster)/prod/patch-$(params.app)-deployment.yaml [0].value $(params.image_dest_url):$(params.image_dest_tag)
+            yq w -i clusters/overlays/$(params.cluster)/prod/patch-$(params.app)-deployment.yaml [0].value $(params.image_dest_url):$(params.image_dest_tag)
     - name: commit
       taskRef:
         name: git
