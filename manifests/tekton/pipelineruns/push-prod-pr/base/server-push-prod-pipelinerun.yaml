@@ -4,21 +4,21 @@ metadata:
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
     argocd.argoproj.io/sync-options: Prune=false
-  name: client-push-prod-pr
-  generateName: client-push-prod-pr-
+  name: server-push-prod-pr
+  generateName: server-push-prod-pr-
 spec:
   serviceAccountName: github-pipeline
   pipelineRef:
     name: push-prod-pr
   params:
     - name: image_dest_tag
-      value: 02be811-2609296507
+      value: a1c87fd-4016009708
     - name: image_dest_url
-      value: quay.io/gnunn/client
+      value: quay.io/gnunn/server
     - name: cluster
       value: ocplab
     - name: app
-      value: client
+      value: server
   workspaces:
   - name: git-source
     persistentVolumeClaim:
