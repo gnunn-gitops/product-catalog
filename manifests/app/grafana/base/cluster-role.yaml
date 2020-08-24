@@ -15,3 +15,17 @@ rules:
       - subjectaccessreviews
     verbs:
       - create
+---
+
+apiVersion: authorization.openshift.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: grafana-proxy
+roleRef:
+  name: grafana-proxy
+subjects:
+  - kind: ServiceAccount
+    name: grafana-serviceaccount
+    namespace: product-catalog-monitor
+userNames:
+  - system:serviceaccount:product-catalog-monitor:grafana-serviceaccount
