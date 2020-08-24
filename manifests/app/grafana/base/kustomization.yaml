@@ -8,7 +8,6 @@ commonAnnotations:
 resources:
 - cluster-role.yaml
 - session-secret.yaml
-- ocp-injected-certs.yaml
 - grafana.yaml
 - grafana-ds.yaml
 - grafana-server-dashboard.yaml
