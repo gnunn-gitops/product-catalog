@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+- ocp-injected-certs.yaml
 - operator-group.yaml
 - prometheus-subscription.yaml
 - grafana-subscription.yaml
