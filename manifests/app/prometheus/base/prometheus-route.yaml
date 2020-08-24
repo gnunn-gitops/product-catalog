@@ -3,12 +3,12 @@ kind: Route
 metadata:
   labels:
     operated-prometheus: "true"
-  name: prometheus-operated
+  name: prometheus-k8s
 spec:
   port:
     targetPort: web
   to:
     kind: Service
-    name: prometheus-operated
+    name: prometheus-k8s
     weight: 100
   wildcardPolicy: None

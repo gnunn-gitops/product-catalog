@@ -10,4 +10,5 @@ resources:
 - session-secret.yaml
 - prometheus.yaml
 - prometheus-quarkus-sm.yaml
-# - prometheus-route.yaml
+- prometheus-service.yaml
+- prometheus-route.yaml
