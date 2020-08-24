@@ -6,6 +6,8 @@ commonAnnotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 
 resources:
+- cluster-role.yaml
+- session-secret.yaml
 - prometheus.yaml
 - prometheus-quarkus-sm.yaml
 - prometheus-route.yaml
