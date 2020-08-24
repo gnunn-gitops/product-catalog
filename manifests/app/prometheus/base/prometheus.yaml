@@ -50,6 +50,7 @@ spec:
     - prometheus-k8s-proxy
   configMaps:
     - ocp-injected-certs
+  externalUrl: https://prometheus-product-catalog-monitor.apps.home.ocplab.com/
   # service:
   #   ports:
   #     - name: prometheus-proxy
