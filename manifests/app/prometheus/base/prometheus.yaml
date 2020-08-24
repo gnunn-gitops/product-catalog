@@ -38,7 +38,7 @@ spec:
       name: prometheus-proxy
       ports:
         - containerPort: 9091
-          name: prometheus-proxy
+          name: prom-proxy
       resources: {}
       volumeMounts:
         - mountPath: /etc/tls/private
