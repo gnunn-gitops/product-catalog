@@ -13,6 +13,7 @@ bases:
 
 resources:
 - namespace.yaml
+- operator-group.yaml
 
 patchesStrategicMerge:
 - sm-patch.yaml
@@ -20,19 +21,13 @@ patchesStrategicMerge:
 patchesJson6902:
 - target:
     version: v1
-    group: operators.coreos.com
-    kind: OperatorGroup
-    name: app-prometheus
-  path: patch-operator-group.yaml
-- target:
-    version: v1
-    group: operators.coreos.com
-    kind: OperatorGroup
-    name: grafana
-  path: patch-operator-group.yaml
-- target:
-    version: v1
     group: rbac.authorization.k8s.io
     kind: ClusterRoleBinding
     name: grafana-proxy
   path: patch-proxy-namespace.yaml
+- target:
+    version: v1
+    group: monitoring.coreos.com
+    kind: Prometheus
+    name: app
+  path: patch-prometheus-replicas.yaml
