@@ -3,10 +3,13 @@ kind: Kustomization
 
 namespace: product-catalog-monitor
 
+commonAnnotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+
 bases:
-- ../../../manifests/app/operators/base
-- ../../../manifests/app/prometheus/base
-- ../../../manifests/app/grafana/base
+- https://github.com/redhat-canada-gitops/catalog/prometheus-operator/overlays/aggregate
+- https://github.com/redhat-canada-gitops/catalog/grafana-operator/overlays/aggregate
+- ../../../manifests/app/monitor/base
 
 resources:
 - namespace.yaml
@@ -16,8 +19,20 @@ patchesStrategicMerge:
 
 patchesJson6902:
 - target:
-    group: operators.coreos.com
     version: v1
+    group: operators.coreos.com
     kind: OperatorGroup
-    name: monitor
-  path: namespace-patch.yaml
+    name: app-prometheus
+  path: patch-operator-group.yaml
+- target:
+    version: v1
+    group: operators.coreos.com
+    kind: OperatorGroup
+    name: grafana
+  path: patch-operator-group.yaml
+- target:
+    version: v1
+    group: rbac.authorization.k8s.io
+    kind: ClusterRoleBinding
+    name: grafana-proxy
+  path: patch-proxy-namespace.yaml
