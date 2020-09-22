@@ -96,4 +96,4 @@ spec:
             Please review the following links before accepting the PR:
 
             Image Vulnerabilities: https://$(params.image_dest_url):$(params.image_dest_tag)
-            Sonarqube Results: http://sonarqube-product-catalog-cicd.apps.cluster.ocplab.com/dashboard?id=product-catalog-$(params.app)
+            Sonarqube Results: http://sonarqube-product-catalog-cicd.apps.home.ocplab.com/dashboard?id=product-catalog-$(params.app)
