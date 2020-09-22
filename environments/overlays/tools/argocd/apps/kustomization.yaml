@@ -1,10 +1,14 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+namespace: argocd
+
 bases:
 - ../../../../../manifests/tools/argocd/base
 
-namespace: argocd
+
+commonLabels:
+  gitops.ownedBy: apps-product-catalog
 
 patchesJson6902:
 - target:
