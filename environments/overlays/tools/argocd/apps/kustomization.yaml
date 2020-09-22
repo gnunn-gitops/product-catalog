@@ -6,7 +6,6 @@ namespace: argocd
 bases:
 - ../../../../../manifests/tools/argocd/base
 
-
 commonLabels:
   gitops.ownedBy: apps-product-catalog
 
