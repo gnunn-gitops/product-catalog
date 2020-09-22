@@ -1,0 +1,1 @@
+oc apply -k ../clusters/overlays/home/tools/argocd
