@@ -12,11 +12,11 @@ spec:
     name: push-prod-pr
   params:
     - name: image_dest_tag
-      value: f022094-1251721310
+      value: c9d407b-3739568522
     - name: image_dest_url
       value: quay.io/gnunn/client
     - name: cluster
-      value: ocplab
+      value: home
     - name: app
       value: client
   workspaces:

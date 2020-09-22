@@ -1,1 +1,1 @@
-oc apply -k ../clusters/overlays/home/tools/argocd
+oc apply -k ../clusters/overlays/home/tools/argocd/manager
