@@ -3,7 +3,7 @@ kind: Kustomization
 
 namespace: argocd
 
-resources:
+bases:
 - ../../../../../../environments/overlays/tools/argocd/manager
 
 patchesJson6902:
