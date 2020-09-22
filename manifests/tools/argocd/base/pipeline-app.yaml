@@ -14,7 +14,7 @@ spec:
   syncPolicy:
     automated:
       prune: false
-      selfHeal: false
+      selfHeal: true
   ignoreDifferences:
   - group: build.openshift.io
     kind: BuildConfig
