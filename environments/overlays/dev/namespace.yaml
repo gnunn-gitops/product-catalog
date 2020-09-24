@@ -4,4 +4,6 @@ metadata:
   annotations:
     openshift.io/description: Project for development environment of product catalog application
     openshift.io/display-name:  Product Catalog Development
+  labels:
+    size: medium
   name: product-catalog-dev
