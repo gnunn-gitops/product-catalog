@@ -1,6 +1,6 @@
 - op: replace
   path: /spec/placement/placementRef/name
-  value: product-catalog-test
+  value: product-catalog-prod
 - op: add
   path: /metadata/annotations
   value:
