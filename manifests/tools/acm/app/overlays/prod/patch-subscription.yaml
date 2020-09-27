@@ -1,0 +1,8 @@
+- op: replace
+  path: /spec/placement/placementRef/name
+  value: product-catalog-test
+- op: add
+  path: /metadata/annotations
+  value:
+    apps.open-cluster-management.io/github-path: /clusters/overlays/rhpds/prod
+    apps.open-cluster-management.io/github-branch: master
