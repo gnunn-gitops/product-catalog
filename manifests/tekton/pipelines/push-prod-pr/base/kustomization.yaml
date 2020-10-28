@@ -7,5 +7,4 @@ generatorOptions:
 resources:
 - github-pipeline-sa.yaml
 - manifest-pvc.yaml
-- condition-push-prod.yaml
 - push-prod-pr-pipeline.yaml
