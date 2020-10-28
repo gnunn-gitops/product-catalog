@@ -130,18 +130,18 @@ spec:
           value: client
         - name: NAMESPACE
           value: product-catalog-test
-    - name: create-prod-pr
-      taskRef:
-        name: tkn
-        kind: Task
-      conditions:
-        - conditionRef: "push-to-prod"
-          params:
-            - name: "push"
-              value: "$(params.push-to-prod)"
-      runAfter:
-        - deploy-test
-      params:
-        - name: commands
-          value: |
-            tkn pipeline start push-prod-pr --prefix-name client -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/client -p cluster=ocplab -p app=client -s github-pipeline -w name=git-source,claimName=manifest-source
+    # - name: create-prod-pr
+    #   taskRef:
+    #     name: tkn
+    #     kind: Task
+    #   conditions:
+    #     - conditionRef: "push-to-prod"
+    #       params:
+    #         - name: "push"
+    #           value: "$(params.push-to-prod)"
+    #   runAfter:
+    #     - deploy-test
+    #   params:
+    #     - name: commands
+    #       value: |
+    #         tkn pipeline start push-prod-pr --prefix-name client -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/client -p cluster=ocplab -p app=client -s github-pipeline -w name=git-source,claimName=manifest-source
