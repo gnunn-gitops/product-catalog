@@ -17,7 +17,7 @@ spec:
       image: quay.io/skopeo/stable:latest
       script: |
         #!/usr/bin/env bash
-        TOKEN="$(oc whoami -t)"
+        TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
         USER="pipeline"
 
         # echo "Copying image docker://$(params.src-image) to docker://$(params.dest-image):latest"
