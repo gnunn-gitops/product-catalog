@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: quarkus
+spec:
+  namespaceSelector:
+    matchNames:
+    - product-catalog-dev
+    - product-catalog-test
+    - product-catalog-prod
+  selector:
+    matchLabels:
+     quarkus-prometheus: "true"
+  endpoints:
+  - port: http
+    path: /metrics
