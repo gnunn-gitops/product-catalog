@@ -65,7 +65,9 @@ The demo uses the git commit hash to tag the client and server images in the reg
 
 ### Monitoring
 
-A basic monitoring system is installed as part of the demo, it deploys prometheus and grafana into the ```product-catalog-monitor``` namespace along with a simple dashboard for the server application. The dashboard tracks JVM metrics as well as API calls to the server, with no load the API call metrics will be flat and that is normal:
+A basic monitoring system is installed as part of the demo, as a pre-requisite it requires [monitoring for user-defined projects](https://docs.openshift.com/container-platform/4.6/monitoring/enabling-monitoring-for-user-defined-projects.html) to be enabled in OpenShift.
+
+This demo deploys grafana into the ```product-catalog-monitor``` namespace along with a simple dashboard for the server application. The dashboard tracks JVM metrics as well as API calls to the server, with no load the API call metrics will be flat and that is normal:
 
 ![alt text](https://raw.githubusercontent.com/gnunn-gitops/product-catalog/master/docs/img/monitoring.png)
 
