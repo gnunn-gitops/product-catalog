@@ -13,6 +13,7 @@ bases:
 resources:
 - namespace.yaml
 - operator-group.yaml
+- cluster-monitor-view-rb.yaml
 
 patchesStrategicMerge:
 - sm-patch.yaml
