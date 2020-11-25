@@ -15,9 +15,6 @@ resources:
 - operator-group.yaml
 - cluster-monitor-view-rb.yaml
 
-patchesStrategicMerge:
-- sm-patch.yaml
-
 patchesJson6902:
 - target:
     version: v1
