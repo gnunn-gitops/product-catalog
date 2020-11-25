@@ -4,4 +4,3 @@ kind: Kustomization
 resources:
 - grafana-ds.yaml
 - grafana-server-dashboard.yaml
-- prometheus-quarkus-sm.yaml
