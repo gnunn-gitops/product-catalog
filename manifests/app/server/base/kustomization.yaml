@@ -16,3 +16,4 @@ resources:
   - server-service.yaml
   - server-route.yaml
   - server-deployment.yaml
+  - server-sm.yaml

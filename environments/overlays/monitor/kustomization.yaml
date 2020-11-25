@@ -7,7 +7,6 @@ commonAnnotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 
 bases:
-- https://github.com/redhat-canada-gitops/catalog/prometheus-operator/overlays/aggregate
 - https://github.com/redhat-canada-gitops/catalog/grafana-operator/overlays/aggregate
 - ../../../manifests/app/monitor/base
 
@@ -25,9 +24,3 @@ patchesJson6902:
     kind: ClusterRoleBinding
     name: grafana-proxy
   path: patch-proxy-namespace.yaml
-- target:
-    version: v1
-    group: monitoring.coreos.com
-    kind: Prometheus
-    name: app
-  path: patch-prometheus-replicas.yaml
