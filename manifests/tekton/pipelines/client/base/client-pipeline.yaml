@@ -134,11 +134,10 @@ spec:
     #   taskRef:
     #     name: tkn
     #     kind: Task
-    #   conditions:
-    #     - conditionRef: "push-to-prod"
-    #       params:
-    #         - name: "push"
-    #           value: "$(params.push-to-prod)"
+    #   when:
+    #     - input: "$(params.push-to-prod)"
+    #       operator: in
+    #       values: ["true","yes"]
     #   runAfter:
     #     - deploy-test
     #   params:
