@@ -9,7 +9,6 @@ bases:
 # Sonarqube
 - https://github.com/redhat-canada-gitops/catalog/sonarqube8/overlays/plugins
 - ../../../manifests/tekton/tasks/base
-- ../../../manifests/tekton/conditions/base
 - ../../../manifests/tekton/pipelines/client/base
 - ../../../manifests/tekton/pipelines/server/base
 - ../../../manifests/tekton/pipelines/push-prod-pr/base
