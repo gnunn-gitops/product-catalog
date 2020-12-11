@@ -7,7 +7,7 @@ commonAnnotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 
 bases:
-- https://github.com/redhat-canada-gitops/catalog/grafana-operator/overlays/aggregate
+- https://github.com/redhat-canada-gitops/catalog/grafana-operator/overlays/aggregate?ref=grafana
 - ../../../manifests/app/monitor/base
 
 resources:
@@ -22,3 +22,9 @@ patchesJson6902:
     kind: ClusterRoleBinding
     name: grafana-proxy
   path: patch-proxy-namespace.yaml
+- target:
+    version: v1alpha1
+    group: integreatly.org
+    kind: Grafana
+    name: grafana
+  path: patch-grafana-sar.yaml
