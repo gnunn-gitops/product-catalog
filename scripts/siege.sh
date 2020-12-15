@@ -1,5 +1,7 @@
-COUNT=20
+COUNT=50
 
-siege -r $COUNT -c 50 -v http://server-product-catalog-dev.apps.cluster.ocplab.com/api/product &
-siege -r $COUNT -c 50 -v http://server-product-catalog-dev.apps.cluster.ocplab.com/api/product/count &
-siege -r $COUNT -c 50 -v http://server-product-catalog-dev.apps.cluster.ocplab.com/api/category &
+SERVER_HOST=server-product-catalog-dev.apps.home.ocplab.com
+
+siege -r $COUNT -c 50 -v http://${SERVER_HOST}/api/product &
+siege -r $COUNT -c 50 -v http://${SERVER_HOST}/api/product/count &
+siege -r $COUNT -c 50 -v http://${SERVER_HOST}/api/category &
