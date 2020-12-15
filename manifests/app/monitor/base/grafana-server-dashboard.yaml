@@ -25,28 +25,21 @@ spec:
       "gnetId": null,
       "graphTooltip": 0,
       "id": 2,
-      "iteration": 1592423723173,
+      "iteration": 1607988655751,
       "links": [],
       "panels": [
         {
           "collapsed": false,
+          "datasource": null,
           "gridPos": {
             "h": 1,
             "w": 24,
             "x": 0,
             "y": 0
           },
-          "id": 14,
+          "id": 21,
           "panels": [],
-          "repeat": "api",
-          "scopedVars": {
-            "api": {
-              "selected": false,
-              "text": "product",
-              "value": "product"
-            }
-          },
-          "title": "API Performance for $api",
+          "title": "API Performance",
           "type": "row"
         },
         {
@@ -54,14 +47,23 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": null,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 0,
             "y": 1
           },
-          "id": 8,
+          "hiddenSeries": false,
+          "id": 27,
           "legend": {
             "avg": false,
             "current": false,
@@ -73,31 +75,21 @@ spec:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
-          "options": {},
           "percentage": false,
+          "pluginVersion": "7.1.1",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
-          "scopedVars": {
-            "api": {
-              "selected": false,
-              "text": "product",
-              "value": "product"
-            }
-          },
           "seriesOverrides": [],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate({__name__=~\".*_count.*\",method=~\".+\",type=\"counter\", namespace=\"$namespace\", api=\"$api\"}[5m])) by (method)",
-              "format": "time_series",
+              "expr": "sum(rate({__name__=~\".*_count.*\",method=~\".+\",type=\"counter\", namespace=\"$namespace\"}[5m])) by (method)",
               "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
+              "legendFormat": "{{method}}",
               "refId": "A"
             }
           ],
@@ -122,7 +114,7 @@ spec:
           "yaxes": [
             {
               "format": "short",
-              "label": null,
+              "label": "",
               "logBase": 1,
               "max": null,
               "min": null,
@@ -130,7 +122,7 @@ spec:
             },
             {
               "format": "short",
-              "label": null,
+              "label": "",
               "logBase": 1,
               "max": null,
               "min": null,
@@ -147,15 +139,23 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "description": "",
+          "datasource": null,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 8,
             "y": 1
           },
-          "id": 10,
+          "hiddenSeries": false,
+          "id": 29,
           "legend": {
             "avg": false,
             "current": false,
@@ -167,31 +167,21 @@ spec:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
-          "options": {},
           "percentage": false,
+          "pluginVersion": "7.1.1",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
-          "scopedVars": {
-            "api": {
-              "selected": false,
-              "text": "product",
-              "value": "product"
-            }
-          },
           "seriesOverrides": [],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate({__name__=~\".*_seconds.*\",method=~\".+\",type=\"perf\", namespace=\"$namespace\", api=\"$api\", quantile=\"0.95\"}[5m])) by (method)",
-              "format": "time_series",
+              "expr": "sum(rate({__name__=~\".*_seconds.*\",method=~\".+\",type=\"perf\", namespace=\"$namespace\", quantile=\"0.95\"}[5m])) by (method)",
               "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
+              "legendFormat": "{{method}}",
               "refId": "A"
             }
           ],
@@ -241,15 +231,23 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "description": "",
+          "datasource": null,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 8,
             "x": 16,
             "y": 1
           },
-          "id": 15,
+          "hiddenSeries": false,
+          "id": 30,
           "legend": {
             "avg": false,
             "current": false,
@@ -261,31 +259,21 @@ spec:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
-          "options": {},
           "percentage": false,
+          "pluginVersion": "7.1.1",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
-          "scopedVars": {
-            "api": {
-              "selected": false,
-              "text": "product",
-              "value": "product"
-            }
-          },
           "seriesOverrides": [],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate({__name__=~\".*_seconds.*\",method=~\".+\",type=\"perf\", namespace=\"$namespace\", api=\"$api\", quantile=\"0.75\"}[5m])) by (method)",
-              "format": "time_series",
+              "expr": "sum(rate({__name__=~\".*_seconds.*\",method=~\".+\",type=\"perf\", namespace=\"$namespace\", quantile=\"0.75\"}[5m])) by (method)",
               "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
+              "legendFormat": "{{method}}",
               "refId": "A"
             }
           ],
@@ -332,25 +320,16 @@ spec:
         },
         {
           "collapsed": false,
+          "datasource": null,
           "gridPos": {
             "h": 1,
             "w": 24,
             "x": 0,
             "y": 9
           },
-          "id": 16,
+          "id": 32,
           "panels": [],
-          "repeat": null,
-          "repeatIteration": 1592423723173,
-          "repeatPanelId": 14,
-          "scopedVars": {
-            "api": {
-              "selected": false,
-              "text": "category",
-              "value": "category"
-            }
-          },
-          "title": "API Performance for $api",
+          "title": "Database Metrics",
           "type": "row"
         },
         {
@@ -358,14 +337,24 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": null,
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 8,
-            "w": 8,
+            "w": 12,
             "x": 0,
             "y": 10
           },
-          "id": 17,
+          "hiddenSeries": false,
+          "id": 34,
           "legend": {
             "avg": false,
             "current": false,
@@ -377,42 +366,35 @@ spec:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
-          "options": {},
           "percentage": false,
+          "pluginVersion": "7.1.1",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
-          "repeatIteration": 1592423723173,
-          "repeatPanelId": 8,
-          "repeatedByRow": true,
-          "scopedVars": {
-            "api": {
-              "selected": false,
-              "text": "category",
-              "value": "category"
-            }
-          },
           "seriesOverrides": [],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate({__name__=~\".*_count.*\",method=~\".+\",type=\"counter\", namespace=\"$namespace\", api=\"$api\"}[5m])) by (method)",
-              "format": "time_series",
+              "expr": "rate(vendor_agroal_active_count{namespace=\"$namespace\"}[5m])",
               "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
+              "legendFormat": "Active ({{pod}})",
               "refId": "A"
+            },
+            {
+              "expr": "rate(vendor_agroal_available_count{namespace=\"$namespace\"}[5m])",
+              "interval": "",
+              "legendFormat": "Idle({{pod}})",
+              "refId": "B"
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Method Hits",
+          "title": "Active Connections",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -454,15 +436,24 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": null,
           "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 8,
-            "w": 8,
-            "x": 8,
+            "w": 12,
+            "x": 12,
             "y": 10
           },
-          "id": 18,
+          "hiddenSeries": false,
+          "id": 36,
           "legend": {
             "avg": false,
             "current": false,
@@ -474,139 +465,35 @@ spec:
           },
           "lines": true,
           "linewidth": 1,
-          "links": [],
           "nullPointMode": "null",
-          "options": {},
           "percentage": false,
+          "pluginVersion": "7.1.1",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
-          "repeatIteration": 1592423723173,
-          "repeatPanelId": 10,
-          "repeatedByRow": true,
-          "scopedVars": {
-            "api": {
-              "selected": false,
-              "text": "category",
-              "value": "category"
-            }
-          },
           "seriesOverrides": [],
           "spaceLength": 10,
           "stack": false,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate({__name__=~\".*_seconds.*\",method=~\".+\",type=\"perf\", namespace=\"$namespace\", api=\"$api\", quantile=\"0.95\"}[5m])) by (method)",
-              "format": "time_series",
+              "expr": "rate(vendor_agroal_creation_time_average_seconds{namespace=\"$namespace\"}[5m])",
               "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
+              "legendFormat": "Average ({{pod}})",
               "refId": "A"
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Performance 95% quantile",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
             },
             {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "description": "",
-          "fill": 1,
-          "gridPos": {
-            "h": 8,
-            "w": 8,
-            "x": 16,
-            "y": 10
-          },
-          "id": 19,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "options": {},
-          "percentage": false,
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "repeatIteration": 1592423723173,
-          "repeatPanelId": 15,
-          "repeatedByRow": true,
-          "scopedVars": {
-            "api": {
-              "selected": false,
-              "text": "category",
-              "value": "category"
-            }
-          },
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "sum(rate({__name__=~\".*_seconds.*\",method=~\".+\",type=\"perf\", namespace=\"$namespace\", api=\"$api\", quantile=\"0.75\"}[5m])) by (method)",
-              "format": "time_series",
+              "expr": "rate(vendor_agroal_blocking_time_max_seconds{namespace=\"$namespace\"}[5m])",
               "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "",
-              "refId": "A"
+              "legendFormat": "Maximum ({{pod}})",
+              "refId": "B"
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Performance 75% quantile",
+          "title": "Connection Wait Time",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -645,6 +532,7 @@ spec:
         },
         {
           "collapsed": false,
+          "datasource": null,
           "gridPos": {
             "h": 1,
             "w": 24,
@@ -661,14 +549,23 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": null,
           "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 9,
             "w": 8,
             "x": 0,
             "y": 19
           },
+          "hiddenSeries": false,
           "id": 2,
           "legend": {
             "avg": false,
@@ -683,8 +580,8 @@ spec:
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
-          "options": {},
           "percentage": false,
+          "pluginVersion": "7.1.1",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -696,8 +593,9 @@ spec:
             {
               "expr": "sum(base_memory_usedHeap_bytes{namespace=\"$namespace\"}) by (pod)",
               "format": "time_series",
+              "interval": "",
               "intervalFactor": 1,
-              "legendFormat": "",
+              "legendFormat": "{{pod}}",
               "refId": "A"
             }
           ],
@@ -747,13 +645,22 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": null,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 9,
             "w": 8,
             "x": 8,
             "y": 19
           },
+          "hiddenSeries": false,
           "id": 4,
           "legend": {
             "avg": false,
@@ -768,8 +675,8 @@ spec:
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
-          "options": {},
           "percentage": false,
+          "pluginVersion": "7.1.1",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -781,8 +688,9 @@ spec:
             {
               "expr": "sum(rate(base_gc_time_total_seconds{namespace=\"$namespace\"}[5m])) by (pod)",
               "format": "time_series",
+              "interval": "",
               "intervalFactor": 1,
-              "legendFormat": "",
+              "legendFormat": "{{pod}}",
               "refId": "A"
             }
           ],
@@ -832,14 +740,23 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
+          "datasource": null,
           "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
+          "fillGradient": 0,
           "gridPos": {
             "h": 9,
             "w": 8,
             "x": 16,
             "y": 19
           },
+          "hiddenSeries": false,
           "id": 6,
           "legend": {
             "avg": false,
@@ -854,8 +771,8 @@ spec:
           "linewidth": 1,
           "links": [],
           "nullPointMode": "null",
-          "options": {},
           "percentage": false,
+          "pluginVersion": "7.1.1",
           "pointradius": 2,
           "points": false,
           "renderer": "flot",
@@ -869,7 +786,7 @@ spec:
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
-              "legendFormat": "",
+              "legendFormat": "{{name}} ({{pod}})",
               "refId": "A"
             }
           ],
@@ -916,7 +833,7 @@ spec:
         }
       ],
       "refresh": "5s",
-      "schemaVersion": 18,
+      "schemaVersion": 26,
       "style": "dark",
       "tags": [],
       "templating": {
@@ -953,41 +870,6 @@ spec:
             "query": "product-catalog-dev,product-catalog-test,product-catalog-prod",
             "skipUrlSync": false,
             "type": "custom"
-          },
-          {
-            "allValue": null,
-            "current": {
-              "tags": [],
-              "text": "All",
-              "value": [
-                "$__all"
-              ]
-            },
-            "hide": 0,
-            "includeAll": true,
-            "label": "API",
-            "multi": true,
-            "name": "api",
-            "options": [
-              {
-                "selected": true,
-                "text": "All",
-                "value": "$__all"
-              },
-              {
-                "selected": false,
-                "text": "product",
-                "value": "product"
-              },
-              {
-                "selected": false,
-                "text": "category",
-                "value": "category"
-              }
-            ],
-            "query": "product,category",
-            "skipUrlSync": false,
-            "type": "custom"
           }
         ]
       },
@@ -997,7 +879,6 @@ spec:
       },
       "timepicker": {
         "refresh_intervals": [
-          "5s",
           "10s",
           "30s",
           "1m",
@@ -1023,5 +904,5 @@ spec:
       "timezone": "",
       "title": "Server Metrics",
       "uid": "tXuH7MWMk",
-      "version": 9
+      "version": 3
     }
