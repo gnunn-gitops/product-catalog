@@ -394,7 +394,7 @@ spec:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Active Connections",
+          "title": "Connection Count",
           "tooltip": {
             "shared": true,
             "sort": 0,
