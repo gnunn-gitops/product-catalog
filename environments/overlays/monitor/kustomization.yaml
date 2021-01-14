@@ -7,7 +7,7 @@ commonAnnotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 
 bases:
-- https://github.com/redhat-canada-gitops/catalog/grafana-operator/overlays/user-app?ref=grafana
+- https://github.com/redhat-canada-gitops/catalog/grafana-operator/overlays/user-app
 - ../../../manifests/app/monitor/base
 
 resources:
