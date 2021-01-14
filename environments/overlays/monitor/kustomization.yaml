@@ -7,7 +7,7 @@ commonAnnotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 
 bases:
-- https://github.com/redhat-canada-gitops/catalog/grafana-operator/overlays/aggregate?ref=grafana
+- https://github.com/redhat-canada-gitops/catalog/grafana-operator/overlays/user-app?ref=grafana
 - ../../../manifests/app/monitor/base
 
 resources:
@@ -16,12 +16,6 @@ resources:
 - cluster-monitor-view-rb.yaml
 
 patchesJson6902:
-- target:
-    version: v1
-    group: rbac.authorization.k8s.io
-    kind: ClusterRoleBinding
-    name: grafana-proxy
-  path: patch-proxy-namespace.yaml
 - target:
     version: v1alpha1
     group: integreatly.org
