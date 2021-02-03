@@ -1,0 +1,1 @@
+A standalone deployment of product catalog that deploys the server component as a knative serverless service
