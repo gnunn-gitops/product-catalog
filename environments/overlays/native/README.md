@@ -1,0 +1,1 @@
+A standalone deployment of the application with the server application using Quarkus natively
