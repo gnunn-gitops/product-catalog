@@ -79,6 +79,7 @@ spec:
             git config --global user.email "pipeline@redhat.com"
             git add -u
             git commit -m 'Pushing image $(params.image_dest_url):$(params.image_dest_tag) to production'
+            git push origin push-$(params.image_dest_tag)
     - name: prod-pr-deploy
       taskRef:
         name: task-create-pr

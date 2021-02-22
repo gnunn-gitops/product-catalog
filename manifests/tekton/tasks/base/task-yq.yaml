@@ -15,4 +15,5 @@ spec:
       image: mikefarah/yq:3.3.2
       script: |
         #!/usr/bin/env sh
+        echo "Running: '$(params.commands)'"
         $(params.commands)
