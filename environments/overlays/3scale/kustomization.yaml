@@ -28,5 +28,19 @@ patchesJson6902:
     name: server
   path: patch-server-deployment.yaml
 
+- target:
+    group: apps.openshift.io
+    version: v1
+    kind: DeploymentConfig
+    name: apicast-prod
+  path: patch-apicast-deployment.yaml
+
+- target:
+    group: apps.openshift.io
+    version: v1
+    kind: DeploymentConfig
+    name: apicast-stage
+  path: patch-apicast-deployment.yaml
+
 transformers:
-- global-labels.yaml  
+- global-labels.yaml
