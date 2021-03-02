@@ -1,0 +1,1 @@
+oc apply -k ../clusters/overlays/ocplab/tools/argocd/manager
