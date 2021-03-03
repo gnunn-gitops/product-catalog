@@ -29,7 +29,7 @@ spec:
   - name: M2_DIRECTORY
     type: string
     description: Location of M2 directory, do not change
-    default: /tekton/home/.m2
+    default: /root/.m2
   steps:
     - name: mvn-settings
       image: docker.io/maven:3.6.3-jdk-11
