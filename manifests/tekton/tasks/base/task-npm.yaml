@@ -7,7 +7,7 @@ spec:
   - name: source
   steps:
     - name: npm-install
-      image: quay.io/gnunn/nodejs10-tools:latest
+      image: registry.redhat.io/ubi8/nodejs-14:latest
       command:
         - /bin/sh
         - -c
@@ -18,7 +18,7 @@ spec:
         - name: npm-cache
           mountPath: $(workspaces.source.path)/node_modules
     - name: build
-      image: quay.io/gnunn/nodejs10-tools:latest
+      image: registry.redhat.io/ubi8/nodejs-14:latest
       command:
         - /bin/sh
         - -c
@@ -29,7 +29,7 @@ spec:
         - name: npm-cache
           mountPath: $(workspaces.source.path)/node_modules
     - name: quality
-      image: quay.io/gnunn/nodejs10-tools:latest
+      image: registry.redhat.io/ubi8/nodejs-14:latest
       command:
         - /bin/sh
         - -c
@@ -48,7 +48,7 @@ spec:
         - name: dependency-cache
           mountPath: /opt/dependency-check/data
     - name: copy-dist
-      image: quay.io/gnunn/nodejs10-tools:latest
+      image: registry.redhat.io/ubi8/nodejs-14:latest
       command:
         - /bin/sh
         - -c

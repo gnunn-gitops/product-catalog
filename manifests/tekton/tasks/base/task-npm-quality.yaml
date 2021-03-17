@@ -7,7 +7,7 @@ spec:
   - name: source
   steps:
     - name: quality
-      image: quay.io/gnunn/nodejs10-tools:latest
+      image: registry.redhat.io/ubi8/nodejs-14:latest
       command:
         - /bin/sh
         - -c
