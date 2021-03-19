@@ -5,6 +5,7 @@ metadata:
 spec:
   workspaces:
     - name: git-source
+    - name: maven-settings
   params:
     - name: git_revision
       type: string
