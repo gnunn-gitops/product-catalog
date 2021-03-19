@@ -12,7 +12,7 @@ resources:
 # Tekton tasks
 - task-git.yaml
 - task-yq.yaml
-- task-maven.yaml
+- github.com/redhat-canada-gitops/catalog/openshift-pipelines-tasks/maven/base?ref=tasks
 - task-npm.yaml
 - task-npm-quality.yaml
 - task-binary-s2i.yaml
