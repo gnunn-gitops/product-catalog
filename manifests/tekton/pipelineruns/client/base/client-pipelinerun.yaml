@@ -16,6 +16,3 @@ spec:
   - name: git-source
     persistentVolumeClaim:
       claimName: client-source
-  - name: newman-env
-    configMap:
-      name: newman-env
