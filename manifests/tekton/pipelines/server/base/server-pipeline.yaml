@@ -103,7 +103,7 @@ spec:
           value:
             - "sonar:sonar"
             - "-Pquality"
-    - name: install-nexus
+    - name: deploy-nexus
       taskRef:
         name: maven
       workspaces:
@@ -121,7 +121,7 @@ spec:
           value: "maven-repo-creds"
         - name: GOALS
           value:
-            - install
+            - deploy
     - name: build-image
       taskRef:
         name: binary-s2i
