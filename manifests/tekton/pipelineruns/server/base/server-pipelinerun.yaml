@@ -21,3 +21,6 @@ spec:
   - name: maven-settings
     configmap:
       name: maven-settings
+  - name: newman-env
+    configMap:
+      name: newman-env
