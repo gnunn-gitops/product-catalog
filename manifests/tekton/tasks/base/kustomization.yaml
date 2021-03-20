@@ -12,13 +12,13 @@ resources:
 # Tekton tasks
 - task-git.yaml
 - task-yq.yaml
-- github.com/redhat-canada-gitops/catalog/openshift-pipelines-tasks/maven/base?ref=tasks
+- github.com/redhat-canada-gitops/catalog/openshift-pipelines-tasks/maven/overlays/m2-cache?ref=tasks
 - task-npm.yaml
 - task-npm-quality.yaml
 - task-binary-s2i.yaml
 - task-push-image.yaml
 - task-deploy.yaml
-- task-newman.yaml
+- github.com/redhat-canada-gitops/catalog/openshift-pipelines-tasks/newman/base?ref=tasks
 - task-create-pr.yaml
 - task-tekton.yaml
 - task-generate-id.yaml

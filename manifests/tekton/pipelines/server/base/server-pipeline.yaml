@@ -6,6 +6,7 @@ spec:
   workspaces:
     - name: git-source
     - name: maven-settings
+    - name: newman-env
   params:
     - name: git_revision
       type: string
@@ -52,57 +53,75 @@ spec:
       workspaces:
         - name: source
           workspace: git-source
+        - name: maven-settings
+          workspace: maven-settings
       runAfter:
         - generate-id
       params:
         - name: MAVEN_MIRROR_URL
           value: "$(params.MAVEN_MIRROR_URL)"
+        - name: MAVEN_REPO_CONFIG_SECRET
+          value: "maven-repo-creds"
         - name: GOALS
-          value: "package"
-        - name: ARGUMENTS
-          value: "-DskipTests"
+          value:
+            - "-DskipTests"
+            - "package"
     - name: unit-test
       taskRef:
         name: maven
       workspaces:
         - name: source
           workspace: git-source
+        - name: maven-settings
+          workspace: maven-settings
       runAfter:
         - build
       params:
         - name: MAVEN_MIRROR_URL
           value: "$(params.MAVEN_MIRROR_URL)"
+        - name: MAVEN_REPO_CONFIG_SECRET
+          value: "maven-repo-creds"
         - name: GOALS
-          value: "test"
+          value:
+            - "test"
     - name: quality
       taskRef:
         name: maven
       workspaces:
         - name: source
           workspace: git-source
+        - name: maven-settings
+          workspace: maven-settings
       runAfter:
         - build
       params:
         - name: MAVEN_MIRROR_URL
           value: "$(params.MAVEN_MIRROR_URL)"
+        - name: MAVEN_REPO_CONFIG_SECRET
+          value: "maven-repo-creds"
         - name: GOALS
-          value: "sonar:sonar"
-        - name: PROFILES
-          value: "quality"
+          value:
+            - "sonar:sonar"
+            - "-Pquality"
     - name: install-nexus
       taskRef:
         name: maven
       workspaces:
         - name: source
           workspace: git-source
+        - name: maven-settings
+          workspace: maven-settings
       runAfter:
         - unit-test
         - quality
       params:
         - name: MAVEN_MIRROR_URL
           value: "$(params.MAVEN_MIRROR_URL)"
+        - name: MAVEN_REPO_CONFIG_SECRET
+          value: "maven-repo-creds"
         - name: GOALS
-          value: "install"
+          value:
+            - install
     - name: build-image
       taskRef:
         name: binary-s2i

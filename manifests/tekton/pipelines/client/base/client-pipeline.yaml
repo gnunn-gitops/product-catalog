@@ -5,6 +5,7 @@ metadata:
 spec:
   workspaces:
     - name: git-source
+    - name: newman-env
   params:
     - name: git_revision
       type: string
