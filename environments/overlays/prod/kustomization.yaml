@@ -10,6 +10,7 @@ bases:
 
 resources:
 - namespace.yaml
+- post-sync-pipeline-job.yaml
 
 patchesJson6902:
 - target:

@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: post-sync-pipeline
+  generateName: post-sync-pipeline-
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+        - image: registry.access.redhat.com/ubi8
+          command:
+          - "curl"
+          - "-X"
+          - "POST"
+          - "http://el-server-post-prod.product-catalog-cicd:8080"
+          imagePullPolicy: Always
+          name: post-sync-pipeline
+      dnsPolicy: ClusterFirst
+      restartPolicy: OnFailure
+      terminationGracePeriodSeconds: 30

@@ -1,0 +1,17 @@
+{
+	"id": "30c331d4-e961-4606-aecb-5a60e8e15213",
+	"name": "product-catalog-dev-service",
+	"values": [
+		{
+			"key": "host",
+			"value": "server.product-catalog-prod:8080",
+			"enabled": true
+		},
+		{
+			"key": "scheme",
+			"value": "http",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment"
+}

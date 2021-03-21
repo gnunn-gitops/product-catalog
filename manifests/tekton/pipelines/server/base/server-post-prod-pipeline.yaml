@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: server-post-prod
+spec:
+  workspaces:
+    - name: newman-env
+  tasks:
+    - name: prod-test
+      taskRef:
+        name: newman
+      params:
+        - name: COLLECTION
+          value: https://raw.githubusercontent.com/gnunn-gitops/product-catalog-server/master/tests/product-catalog-server-tests.json
+        - name: ENVIRONMENT
+          value: newman-prod-env.json
+      workspaces:
+        - name: newman-env
+          workspace: newman-env

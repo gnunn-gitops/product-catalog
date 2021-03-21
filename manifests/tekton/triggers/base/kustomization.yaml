@@ -7,3 +7,5 @@ resources:
 - server-triggertemplate.yaml
 - client-eventlistener.yaml
 - client-triggertemplate.yaml
+- server-post-prod-eventlistener.yaml
+- server-post-prod-triggertemplate.yaml

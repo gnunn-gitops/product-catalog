@@ -36,3 +36,9 @@ spec:
           - name: git-source
             persistentVolumeClaim:
               claimName: server-source
+          - name: maven-settings
+            configmap:
+              name: maven-settings
+          - name: newman-env
+            configMap:
+              name: newman-env

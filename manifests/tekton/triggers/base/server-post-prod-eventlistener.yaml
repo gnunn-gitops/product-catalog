@@ -1,0 +1,27 @@
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: server-post-prod
+spec:
+  serviceAccountName: pipeline
+  triggers:
+    - name: server-post-prod-webhook
+      template:
+        name: server-post-prod
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: server-post-prod-webhook
+  labels:
+    app.kubernetes.io/managed-by: EventListener
+    app.kubernetes.io/part-of: Triggers
+    eventlistener: server-post-prod
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: "Service"
+    name: el-server-post-prod
+    weight: 100

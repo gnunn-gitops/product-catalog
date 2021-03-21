@@ -1,0 +1,23 @@
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: server-post-prod
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        annotations:
+          argocd.argoproj.io/compare-options: IgnoreExtraneous
+          argocd.argoproj.io/sync-options: Prune=false
+        labels:
+          tekton.dev/pipeline: server-post-prod
+        generateName: server-post-prod-webhook-
+      spec:
+        pipelineRef:
+          name: server-post-prod
+        workspaces:
+        - name: newman-env
+          configMap:
+            name: newman-env

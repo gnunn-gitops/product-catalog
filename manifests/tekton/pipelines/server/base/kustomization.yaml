@@ -12,6 +12,7 @@ configMapGenerator:
     files:
       - config/newman-dev-env.json
       - config/newman-test-env.json
+      - config/newman-prod-env.json
 
 resources:
 - secrets/maven-repo-creds.yaml
@@ -20,3 +21,4 @@ resources:
 - server-buildconfig.yaml
 - server-pvc.yaml
 - server-pipeline.yaml
+- server-post-prod-pipeline.yaml
