@@ -18,11 +18,37 @@ spec:
         - name: newman-env
           workspace: newman-env
   finally:
-    - name: notify
+    - name: notify-succeeded
       taskRef:
         name: send-to-webhook-slack
       params:
         - name: webhook-secret
           value: slack-deployments-webhook
         - name: message
-          value: "Production has been synchronized by ArgoCD"
+          value: "Production has been synchronized by ArgoCD, test status: $(tasks.prod-test.status)"
+
+    # Add when pipelines updated to version of Tekton that supports using when expressions
+    # - name: notify-succeeded
+    #   when:
+    #     - input: $(tasks.prod-test.status)
+    #       operator: in
+    #       values: ["Succeeded"]
+    #   taskRef:
+    #     name: send-to-webhook-slack
+    #   params:
+    #     - name: webhook-secret
+    #       value: slack-deployments-webhook
+    #     - name: message
+    #       value: "SUCCEEDED: Production has been synchronized by ArgoCD"
+    # - name: notify-failed
+    #   when:
+    #     - input: $(tasks.prod-test.status)
+    #       operator: in
+    #       values: ["Failed"]
+    #   taskRef:
+    #     name: send-to-webhook-slack
+    #   params:
+    #     - name: webhook-secret
+    #       value: slack-deployments-webhook
+    #     - name: message
+    #       value: "FAILED: Production has been synchronized by ArgoCD"
