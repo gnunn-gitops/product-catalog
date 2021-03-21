@@ -1,0 +1,34 @@
+# Adapted from Tekton Catalog item
+# https://github.com/tektoncd/catalog/tree/main/task/send-to-webhook-slack/0.1
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: send-to-webhook-slack
+  labels:
+    app.kubernetes.io/version: "0.1"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/tags: messaging
+spec:
+  description: >-
+    These tasks post a simple message to a slack channel.
+    This task uses Incoming Webhooks of slack to send the message.
+  params:
+  - name: webhook-secret
+    type: string
+    description: secret name of the slack app webhook URL (key is url)
+  - name: message
+    type: string
+    description: plain text message
+  steps:
+  - name: post
+    image: registry.access.redhat.com/ubi8
+    script: |
+      #!/bin/sh
+      /usr/bin/curl -X POST -H 'Content-type: application/json' --data '{"text":"$(params.message)"}' $URL
+    env:
+    - name: URL
+      valueFrom:
+        secretKeyRef:
+          name: $(params.webhook-secret)
+          key: url

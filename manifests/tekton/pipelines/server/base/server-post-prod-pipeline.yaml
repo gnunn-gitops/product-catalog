@@ -17,3 +17,12 @@ spec:
       workspaces:
         - name: newman-env
           workspace: newman-env
+  finally:
+    - name: notify
+      taskRef:
+        name: send-to-webhook-slack
+      params:
+        - name: webhook-secret
+          value: slack-deployments-webhook
+        - name: message
+          value: "Production has been synchronized by ArgoCD"
