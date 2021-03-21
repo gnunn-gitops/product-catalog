@@ -22,4 +22,4 @@ resources:
 - task-create-pr.yaml
 - task-tekton.yaml
 - task-generate-id.yaml
-= task-send-to-webhook-slack.yaml
+- task-send-to-webhook-slack.yaml
