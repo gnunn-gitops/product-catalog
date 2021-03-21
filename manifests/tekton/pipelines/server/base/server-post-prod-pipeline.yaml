@@ -18,7 +18,7 @@ spec:
         - name: newman-env
           workspace: newman-env
   finally:
-    - name: notify-succeeded
+    - name: notify
       taskRef:
         name: send-to-webhook-slack
       params:
