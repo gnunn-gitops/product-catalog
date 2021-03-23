@@ -12,9 +12,7 @@ spec:
     repoURL: https://github.com/gnunn-gitops/product-catalog.git
     targetRevision: master
   syncPolicy:
-    automated:
-      prune: false
-      selfHeal: false
+    automated: {}
   ignoreDifferences:
   - group: apps
     kind: Deployment
