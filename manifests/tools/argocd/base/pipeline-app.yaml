@@ -11,6 +11,13 @@ spec:
     path: cluster/overlays/default/pipeline
     repoURL: https://github.com/gnunn-gitops/product-catalog.git
     targetRevision: master
+  info:
+  - name: Environment
+    value: "CI/CD"
+  - name: Owner
+    value: "Gerald Nunn"
+  - name: Contact
+    value: "gnunn@somewhere.com"
   syncPolicy:
     automated: {}
   ignoreDifferences:

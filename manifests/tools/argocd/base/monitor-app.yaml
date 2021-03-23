@@ -11,6 +11,13 @@ spec:
     path: manifests/app/operators
     repoURL: https://github.com/gnunn-gitops/product-catalog.git
     targetRevision: master
+  info:
+  - name: Environment
+    value: Monitoring
+  - name: Owner
+    value: "Gerald Nunn"
+  - name: Contact
+    value: "gnunn@somewhere.com"
   syncPolicy:
     automated: {}
   ignoreDifferences:

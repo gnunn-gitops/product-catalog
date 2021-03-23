@@ -11,6 +11,13 @@ spec:
     path: manifests/app/overlays/prod-quay
     repoURL: https://github.com/gnunn-gitops/product-catalog.git
     targetRevision: master
+  info:
+  - name: Environment
+    value: Production
+  - name: Owner
+    value: "Gerald Nunn"
+  - name: Contact
+    value: "gnunn@somewhere.com"
   syncPolicy:
     automated: {}
   ignoreDifferences:
