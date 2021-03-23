@@ -34,5 +34,3 @@ spec:
     policies:
     - p, role:user, applications, *, *, allow
     - p, role:user, projects, get, *, allow
-  sourceRepos:
-  - '*'
