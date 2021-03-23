@@ -20,6 +20,10 @@ spec:
       description: "Set to true if you want the pipeline to create a PR to push to prod"
       type: string
       default: "false"
+    - name: cluster
+      type: string
+      description: Cluster to push to
+      default: "home"
   tasks:
     - name: clone
       taskRef:
@@ -143,4 +147,4 @@ spec:
       params:
         - name: commands
           value: |
-            tkn pipeline start push-prod-pr --prefix-name client -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/client -p cluster=ocplab -p app=client -s github-pipeline -w name=git-source,claimName=manifest-source
+            tkn pipeline start push-prod-pr --prefix-name client -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/client -p cluster=$(params.cluster) -p app=client -s github-pipeline -w name=git-source,claimName=manifest-source
