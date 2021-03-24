@@ -19,7 +19,10 @@
         <mirror>
           <id>local-repository</id>
           <name>Local Nexus Maven Mirror</name>
+          <url>http://nexus.dev-tools:8081/content/groups/public</url>
+          <!--
           <url>http://nexus:8081/content/groups/public</url>
+          -->
           <mirrorOf>*</mirrorOf>
         </mirror>
       </mirrors>
