@@ -32,6 +32,8 @@ If you really want to to deploy this application into your own cluster,
 you will need to create a new repo and setup Kustomize overlays that point to this repo. Since Kustomize supports referencing remote resources you do not need
 to fork this repo, a new one will suffice.
 
+This project requires Nexus and SonarQube be available, this project used to deploy them directly but I have opted to move these as a separate deployment so it can be shared amongst multiple projects. To see how I deploy them visit the [dev-tools](https://github.com/gnunn-gitops/dev-tools) repository.
+
 *Deprecated* In order to make this easier, I had created a [product-catalog-template](https://github.com/gnunn-gitops/product-catalog-template) . It includes detailed instructions with regards to pre-requisities and what needs to be modified to deploy the demo in your own cluster.
 
 Once deployed in your cluster under ArgoCD it should appear as follows:
@@ -57,7 +59,9 @@ Once you make the code change, start the client pipeline. Note that in OpenShift
 
 The demo uses a pipeline called ```push-prod-pr``` that creates a pull request in github. When the pull request is merged ArgoCD will see the change in git and automatically deploy the updated image for you. The client and server pipelines can run the push-prod-pr automatically if you set the ```push-to-prod``` parameter to true to have it trigger the pipeline automatically. The default for this parameter is false.
 
-Note that OpenShift Pipelines currently shows conditions which are not met as failed steps in the pipeline so don't be alarmed that client and server pipelines appear to be failing when ```push-to-prod``` is set to false.
+For the server pipeline the process has been enhanced so that a post-sync hook in ArgoCD will trigger a pipeline to run an integration test after the deployment and send a notification of the status to a slack channel. This process is depicted in the diagram below.
+
+![alt text](https://raw.githubusercontent.com/gnunn-gitops/product-catalog/master/docs/img/cicd-flow.png)
 
 To execute the pipelines you will need to create pipelinerun objects, base versions are available in ```manifests/tekton/pipelineruns```. A script is also available at ```scripts/apply-pipelineruns.sh``` to load the client and server pipelineruns however you will need to modify the pipelineruns to reflect your cluster and enterprise registry.
 
