@@ -28,16 +28,25 @@
         <profile>
           <id>nexus-internal</id>
           <properties>
+            <repository.snapshots>http://nexus.dev-tools:8081/content/repositories/snapshots</repository.snapshots>
+            <repository.releases>http://nexus.dev-tools:8081/content/repositories/releases</repository.releases>
+            <!--
             <repository.snapshots>http://nexus:8081/content/repositories/snapshots</repository.snapshots>
             <repository.releases>http://nexus:8081/content/repositories/releases</repository.releases>
+            -->
           </properties>
         </profile>
         <profile>
           <id>sonar</id>
           <properties>
             <sonar.host.url>
+              http://sonarqube.dev-tools:9000
+            </sonar.host.url>
+            <!--
+            <sonar.host.url>
               http://sonarqube:9000
             </sonar.host.url>
+          -->
           </properties>
         </profile>
         <profile>
