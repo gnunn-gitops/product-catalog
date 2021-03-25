@@ -5,6 +5,10 @@ metadata:
 spec:
   workspaces:
   - name: source
+  params:
+  - name: SONAR_SERVER_URL
+    default: "http://sonarqube.dev-tools:9000"
+    description: The location of sonarqube, passed as an environment variable SONAR_SERVER_URL
   steps:
     - name: quality
       image: registry.redhat.io/ubi8/nodejs-14:latest
@@ -19,6 +23,9 @@ spec:
           dependency-check.sh --format ALL -s . --out reports/dependency-check --project "product-catalog-client"
           npm run sonar
           echo "Quality check complete, see results in sonarqube"
+      env:
+        - name: SONAR_SERVER_URL
+          value: $(params.SONAR_SERVER_URL)
       workingDir: $(workspaces.source.path)
       volumeMounts:
         - name: npm-cache
