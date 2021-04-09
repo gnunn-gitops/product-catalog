@@ -30,6 +30,8 @@ spec:
             value: $(params.git-url)
           - name: git-revision
             value: $(params.git-revision)
+          - name: push-to-prod
+            value: "true"
         workspaces:
           - name: git-source
             persistentVolumeClaim:
