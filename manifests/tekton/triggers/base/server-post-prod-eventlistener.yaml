@@ -8,7 +8,7 @@ spec:
   triggers:
     - name: server-post-prod-webhook
       template:
-        name: server-post-prod
+        ref: server-post-prod
 ---
 apiVersion: route.openshift.io/v1
 kind: Route
@@ -20,7 +20,7 @@ metadata:
     eventlistener: server-post-prod
 spec:
   port:
-    targetPort: 8080
+    targetPort: 8000
   to:
     kind: "Service"
     name: el-server-post-prod

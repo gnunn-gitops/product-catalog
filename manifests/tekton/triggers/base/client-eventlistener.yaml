@@ -10,7 +10,7 @@ spec:
       bindings:
         - ref: github-triggerbinding
       template:
-        name: client
+        ref: client
 ---
 apiVersion: route.openshift.io/v1
 kind: Route
@@ -22,7 +22,7 @@ metadata:
     eventlistener: client
 spec:
   port:
-    targetPort: 8080
+    targetPort: 8000
   to:
     kind: "Service"
     name: el-client
