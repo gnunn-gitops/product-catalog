@@ -15,6 +15,10 @@ spec:
           - "curl"
           - "-X"
           - "POST"
+          - "-H"
+          - "Content-Type: application/json"
+          - "--data"
+          - "{}"
           - "http://el-server-post-prod.product-catalog-cicd:8080"
           imagePullPolicy: Always
           name: post-sync-pipeline
