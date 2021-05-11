@@ -7,7 +7,7 @@ spec:
   - group: '*'
     kind: '*'
   destinations:
-  - namespace: 'argocd'
+  - namespace: 'openshift-gitops'
     server: '*'
   - namespace: 'product-catalog-cicd'
     server: '*'
