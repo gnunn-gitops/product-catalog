@@ -6,7 +6,7 @@ metadata:
     gitops.ownedBy: apps-product-catalog
 spec:
   destination:
-    namespace: argocd
+    namespace: openshift-gitops
     server: https://kubernetes.default.svc
   project: apps-product-catalog
   source:
