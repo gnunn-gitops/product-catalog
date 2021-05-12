@@ -33,7 +33,7 @@ spec:
           - name: MAVEN_MIRROR_URL
             value: http://nexus:8081/content/groups/public/
           - name: push-to-prod
-            value: "false"
+            value: "true"
         workspaces:
           - name: git-source
             persistentVolumeClaim:
