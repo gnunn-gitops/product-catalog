@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: product-catalog-test
+
+bases:
+- ../../../components/apps/database/base
+- ../../../components/apps/client/base
+- ../../../components/apps/server/base
+
+images:
+- name: quay.io/gnunn/client
+  newTag: test
+- name: quay.io/gnunn/server
+  newTag: test

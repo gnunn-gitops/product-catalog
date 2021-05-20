@@ -1,0 +1,66 @@
+# Note not currently working, pods constantly terminating and restarting
+# Using DC for now but preserved here to come back to later
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+  annotations:
+    app.openshift.io/connects-to: database
+    app.openshift.io/vcs-ref: master
+    app.openshift.io/vcs-uri: 'https://github.com/gnunn-gitops/product-catalog-server'
+  labels:
+    app: server
+    app.kubernetes.io/name: server
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/instance: server
+    app.openshift.io/runtime: quarkus
+    app.kubernetes.io/part-of: product-catalog
+spec:
+  selector:
+    matchLabels:
+      name: server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: server
+        quarkus-prometheus: "true"
+    spec:
+      containers:
+        - name: server
+          env:
+            - name: QUARKUS_KUBERNETES_CONFIG_ENABLED
+              value: "true"
+            - name: QUARKUS_KUBERNETES_CONFIG_CONFIG_MAPS
+              value: server
+            # - name: JAVA_OPTIONS
+            #   value: >-
+            #     -Dquarkus.kubernetes-config.enabled=true
+            #     -Dquarkus.kubernetes-config.config-maps=server
+          image: quay.io/gnunn/server:latest
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+            name: http
+          - containerPort: 8443
+            protocol: TCP
+          - containerPort: 8778
+            protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          readinessProbe:
+              httpGet:
+                path: /health
+                port: 8080
+                scheme: HTTP
+              timeoutSeconds: 1
+              periodSeconds: 10
+              successThreshold: 1
+              failureThreshold: 3
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File

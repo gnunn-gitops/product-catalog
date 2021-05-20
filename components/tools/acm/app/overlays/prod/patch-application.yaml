@@ -1,4 +1,0 @@
-- op: replace
-  path: /spec/selector/matchLabels
-  value:
-    app: product-catalog-prod
