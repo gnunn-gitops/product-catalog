@@ -1,9 +1,0 @@
-apiVersion: builtin
-kind: LabelTransformer
-metadata:
-  name: global-labels
-labels:
-  app.kubernetes.io/part-of: product-catalog
-fieldSpecs:
-- path: metadata/labels
-  create: true

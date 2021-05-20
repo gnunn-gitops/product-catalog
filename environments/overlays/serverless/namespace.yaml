@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  annotations:
-    openshift.io/description: Project for deploying the quarkus server application as a serverless version
-    openshift.io/display-name:  Product Catalog Serverless
-  labels:
-    size: medium
-  name: product-catalog-serverless

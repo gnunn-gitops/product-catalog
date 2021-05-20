@@ -1,4 +1,0 @@
-- op: add
-  path: /metadata/annotations
-  value:
-    app.openshift.io/connects-to: server
