@@ -12,7 +12,7 @@ configMapGenerator:
     - config/application.properties
 
 resources:
-  # - default-view-rolebinding.yaml
+  - default-view-rolebinding.yaml
   - server-service.yaml
   - server-route.yaml
   - server-deployment.yaml
