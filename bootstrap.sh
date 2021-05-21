@@ -1,0 +1,1 @@
+kustomize build bootstrap/argocd/applicationset/base | oc apply -f -
