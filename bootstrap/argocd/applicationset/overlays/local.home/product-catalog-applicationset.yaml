@@ -14,17 +14,17 @@ spec:
           url: https://kubernetes.default.svc
           values:
             name: product-catalog-dev
-            path: environments/overlays/dev
+            path: clusters/local.home/overlays/dev
         - cluster: local
           url: https://kubernetes.default.svc
           values:
             name: product-catalog-test
-            path: environments/overlays/test
+            path: clusters/local.home/overlays/test
         - cluster: local
           url: https://kubernetes.default.svc
           values:
             name: product-catalog-prod
-            path: environments/overlays/prod
+            path: clusters/local.home/overlays/prod
   template:
     metadata:
       name: '{{values.name}}'
@@ -39,7 +39,7 @@ spec:
           selfHeal: true
       source:
         repoURL: https://github.com/gnunn-gitops/cluster-config
-        targetRevision: refactor
+        targetRevision: master
         path: '{{values.path}}'
       destination:
         server: https://kubernetes.default.svc
