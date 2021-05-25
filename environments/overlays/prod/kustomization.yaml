@@ -4,9 +4,9 @@ kind: Kustomization
 namespace: product-catalog-prod
 
 resources:
-- ../../../components/app/database/base
-- ../../../components/app/server/base
-- ../../../components/app/client/base
+- ../../../components/apps/database/base
+- ../../../components/apps/server/base
+- ../../../components/apps/client/base
 - post-sync-pipeline-job.yaml
 
 images:
