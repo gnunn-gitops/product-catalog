@@ -8,11 +8,7 @@ commonAnnotations:
 
 bases:
 - https://github.com/redhat-canada-gitops/catalog/grafana-operator/overlays/user-app
-- ../../../manifests/app/monitor/base
-
-resources:
-- namespace.yaml
-- operator-group.yaml
+- ../../../components/apps/monitor/base
 
 patchesJson6902:
 - target:
