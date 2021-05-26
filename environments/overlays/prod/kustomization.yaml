@@ -8,9 +8,3 @@ resources:
 - ../../../components/apps/server/base
 - ../../../components/apps/client/base
 - post-sync-pipeline-job.yaml
-
-images:
-- name: quay.io/gnunn/client
-  newTag: latest
-- name: quay.io/gnunn/server
-  newTag: latest

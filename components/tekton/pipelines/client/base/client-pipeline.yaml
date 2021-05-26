@@ -23,7 +23,7 @@ spec:
     - name: cluster
       type: string
       description: Cluster to push to
-      default: "home"
+      default: "local.home"
   tasks:
     - name: clone
       taskRef:

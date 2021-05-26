@@ -6,3 +6,9 @@ bases:
 
 patchesStrategicMerge:
 - patch.yaml
+
+images:
+- name: quay.io/gnunn/client
+  newTag: latest
+- name: quay.io/gnunn/server
+  newTag: latest

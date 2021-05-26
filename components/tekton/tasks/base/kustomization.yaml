@@ -23,3 +23,4 @@ resources:
 - task-tekton.yaml
 - task-generate-id.yaml
 - task-send-to-webhook-slack.yaml
+- task-kustomize.yaml

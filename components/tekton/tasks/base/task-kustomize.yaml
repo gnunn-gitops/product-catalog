@@ -1,0 +1,29 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: kustomize
+spec:
+  params:
+    - name: old-image
+      type: string
+      description: "The placeholder image in the deployment to be replaced."
+    - name: new-image
+      type: string
+      description: "The image to update the deployment with."
+    - name: new-tag
+      type: string
+      description: "The image to tag update the deployment with."
+    - name: overlaypath
+      type: string
+      description: "Path to the overlay directory."
+  steps:
+    - name: kustomzie
+      workingDir: $(workspaces.source.path)
+      image: quay.io/redhatworkshops/kustomize-task:v4.0.5
+      script: |
+        #!/usr/bin/env /bin/sh
+        echo "Running: kustomize edit set image $(params.old-image)=$(params.new-image):$(params.new-tag)"
+        cd $(params.overlaypath)
+        kustomize edit set image $(params.old-image)=$(params.new-image):$(params.new-tag)
+  workspaces:
+    - name: source

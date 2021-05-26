@@ -53,16 +53,21 @@ spec:
             git checkout -b push-$(params.image_dest_tag)
     - name: patch
       taskRef:
-        name: yq
+        name: kustomize
+      params:
+        - name: old-image
+          value: "quay.io/gnunn/$(params.app)"
+        - name: new-image
+          value: "quay.io/gnunn/$(params.app)"
+        - name: new-tag
+          value: "$(params.image_dest_tag)"
+        - name: overlaypath
+          value: "clusters/$(params.cluster)/prod"
       runAfter:
         - branch
       workspaces:
         - name: source
           workspace: git-source
-      params:
-        - name: commands
-          value: |
-            yq w -i clusters/overlays/$(params.cluster)/prod/patch-$(params.app)-deployment.yaml [0].value $(params.image_dest_url):$(params.image_dest_tag)
     - name: commit
       taskRef:
         name: git
