@@ -56,13 +56,13 @@ spec:
         name: kustomize
       params:
         - name: old-image
-          value: "quay.io/gnunn/$(params.app)"
+          value: "${params.image_dest_url}"
         - name: new-image
-          value: "quay.io/gnunn/$(params.app)"
+          value: "${params.image_dest_url}"
         - name: new-tag
           value: "$(params.image_dest_tag)"
         - name: overlaypath
-          value: "clusters/$(params.cluster)/prod"
+          value: "clusters/$(params.cluster)/overlays/prod"
       runAfter:
         - branch
       workspaces:
