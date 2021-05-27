@@ -56,9 +56,9 @@ spec:
         name: kustomize
       params:
         - name: old-image
-          value: "${params.image_dest_url}"
+          value: "$(params.image_dest_url)"
         - name: new-image
-          value: "${params.image_dest_url}"
+          value: "$(params.image_dest_url)"
         - name: new-tag
           value: "$(params.image_dest_tag)"
         - name: overlaypath

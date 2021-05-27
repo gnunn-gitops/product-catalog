@@ -17,11 +17,12 @@ spec:
       type: string
       description: "Path to the overlay directory."
   steps:
-    - name: kustomzie
+    - name: kustomize
       workingDir: $(workspaces.source.path)
       image: quay.io/redhatworkshops/kustomize-task:v4.0.5
       script: |
         #!/usr/bin/env /bin/sh
+        echo "Kustomizing image"
         echo "Running: kustomize edit set image $(params.old-image)=$(params.new-image):$(params.new-tag)"
         cd $(params.overlaypath)
         kustomize edit set image $(params.old-image)=$(params.new-image):$(params.new-tag)
