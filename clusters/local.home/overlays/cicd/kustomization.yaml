@@ -15,7 +15,6 @@ bases:
 
 resources:
 - pipeline-rolebinding.yaml
-- user1-rolebinding.yaml
 - docker-sealed-secret.yaml
 - github-sealed-secret.yaml
 - slack-deployments-webhook-sealed-secret.yaml
