@@ -1,8 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-bases:
-- ../../../../environments/overlays/prod
 
 patchesStrategicMerge:
 - patch.yaml
@@ -11,4 +9,7 @@ images:
 - name: quay.io/gnunn/client
   newTag: latest
 - name: quay.io/gnunn/server
-  newTag: latest
+  newName: quay.io/gnunn/server
+  newTag: f08be80-110331912
+resources:
+- ../../../../environments/overlays/prod
