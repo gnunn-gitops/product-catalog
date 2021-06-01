@@ -10,6 +10,6 @@ images:
   newTag: latest
 - name: quay.io/gnunn/server
   newName: quay.io/gnunn/server
-  newTag: f08be80-4028320735
+  newTag: b097d80-3633840062
 resources:
 - ../../../../environments/overlays/prod
