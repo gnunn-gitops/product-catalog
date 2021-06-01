@@ -31,10 +31,10 @@ spec:
           - containerPort: 8080
             protocol: TCP
             name: http
-          volumeMounts:
-          - mountPath: /opt/app-root/src/config.js
-            name: config-data
-            subPath: config.js
+          # volumeMounts:
+          # - mountPath: /opt/app-root/src/config.js
+          #   name: config-data
+          #   subPath: config.js
           livenessProbe:
             httpGet:
               path: /health.html
@@ -52,7 +52,7 @@ spec:
               failureThreshold: 3
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
-      volumes:
-      - configMap:
-          name: client
-        name: config-data
+      # volumes:
+      # - configMap:
+      #     name: client
+      #   name: config-data
