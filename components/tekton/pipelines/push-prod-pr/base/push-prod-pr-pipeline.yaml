@@ -24,6 +24,10 @@ spec:
     - name: app
       type: string
       description: Either 'server' or 'client'
+    - name: sonarqube_host
+      type: string
+      description: Hostname for sonarqube
+      default: sonarqube-dev-tools.apps.home.ocplab.com
   tasks:
     - name: clone
       taskRef:
@@ -102,4 +106,4 @@ spec:
             Please review the following links before accepting the PR:
 
             Image Vulnerabilities: https://$(params.image_dest_url):$(params.image_dest_tag)
-            Sonarqube Results: http://sonarqube-dev-tools.apps.$(params.cluster).ocplab.com/dashboard?id=product-catalog-$(params.app)
+            Sonarqube Results: http://$(params.sonarqube_host)/dashboard?id=product-catalog-$(params.app)
