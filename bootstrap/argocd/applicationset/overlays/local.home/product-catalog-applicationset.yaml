@@ -24,7 +24,7 @@ spec:
           url: https://kubernetes.default.svc
           values:
             name: product-catalog-prod
-            path: environments/overlays/prod
+            path: clusters/local.home/overlays/prod
         - cluster: local
           url: https://kubernetes.default.svc
           values:
