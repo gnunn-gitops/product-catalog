@@ -12,7 +12,7 @@ spec:
     name: push-prod-pr
   params:
     - name: image_dest_tag
-      value: f08be80-4028320735
+      value: 3f35360-1705790019
     - name: image_dest_url
       value: quay.io/gnunn/server
     - name: cluster
