@@ -24,3 +24,5 @@ spec:
       # Generate uinque UID
       export BUILD_UID=$(printf '%s ' $(date) | cksum | cut -f -1 -d ' ')
       echo -n "$BUILD_UID" > $(results.build-uid.path)
+
+      echo "Generated ID $SHORT_SHA-$BUILD_UID"
