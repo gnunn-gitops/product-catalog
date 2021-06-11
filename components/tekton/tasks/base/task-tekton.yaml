@@ -12,4 +12,5 @@ spec:
       image: gcr.io/tekton-releases/dogfooding/tkn
       script: |
         #!/usr/bin/env sh
+        echo "Running command '$(params.commands)'"
         $(params.commands)
