@@ -9,7 +9,7 @@ spec:
       description: The tkn commands to run
   steps:
     - name: tkn
-      image: gcr.io/tekton-releases/dogfooding/tkn
+      image: quay.io/rhcanada/tkn-cli:0.17.2
       script: |
         #!/usr/bin/env sh
         echo "Running command '$(params.commands)'"
