@@ -17,7 +17,7 @@ spec:
   selector:
     matchLabels:
       name: client
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
