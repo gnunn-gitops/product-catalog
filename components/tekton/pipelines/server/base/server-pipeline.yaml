@@ -68,26 +68,7 @@ spec:
           value: "maven-repo-creds"
         - name: GOALS
           value:
-            - "-DskipTests"
             - "package"
-    - name: unit-test
-      taskRef:
-        name: maven
-      workspaces:
-        - name: source
-          workspace: git-source
-        - name: maven-settings
-          workspace: maven-settings
-      runAfter:
-        - build
-      params:
-        - name: MAVEN_MIRROR_URL
-          value: "$(params.MAVEN_MIRROR_URL)"
-        - name: MAVEN_REPO_CONFIG_SECRET
-          value: "maven-repo-creds"
-        - name: GOALS
-          value:
-            - "test"
     - name: quality
       taskRef:
         name: maven
