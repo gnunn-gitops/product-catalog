@@ -97,7 +97,6 @@ spec:
         - name: maven-settings
           workspace: maven-settings
       runAfter:
-        - unit-test
         - quality
       params:
         - name: MAVEN_MIRROR_URL
@@ -114,7 +113,6 @@ spec:
         - name: source
           workspace: git-source
       runAfter:
-        - unit-test
         - quality
       params:
         - name: file
