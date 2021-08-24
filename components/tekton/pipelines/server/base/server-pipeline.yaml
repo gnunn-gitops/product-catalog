@@ -153,6 +153,8 @@ spec:
           value: $(params.acs-secret)
         - name: image
           value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+        - name: output_format
+          value: pretty
       when:
         - input: "$(params.acs-secret)"
           operator: notin
