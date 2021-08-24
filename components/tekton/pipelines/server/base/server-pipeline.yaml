@@ -28,6 +28,11 @@ spec:
       type: string
       description: Cluster to push to
       default: "local.home"
+    - name: acs-secret
+      description: Name of the secret with the central endpoint and api token. If not set no scan is done
+      default: "ignore"
+    - name: MAVEN_IMAGE
+      default: image-registry.openshift-image-registry.svc:5000/openshift/java:openjdk-11-ubi8
   tasks:
     - name: clone
       taskRef:
@@ -62,6 +67,8 @@ spec:
       runAfter:
         - generate-id
       params:
+        - name: MAVEN_IMAGE
+          value: $(params.MAVEN_IMAGE)
         - name: MAVEN_MIRROR_URL
           value: "$(params.MAVEN_MIRROR_URL)"
         - name: MAVEN_REPO_CONFIG_SECRET
@@ -80,6 +87,8 @@ spec:
       runAfter:
         - build
       params:
+        - name: MAVEN_IMAGE
+          value: $(params.MAVEN_IMAGE)
         - name: MAVEN_MIRROR_URL
           value: "$(params.MAVEN_MIRROR_URL)"
         - name: MAVEN_REPO_CONFIG_SECRET
@@ -99,6 +108,8 @@ spec:
       runAfter:
         - quality
       params:
+        - name: MAVEN_IMAGE
+          value: $(params.MAVEN_IMAGE)
         - name: MAVEN_MIRROR_URL
           value: "$(params.MAVEN_MIRROR_URL)"
         - name: MAVEN_REPO_CONFIG_SECRET
@@ -129,6 +140,41 @@ spec:
         - name: SCRIPT
           value: |
             oc tag server:latest server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+    - name: acs-scan-image
+      taskref:
+        name: rox-image-scan
+        kind: ClusterTask
+      runAfter:
+        - tag-image
+      params:
+        - name: rox_central_endpoint
+          value: $(params.acs-secret)
+        - name: rox_api_token
+          value: $(params.acs-secret)
+        - name: image
+          value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+      when:
+        - input: "$(params.acs-secret)"
+          operator: notin
+          values: ["ignore"]
+    - name: acs-check-image
+      taskref:
+        name: rox-image-check
+        kind: ClusterTask
+      runAfter:
+        - acs-scan-image
+      params:
+        - name: rox_central_endpoint
+          value: $(params.acs-secret)
+        - name: rox_api_token
+          value: $(params.acs-secret)
+        - name: image
+          value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+      # Uncomment when "when" is scoped to task in Pipelines 1.6
+      # when:
+      #   - input: "$(params.acs-secret)"
+      #     operator: notin
+      #     values: ["ignore"]
     - name: push-dev-image
       taskRef:
         name: push-image
