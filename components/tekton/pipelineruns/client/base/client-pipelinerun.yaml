@@ -12,8 +12,6 @@ spec:
   params:
     - name: push-to-prod
       value: "false"
-    - name: acs-secret
-      value: acs-secret
   workspaces:
   - name: git-source
     persistentVolumeClaim:

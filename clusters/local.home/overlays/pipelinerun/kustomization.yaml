@@ -16,3 +16,8 @@ patches:
       value:
         name: cluster
         value: local.home
+    - op: add
+      path: /spec/params/-
+      value:
+        name: acs-secret
+        value: acs-secret

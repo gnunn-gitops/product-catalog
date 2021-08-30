@@ -139,7 +139,8 @@ spec:
       params:
         - name: SCRIPT
           value: |
-            oc tag server:latest server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+            echo "Taging image server@$(tasks.build-image.results.digest) to server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)"
+            oc tag server@$(tasks.build-image.results.digest) server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
     - name: acs-scan-image
       taskref:
         name: rox-image-scan
