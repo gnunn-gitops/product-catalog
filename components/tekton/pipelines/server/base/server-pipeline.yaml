@@ -195,7 +195,6 @@ spec:
     - name: push-dev-image
       taskRef:
         name: push-image
-        kind: Task
       runAfter:
         - tag-image
         - deploy-nexus
@@ -232,7 +231,6 @@ spec:
     - name: push-test-image
       taskRef:
         name: push-image
-        kind: Task
       runAfter:
         - dev-test
       params:
@@ -268,7 +266,6 @@ spec:
     - name: create-prod-pr
       taskRef:
         name: tkn
-        kind: Task
       when:
         - input: "$(params.push-to-prod)"
           operator: in
