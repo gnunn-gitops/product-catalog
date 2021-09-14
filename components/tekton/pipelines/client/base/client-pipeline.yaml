@@ -132,7 +132,7 @@ spec:
       #     operator: notin
       #     values: ["ignore"]
     - name: notify-on-fail
-      taskRef:
+      taskref:
         name: send-to-webhook-slack
         kind: Task
       runAfter:
@@ -147,7 +147,7 @@ spec:
         - name: message
           value: "The image scan for client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) failed, please view test results here: https://central-stackrox.apps.home.ocplab.com/main/vulnerability-management/images/$(tasks.build-image.results.digest)"
     - name: push-dev-image
-      taskRef:
+      taskref:
         name: push-image
         kind: Task
       runAfter:
