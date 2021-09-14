@@ -45,6 +45,7 @@ spec:
     - name: generate-id
       taskRef:
         name: generate-id
+        kind: Task
       runAfter:
         - clone
       workspaces:
@@ -53,6 +54,7 @@ spec:
     - name: build
       taskRef:
         name: npm
+        kind: Task
       runAfter:
         - generate-id
       workspaces:
@@ -61,6 +63,7 @@ spec:
     - name: quality
       taskRef:
         name: npm-quality
+        kind: Task
       runAfter:
         - build
       workspaces:
@@ -69,6 +72,7 @@ spec:
     - name: build-image
       taskRef:
         name: binary-s2i
+        kind: Task
       workspaces:
         - name: source
           workspace: git-source
@@ -130,6 +134,7 @@ spec:
     - name: notify-on-fail
       taskRef:
         name: send-to-webhook-slack
+        kind: Task
       runAfter:
         - acs-check-image
       when:
@@ -144,6 +149,7 @@ spec:
     - name: push-dev-image
       taskRef:
         name: push-image
+        kind: Task
       runAfter:
         - tag-image
       params:
@@ -156,6 +162,7 @@ spec:
     - name: deploy-dev
       taskRef:
         name: deploy
+        kind: Task
       runAfter:
         - push-dev-image
       params:
@@ -166,6 +173,7 @@ spec:
     - name: push-test-image
       taskRef:
         name: push-image
+        kind: Task
       runAfter:
         - deploy-dev
       params:
@@ -178,6 +186,7 @@ spec:
     - name: deploy-test
       taskRef:
         name: deploy
+        kind: Task
       runAfter:
         - push-test-image
       params:
@@ -188,6 +197,7 @@ spec:
     - name: create-prod-pr
       taskRef:
         name: tkn
+        kind: Task
       when:
         - input: "$(params.push-to-prod)"
           operator: in
