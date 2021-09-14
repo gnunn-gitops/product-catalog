@@ -95,7 +95,7 @@ spec:
             echo "Taging image client@$(tasks.build-image.results.digest) to client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)"
             oc tag client@$(tasks.build-image.results.digest) client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
     - name: acs-scan-image
-      taskref:
+      taskRef:
         name: rox-image-scan
         kind: ClusterTask
       runAfter:
@@ -114,7 +114,7 @@ spec:
           operator: notin
           values: ["ignore"]
     - name: acs-check-image
-      taskref:
+      taskRef:
         name: rox-image-check
         kind: ClusterTask
       runAfter:
@@ -132,7 +132,7 @@ spec:
       #     operator: notin
       #     values: ["ignore"]
     - name: notify-on-fail
-      taskref:
+      taskRef:
         name: send-to-webhook-slack
         kind: Task
       runAfter:
@@ -147,7 +147,7 @@ spec:
         - name: message
           value: "The image scan for client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) failed, please view test results here: https://central-stackrox.apps.home.ocplab.com/main/vulnerability-management/images/$(tasks.build-image.results.digest)"
     - name: push-dev-image
-      taskref:
+      taskRef:
         name: push-image
         kind: Task
       runAfter:
