@@ -51,6 +51,7 @@ spec:
     - name: generate-id
       taskRef:
         name: generate-id
+        kind: Task
       runAfter:
         - clone
       workspaces:
@@ -59,6 +60,7 @@ spec:
     - name: build
       taskRef:
         name: maven
+        kind: Task
       workspaces:
         - name: source
           workspace: git-source
@@ -79,6 +81,7 @@ spec:
     - name: quality
       taskRef:
         name: maven
+        kind: Task
       workspaces:
         - name: source
           workspace: git-source
@@ -100,6 +103,7 @@ spec:
     - name: deploy-nexus
       taskRef:
         name: maven
+        kind: Task
       workspaces:
         - name: source
           workspace: git-source
@@ -120,6 +124,7 @@ spec:
     - name: build-image
       taskRef:
         name: binary-s2i
+        kind: Task
       workspaces:
         - name: source
           workspace: git-source
@@ -142,7 +147,7 @@ spec:
             echo "Taging image server@$(tasks.build-image.results.digest) to server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)"
             oc tag server@$(tasks.build-image.results.digest) server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
     - name: acs-scan-image
-      taskref:
+      taskRef:
         name: rox-image-scan
         kind: ClusterTask
       runAfter:
@@ -161,7 +166,7 @@ spec:
           operator: notin
           values: ["ignore"]
     - name: acs-check-image
-      taskref:
+      taskRef:
         name: rox-image-check
         kind: ClusterTask
       runAfter:
@@ -181,6 +186,7 @@ spec:
     - name: notify-on-fail
       taskRef:
         name: send-to-webhook-slack
+        kind: Task
       runAfter:
         - acs-check-image
       when:
@@ -195,6 +201,7 @@ spec:
     - name: push-dev-image
       taskRef:
         name: push-image
+        kind: Task
       runAfter:
         - tag-image
         - deploy-nexus
@@ -208,6 +215,7 @@ spec:
     - name: deploy-dev
       taskRef:
         name: deploy
+        kind: Task
       runAfter:
         - push-dev-image
       params:
@@ -218,6 +226,7 @@ spec:
     - name: dev-test
       taskRef:
         name: newman
+        kind: Task
       runAfter:
         - deploy-dev
       params:
@@ -231,6 +240,7 @@ spec:
     - name: push-test-image
       taskRef:
         name: push-image
+        kind: Task
       runAfter:
         - dev-test
       params:
@@ -243,6 +253,7 @@ spec:
     - name: deploy-test
       taskRef:
         name: deploy
+        kind: Task
       runAfter:
         - push-test-image
       params:
@@ -253,6 +264,7 @@ spec:
     - name: test-test
       taskRef:
         name: newman
+        kind: Task
       runAfter:
         - deploy-test
       params:
@@ -266,6 +278,7 @@ spec:
     - name: create-prod-pr
       taskRef:
         name: tkn
+        kind: Task
       when:
         - input: "$(params.push-to-prod)"
           operator: in
