@@ -20,4 +20,4 @@ patches:
       path: /spec/params/-
       value:
         name: acs-secret
-        value: acs-secret
+        value: roxsecrets
