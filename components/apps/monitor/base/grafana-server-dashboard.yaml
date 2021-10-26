@@ -5,7 +5,6 @@ metadata:
     app: grafana
   name: server-dashboard
 spec:
-  name: server-dashboard.json
   json: |
     {
       "annotations": {
