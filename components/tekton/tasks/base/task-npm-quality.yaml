@@ -28,14 +28,9 @@ spec:
           value: $(params.SONAR_SERVER_URL)
       workingDir: $(workspaces.source.path)
       volumeMounts:
-        - name: npm-cache
-          mountPath: $(workspaces.source.path)/node_modules
         - name: dependency-cache
           mountPath: /opt/dependency-check/data
   volumes:
-    - name: npm-cache
-      persistentVolumeClaim:
-        claimName: npm-cache
     - name: dependency-cache
       persistentVolumeClaim:
         claimName: dependency-cache

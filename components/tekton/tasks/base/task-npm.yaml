@@ -14,9 +14,6 @@ spec:
       args:
         - npm install --package-lock
       workingDir: $(workspaces.source.path)
-      volumeMounts:
-        - name: npm-cache
-          mountPath: $(workspaces.source.path)/node_modules
     - name: build
       image: registry.redhat.io/ubi8/nodejs-14:latest
       command:
@@ -25,9 +22,6 @@ spec:
       args:
         - npm run build
       workingDir: $(workspaces.source.path)
-      volumeMounts:
-        - name: npm-cache
-          mountPath: $(workspaces.source.path)/node_modules
     - name: copy-dist
       image: registry.redhat.io/ubi8/nodejs-14:latest
       command:
@@ -46,10 +40,3 @@ spec:
           mkdir -p $(workspaces.source.path)/git-sha
           git rev-parse --short HEAD | tee $(workspaces.source.path)/git-sha/commit-id
       workingDir: $(workspaces.source.path)
-  volumes:
-    - name: npm-cache
-      persistentVolumeClaim:
-        claimName: npm-cache
-    - name: dependency-cache
-      persistentVolumeClaim:
-        claimName: dependency-cache

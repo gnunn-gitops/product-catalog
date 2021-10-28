@@ -7,7 +7,7 @@ generatorOptions:
 resources:
 # Supporting infra
 - m2-cache-pvc.yaml
-- npm-cache-pvc.yaml
+# - npm-cache-pvc.yaml
 - dependency-cache-pvc.yaml
 # Tekton tasks
 - task-git.yaml
