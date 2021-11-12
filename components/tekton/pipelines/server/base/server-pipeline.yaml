@@ -284,7 +284,7 @@ spec:
           values: ["true","yes"]
       runAfter:
         - test-test
-        - rox-image-check
+        - acs-check-image
       params:
         - name: commands
           value: |
