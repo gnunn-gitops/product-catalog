@@ -126,11 +126,10 @@ spec:
           value: $(params.acs-secret)
         - name: image
           value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
-      # Uncomment when "when" is scoped to task in Pipelines 1.6
-      # when:
-      #   - input: "$(params.acs-secret)"
-      #     operator: notin
-      #     values: ["ignore"]
+      when:
+        - input: "$(params.acs-secret)"
+          operator: notin
+          values: ["ignore"]
     - name: notify-on-fail
       taskRef:
         name: send-to-webhook-slack
@@ -204,7 +203,14 @@ spec:
           values: ["true","yes"]
       runAfter:
         - deploy-test
+        - acs-check-image
       params:
         - name: commands
           value: |
-            tkn pipeline start push-prod-pr --prefix-name client -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/client -p cluster=$(params.cluster) -p app=client -s github-pipeline -w name=git-source,claimName=manifest-source
+            if ["$(params.acs-secret)" = "ignore"]; then
+              echo "ACS was not enabled for this run"
+              tkn pipeline start push-prod-pr --prefix-name client -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/client -p cluster=$(params.cluster) -p app=client -s github-pipeline -w name=git-source,claimName=manifest-source
+            else
+              echo "ACS enabled, pass results"
+              tkn pipeline start push-prod-pr --prefix-name client -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/client -p cluster=$(params.cluster) -p app=server -p acs_image_scan_results=https://central-stackrox.apps.home.ocplab.com/main/vulnerability-management/images/$(tasks.build-image.results.digest) -s github-pipeline -w name=git-source,claimName=manifest-source
+            fi
