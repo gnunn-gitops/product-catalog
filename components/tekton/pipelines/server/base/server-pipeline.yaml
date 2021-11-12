@@ -178,11 +178,10 @@ spec:
           value: $(params.acs-secret)
         - name: image
           value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
-      # Uncomment when "when" is scoped to task in Pipelines 1.6
-      # when:
-      #   - input: "$(params.acs-secret)"
-      #     operator: notin
-      #     values: ["ignore"]
+      when:
+        - input: "$(params.acs-secret)"
+          operator: notin
+          values: ["ignore"]
     - name: notify-on-fail
       taskRef:
         name: send-to-webhook-slack
@@ -285,6 +284,7 @@ spec:
           values: ["true","yes"]
       runAfter:
         - test-test
+        - rox-image-check
       params:
         - name: commands
           value: |
