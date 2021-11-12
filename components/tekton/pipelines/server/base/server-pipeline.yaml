@@ -288,4 +288,10 @@ spec:
       params:
         - name: commands
           value: |
-            tkn pipeline start push-prod-pr --prefix-name server -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/server -p cluster=$(params.cluster) -p app=server -s github-pipeline -w name=git-source,claimName=manifest-source
+            if ["$(params.acs-secret)" = "ignore"]
+              echo "ACS was not enabled for this run"
+              tkn pipeline start push-prod-pr --prefix-name server -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/server -p cluster=$(params.cluster) -p app=server -s github-pipeline -w name=git-source,claimName=manifest-source
+            else
+              echo "ACS enabled, pass results"
+              tkn pipeline start push-prod-pr --prefix-name server -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/server -p cluster=$(params.cluster) -p app=server -p acs_image_scan_results=https://central-stackrox.apps.home.ocplab.com/main/vulnerability-management/images/$(tasks.build-image.results.digest) -s github-pipeline -w name=git-source,claimName=manifest-source
+            f1

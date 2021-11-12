@@ -28,6 +28,9 @@ spec:
       type: string
       description: Hostname for sonarqube
       default: sonarqube-dev-tools.apps.home.ocplab.com
+    - name: acs_image_scan_results
+      description: URL to view the ACS image scan results
+      default: none
   tasks:
     - name: clone
       taskRef:
@@ -105,5 +108,6 @@ spec:
           value: |-
             Please review the following links before accepting the PR:
 
-            Image Vulnerabilities: https://$(params.image_dest_url):$(params.image_dest_tag)
+            Quay Image Vulnerabilities: https://$(params.image_dest_url):$(params.image_dest_tag)
+            ACS Image Vulnerabilities: $(params.acs_image_scan_results)
             Sonarqube Results: http://$(params.sonarqube_host)/dashboard?id=product-catalog-$(params.app)
