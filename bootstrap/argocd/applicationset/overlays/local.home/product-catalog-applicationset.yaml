@@ -54,7 +54,7 @@ spec:
           selfHeal: true
       source:
         repoURL: https://github.com/gnunn-gitops/product-catalog
-        targetRevision: pipelines-1.6
+        targetRevision: main
         path: '{{values.path}}'
       destination:
         server: https://kubernetes.default.svc
