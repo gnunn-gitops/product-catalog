@@ -203,7 +203,7 @@ spec:
           values: ["true","yes"]
       runAfter:
         - deploy-test
-        - acs-check-image
+        - notify-on-scan-fail
       params:
         - name: commands
           value: |
