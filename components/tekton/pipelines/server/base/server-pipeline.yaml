@@ -203,7 +203,7 @@ spec:
         kind: Task
       runAfter:
         - tag-image
-        - deploy-nexus
+        # - deploy-nexus
       params:
         - name: src-image
           value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
