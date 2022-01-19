@@ -182,7 +182,7 @@ spec:
         - input: "$(params.acs-secret)"
           operator: notin
           values: ["ignore"]
-    - name: notify-on-fail
+    - name: notify-on-scan-fail
       taskRef:
         name: send-to-webhook-slack
         kind: Task
@@ -284,7 +284,7 @@ spec:
           values: ["true","yes"]
       runAfter:
         - test-test
-        - acs-check-image
+        - notify-on-scan-fail
       params:
         - name: commands
           value: |
@@ -295,3 +295,17 @@ spec:
               echo "ACS enabled, pass results"
               tkn pipeline start push-prod-pr --prefix-name server -p git_revision=pipelines-1.6 -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/server -p cluster=$(params.cluster) -p app=server -p acs_image_scan_results=https://central-stackrox.apps.home.ocplab.com/main/vulnerability-management/images/$(tasks.build-image.results.digest) -s github-pipeline -w name=git-source,claimName=manifest-source
             fi
+  finally:
+    - name: notify-on-fail
+      taskRef:
+        name: send-to-webhook-slack
+        kind: Task
+      when:
+        - input: $(tasks.status)
+          operator: in
+          values: ["Failed"]
+      params:
+        - name: webhook-secret
+          value: slack-deployments-webhook
+        - name: message
+          value: "Some tasks in the $(context.pipeline.name) have failed in pipelinerun $(context.pipelinerun.name) failed, please investigate"
