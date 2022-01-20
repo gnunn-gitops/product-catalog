@@ -28,10 +28,21 @@ spec:
       description: Name of the secret with the central endpoint and api token. If not set no scan is done
       default: "ignore"
   tasks:
+    - name: acquire-lease
+      taskRef:
+        name: acquire-lease
+        kind: ClusterTask
+      params:
+        - name: lease-name
+          value: "$(context.pipeline.name)"
+        - name: owner
+          value: "$(context.pipelineRun.name)"
     - name: clone
       taskRef:
         name: git-clone
         kind: ClusterTask
+      runAfter:
+        - acquire-lease
       workspaces:
         - name: output
           workspace: git-source
@@ -215,6 +226,13 @@ spec:
               tkn pipeline start push-prod-pr --prefix-name client -p git_revision=pipelines-1.6 -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/client -p cluster=$(params.cluster) -p app=server -p acs_image_scan_results=https://central-stackrox.apps.home.ocplab.com/main/vulnerability-management/images/$(tasks.build-image.results.digest) -s github-pipeline -w name=git-source,claimName=manifest-source
             fi
   finally:
+    - name: release-lease
+      taskRef:
+        name: release-lease
+        kind: ClusterTask
+      params:
+        - name: lease-name
+          value: "$(context.pipeline.name)"
     - name: notify-on-fail
       taskRef:
         name: send-to-webhook-slack
