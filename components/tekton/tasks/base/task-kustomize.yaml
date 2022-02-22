@@ -4,7 +4,7 @@ metadata:
   name: kustomize
 spec:
   params:
-    - name: old-image
+    - name: image-name
       type: string
       description: "The placeholder image in the deployment to be replaced."
     - name: new-image
@@ -23,8 +23,8 @@ spec:
       script: |
         #!/usr/bin/env /bin/sh
         echo "Kustomizing image"
-        echo "Running: kustomize edit set image $(params.old-image)=$(params.new-image):$(params.new-tag)"
+        echo "Running: kustomize edit set image $(params.image-name)=$(params.new-image):$(params.new-tag)"
         cd $(params.overlaypath)
-        kustomize edit set image $(params.old-image)=$(params.new-image):$(params.new-tag)
+        kustomize edit set image $(params.image-name)=$(params.new-image):$(params.new-tag)
   workspaces:
     - name: source

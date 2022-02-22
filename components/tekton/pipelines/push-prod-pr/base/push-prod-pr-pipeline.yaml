@@ -62,7 +62,7 @@ spec:
       taskRef:
         name: kustomize
       params:
-        - name: old-image
+        - name: image-name
           value: "$(params.image_dest_url)"
         - name: new-image
           value: "$(params.image_dest_url)"
