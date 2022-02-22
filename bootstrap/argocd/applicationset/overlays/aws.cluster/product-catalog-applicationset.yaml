@@ -14,13 +14,13 @@ spec:
           url: https://kubernetes.default.svc
           values:
             name: product-catalog-dev
-            path: environments/overlays/dev
+            path: clusters/aws.cluster/overlays/dev
             namespace: product-catalog-dev
         - cluster: local
           url: https://kubernetes.default.svc
           values:
             name: product-catalog-test
-            path: environments/overlays/test
+            path: clusters/aws.cluster/overlays/test
             namespace: product-catalog-test
         - cluster: local
           url: https://kubernetes.default.svc

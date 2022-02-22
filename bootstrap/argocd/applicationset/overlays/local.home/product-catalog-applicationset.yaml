@@ -14,13 +14,13 @@ spec:
           url: https://kubernetes.default.svc
           values:
             name: product-catalog-dev
-            path: environments/overlays/dev
+            path: clusters/local.home/overlays/dev
             namespace: product-catalog-dev
         - cluster: local
           url: https://kubernetes.default.svc
           values:
             name: product-catalog-test
-            path: environments/overlays/test
+            path: clusters/local.home/overlays/test
             namespace: product-catalog-test
         - cluster: local
           url: https://kubernetes.default.svc
@@ -50,7 +50,6 @@ spec:
       project: apps-product-catalog
       syncPolicy:
         automated:
-          prune: false
           selfHeal: true
       source:
         repoURL: https://github.com/gnunn-gitops/product-catalog
