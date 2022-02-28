@@ -84,7 +84,7 @@ spec:
               git config --global user.email "pipeline@redhat.com"
               git add clusters/$(params.cluster)/overlays/$(params.environment)/kustomization.yaml
               git commit -m 'Update image in git to quay.io/gnunn/$(params.application):$(params.tag)'
-              git push origin $(git_revision)
+              git push origin $(params.git_revision)
             fi
       workspaces:
         - name: source
