@@ -12,4 +12,5 @@ bases:
 - ../../../components/tekton/pipelines/client/base
 - ../../../components/tekton/pipelines/server/base
 - ../../../components/tekton/pipelines/push-prod-pr/base
+- ../../../components/tekton/pipelines/update-image/base
 - ../../../components/tekton/triggers/base

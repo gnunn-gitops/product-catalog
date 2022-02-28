@@ -1,0 +1,105 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: update-image
+spec:
+  workspaces:
+    - name: manifest-source
+  params:
+    - name: git_revision
+      type: string
+      default: main
+    - name: git_url
+      type: string
+      default: https://github.com/gnunn-gitops/product-catalog
+    - name: application
+      type: string
+      description: The application which we are updating (client or server)
+    - name: environment
+      type: string
+      description: The environment to update the tag for (dev/test)
+    - name: cluster
+      type: string
+      description: Cluster to push to
+      default: "local.home"
+  tasks:
+    - name: acquire-lease
+      taskRef:
+        name: acquire-lease
+        kind: ClusterTask
+      params:
+        - name: lease-name
+          value: "$(context.pipeline.name)"
+        - name: owner
+          value: "$(context.pipelineRun.name)"
+    - name: clone
+      taskRef:
+        name: git-clone
+        kind: ClusterTask
+      runAfter:
+        - acquire-lease
+      workspaces:
+        - name: output
+          workspace: manfest-source
+      params:
+        - name: url
+          value: "$(params.git_url)"
+        - name: revision
+          value: "$(params.git_revision)"
+        - name: deleteExisting
+          value: "true"
+    - name: update-image
+      taskRef:
+        name: kustomize
+      params:
+        - name: image-name
+          value: "quay.io/gnunn/$(params.application)"
+        - name: new-image
+          value: "quay.io/gnunn/$(params.application)"
+        - name: new-tag
+          value: "$(params.new-image-tag)"
+        - name: overlaypath
+          value: "clusters/$(params.cluster)/overlays/$(params.environment)"
+      runAfter:
+        - clone
+      workspaces:
+        - name: source
+          workspace: manifest-source
+    - name: commit-change
+      workingDir: $(workspaces.manifest-source.path)
+      image: docker.io/michaelin/github-cli:latest
+      runAfter:
+        - update-image
+      script: |
+        #!/usr/bin/env sh
+
+        git status
+        cat ~/.gitconfig
+        git config --global user.email "pipeline@redhat.com"
+        git add -u
+        git commit -m 'Pushing image $(params.image_dest_url):$(params.image_dest_tag) in path $(params.overlaypath)'
+        git push origin $(git_revision)
+      workspaces:
+        - name: source
+          workspace: manifest-source
+  finally:
+    - name: release-lease
+      taskRef:
+        name: release-lease
+        kind: ClusterTask
+      params:
+        - name: lease-name
+          value: "$(context.pipeline.name)"
+    - name: notify-on-fail
+      taskRef:
+        name: send-to-webhook-slack
+        kind: Task
+      when:
+        - input: $(tasks.status)
+          operator: in
+          values: ["Failed"]
+      params:
+        - name: webhook-secret
+          value: slack-deployments-webhook
+        - name: message
+          value: "Some tasks in the $(context.pipeline.name) have failed in pipelinerun $(context.pipelinerun.name) failed, please investigate"
