@@ -76,12 +76,16 @@ spec:
       params:
         - name: commands
           value: |
-            git status
-            cat ~/.gitconfig
-            git config --global user.email "pipeline@redhat.com"
-            git add -u
-            git commit -m 'Update image in git to quay.io/gnunn/$(params.application):$(params.tag)'
-            git push origin $(git_revision)
+            if git diff --exit-code;
+            then
+              echo "No changes staged, skipping add/commit"
+            else
+              echo "Changes made, committing"
+              git config --global user.email "pipeline@redhat.com"
+              git add clusters/$(params.cluster)/overlays/$(params.environment)/kustomization.yaml
+              git commit -m 'Update image in git to quay.io/gnunn/$(params.application):$(params.tag)'
+              git push origin $(git_revision)
+            fi
       workspaces:
         - name: source
           workspace: manifest-source
