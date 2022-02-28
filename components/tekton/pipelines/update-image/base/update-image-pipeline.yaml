@@ -25,6 +25,10 @@ spec:
       type: string
       description: Cluster to push to
       default: "local.home"
+    - name: github-secret
+      type: string
+      default: github
+      description: "The name of the secret that has your github username and token"
   tasks:
     - name: acquire-lease
       taskRef:
@@ -81,11 +85,11 @@ spec:
               echo "No changes staged, skipping add/commit"
             else
               echo "Changes made, committing"
-              git config --global user.email "pipeline@redhat.com"
+              git config --global user.email "pipelines@nomail.com"
               git add clusters/$(params.cluster)/overlays/$(params.environment)/kustomization.yaml
-              git status
               git commit -m 'Update image in git to quay.io/gnunn/$(params.application):$(params.tag)'
-              git push origin $(params.git_revision)
+              echo "Running 'git push origin HEAD:$(params.git_revision)'"
+              git push origin HEAD:$(params.git_revision)
             fi
       workspaces:
         - name: source

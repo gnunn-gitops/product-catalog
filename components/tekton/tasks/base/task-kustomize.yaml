@@ -27,7 +27,7 @@ spec:
         cd $(params.overlaypath)
         kustomize edit set image $(params.image-name)=$(params.new-image):$(params.new-tag)
 
-        "Updated file kustomization.yaml file"
+        echo "Updated file kustomization.yaml file"
         cat kustomization.yaml
   workspaces:
     - name: source
