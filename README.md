@@ -80,3 +80,4 @@ This demo deploys grafana into the ```product-catalog-monitor``` namespace along
 ![alt text](https://raw.githubusercontent.com/gnunn-gitops/product-catalog/master/docs/img/monitoring.png)
 
 There's a sample siege script that can be used to drive some load if desired under scripts, you will need to update the script to reflect the endpoints in your cluster.
+
