@@ -18,6 +18,7 @@ resources:
 - docker-sealed-secret.yaml
 - github-sealed-secret.yaml
 - slack-deployments-webhook-sealed-secret.yaml
+- argocd-env-cm.yaml
 
 # patchesJson6902:
 #   - path: patch-pvc-block.yaml
