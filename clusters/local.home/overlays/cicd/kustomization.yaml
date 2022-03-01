@@ -4,6 +4,9 @@ kind: Kustomization
 bases:
 - ../../../../environments/overlays/cicd
 
+resources:
+- pipeline-rolebinding.yaml
+
 # generatorOptions:
 #   disableNameSuffixHash: true
 
@@ -12,13 +15,6 @@ bases:
 #     type: kubernetes.io/dockerconfigjson
 #     files:
 #       - secrets/.dockerconfigjson
-
-resources:
-- pipeline-rolebinding.yaml
-- docker-sealed-secret.yaml
-- github-sealed-secret.yaml
-- slack-deployments-webhook-sealed-secret.yaml
-- argocd-env-cm.yaml
 
 # patchesJson6902:
 #   - path: patch-pvc-block.yaml

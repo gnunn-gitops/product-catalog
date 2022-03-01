@@ -4,10 +4,10 @@ kind: Kustomization
 namespace: product-catalog-cicd
 
 bases:
-# Nexus
-# - https://github.com/redhat-canada-gitops/catalog/nexus2/base
-# Sonarqube
-# - https://github.com/redhat-canada-gitops/catalog/sonarqube8/overlays/plugins
+- docker-sealed-secret.yaml
+- github-sealed-secret.yaml
+- slack-deployments-webhook-sealed-secret.yaml
+- argocd-env-cm.yaml
 - ../../../components/tekton/tasks/base
 - ../../../components/tekton/pipelines/client/base
 - ../../../components/tekton/pipelines/server/base
