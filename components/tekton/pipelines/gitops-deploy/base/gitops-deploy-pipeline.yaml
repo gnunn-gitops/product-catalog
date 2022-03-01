@@ -94,6 +94,16 @@ spec:
       workspaces:
         - name: source
           workspace: manifest-source
+    - name: gitops-deploy
+      taskRef:
+        name: argocd-task-sync-and-wait
+      runAfter:
+        - commit-change
+      params:
+        - name: application-name
+          value: product-catalog-$(params.environment)
+        - name: revision
+          value: $(params.git_revision)
   finally:
     - name: release-lease
       taskRef:
