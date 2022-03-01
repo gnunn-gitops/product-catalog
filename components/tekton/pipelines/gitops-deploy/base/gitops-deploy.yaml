@@ -1,0 +1,117 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: gitops-deploy
+spec:
+  workspaces:
+    - name: manifest-source
+  params:
+    - name: git_revision
+      type: string
+      default: main
+    - name: git_url
+      type: string
+      default: https://github.com/gnunn-gitops/product-catalog
+    - name: application
+      type: string
+      description: The application which we are updating (client or server)
+    - name: tag
+      type: string
+      description: The tag of the new image to deploy
+    - name: environment
+      type: string
+      description: The environment to update the tag for (dev/test)
+    - name: cluster
+      type: string
+      description: Cluster to push to
+      default: "local.home"
+    - name: github-secret
+      type: string
+      default: github
+      description: "The name of the secret that has your github username and token"
+  tasks:
+    - name: acquire-lease
+      taskRef:
+        name: acquire-lease
+        kind: ClusterTask
+      params:
+        - name: lease-name
+          value: "$(context.pipeline.name)"
+        - name: owner
+          value: "$(context.pipelineRun.name)"
+    - name: clone
+      taskRef:
+        name: git-clone
+        kind: ClusterTask
+      runAfter:
+        - acquire-lease
+      workspaces:
+        - name: output
+          workspace: manifest-source
+      params:
+        - name: url
+          value: "$(params.git_url)"
+        - name: revision
+          value: "$(params.git_revision)"
+        - name: deleteExisting
+          value: "true"
+    - name: update-image
+      taskRef:
+        name: kustomize
+      params:
+        - name: image-name
+          value: "quay.io/gnunn/$(params.application)"
+        - name: new-image
+          value: "quay.io/gnunn/$(params.application)"
+        - name: new-tag
+          value: "$(params.tag)"
+        - name: overlaypath
+          value: "clusters/$(params.cluster)/overlays/$(params.environment)"
+      runAfter:
+        - clone
+      workspaces:
+        - name: source
+          workspace: manifest-source
+    - name: commit-change
+      taskRef:
+        name: git
+      runAfter:
+        - update-image
+      params:
+        - name: commands
+          value: |
+            if git diff --exit-code;
+            then
+              echo "No changes staged, skipping add/commit"
+            else
+              echo "Changes made, committing"
+              git config --global user.email "pipelines@nomail.com"
+              git add clusters/$(params.cluster)/overlays/$(params.environment)/kustomization.yaml
+              git commit -m 'Update image in git to quay.io/gnunn/$(params.application):$(params.tag)'
+              echo "Running 'git push origin HEAD:$(params.git_revision)'"
+              git push origin HEAD:$(params.git_revision)
+            fi
+      workspaces:
+        - name: source
+          workspace: manifest-source
+  finally:
+    - name: release-lease
+      taskRef:
+        name: release-lease
+        kind: ClusterTask
+      params:
+        - name: lease-name
+          value: "$(context.pipeline.name)"
+    - name: notify-on-fail
+      taskRef:
+        name: send-to-webhook-slack
+        kind: Task
+      when:
+        - input: $(tasks.status)
+          operator: in
+          values: ["Failed"]
+      params:
+        - name: webhook-secret
+          value: slack-deployments-webhook
+        - name: message
+          value: "Some tasks in the $(context.pipeline.name) have failed in pipelinerun $(context.pipelinerun.name) failed, please investigate"
