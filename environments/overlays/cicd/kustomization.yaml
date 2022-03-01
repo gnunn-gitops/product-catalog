@@ -7,7 +7,6 @@ bases:
 - docker-sealed-secret.yaml
 - github-sealed-secret.yaml
 - slack-deployments-webhook-sealed-secret.yaml
-- argocd-env-cm.yaml
 - ../../../components/tekton/tasks/base
 - ../../../components/tekton/pipelines/client/base
 - ../../../components/tekton/pipelines/server/base

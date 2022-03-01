@@ -15,6 +15,7 @@ bases:
 
 resources:
 - pipeline-rolebinding.yaml
+- argocd-env-cm.yaml
 
 # patchesJson6902:
 #   - path: patch-pvc-block.yaml

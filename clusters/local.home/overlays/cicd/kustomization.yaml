@@ -6,6 +6,7 @@ bases:
 
 resources:
 - pipeline-rolebinding.yaml
+- argocd-env-cm.yaml
 
 # generatorOptions:
 #   disableNameSuffixHash: true
