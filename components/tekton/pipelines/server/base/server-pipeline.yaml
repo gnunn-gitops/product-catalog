@@ -242,7 +242,7 @@ spec:
       params:
         - name: SCRIPT
           value: |
-            tkn pipeline start --showlog --use-param-defaults --param application=server --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --param environment=dev --workspace name=manifest-source,claimName=manifest-source gitops-deploy
+            tkn pipeline start --showlog --use-param-defaults --param application=server --param environment=dev --prefix-name=server-gitops-deploy-dev --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,claimName=manifest-source gitops-deploy
     - name: dev-test
       taskRef:
         name: newman
@@ -290,7 +290,7 @@ spec:
       params:
         - name: SCRIPT
           value: |
-            tkn pipeline start --showlog --use-param-defaults --param application=server --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --param environment=test --workspace name=manifest-source,claimName=manifest-source gitops-deploy
+            tkn pipeline start --showlog --use-param-defaults --param application=server --param environment=test --prefix-name=server-gitops-deploy-test --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,claimName=manifest-source gitops-deploy
     - name: test-test
       taskRef:
         name: newman

@@ -189,7 +189,7 @@ spec:
       params:
         - name: SCRIPT
           value: |
-            tkn pipeline start --showlog --use-param-defaults --param application=client --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --param environment=dev --workspace name=manifest-source,claimName=manifest-source gitops-deploy
+            tkn pipeline start --showlog --use-param-defaults --param application=client --param environment=dev --prefix-name=client-gitops-deploy-dev --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,claimName=manifest-source gitops-deploy
     - name: push-test-image
       taskRef:
         name: push-image
@@ -223,7 +223,7 @@ spec:
       params:
         - name: SCRIPT
           value: |
-            tkn pipeline start --showlog --use-param-defaults --param application=client --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --param environment=test --workspace name=manifest-source,claimName=manifest-source gitops-deploy
+            tkn pipeline start --showlog --use-param-defaults --param application=client --param environment=test --prefix-name=client-gitops-deploy-test --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,claimName=manifest-source gitops-deploy
     - name: create-prod-pr
       taskRef:
         name: tkn
