@@ -169,17 +169,27 @@ spec:
           value: $(params.image_dest_url)
         - name: dest-tags
           value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid),dev
+    # - name: deploy-dev
+    #   taskRef:
+    #     name: deploy
+    #     kind: Task
+    #   runAfter:
+    #     - push-dev-image
+    #   params:
+    #     - name: NAME
+    #       value: client
+    #     - name: NAMESPACE
+    #       value: product-catalog-dev
     - name: deploy-dev
       taskRef:
-        name: deploy
-        kind: Task
+        name: tkn
+        kind: ClusterTask
       runAfter:
         - push-dev-image
       params:
-        - name: NAME
-          value: client
-        - name: NAMESPACE
-          value: product-catalog-dev
+        - name: SCRIPT
+          value: |
+            tkn pipeline start --showlog --use-param-defaults --param application=client --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --param environment=dev --workspace name=manifest-source,claimName=manifest-source gitops-deploy
     - name: push-test-image
       taskRef:
         name: push-image
@@ -193,17 +203,27 @@ spec:
           value: $(params.image_dest_url)
         - name: dest-tags
           value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid),test,latest
+    # - name: deploy-test
+    #   taskRef:
+    #     name: deploy
+    #     kind: Task
+    #   runAfter:
+    #     - push-test-image
+    #   params:
+    #     - name: NAME
+    #       value: client
+    #     - name: NAMESPACE
+    #       value: product-catalog-test
     - name: deploy-test
       taskRef:
-        name: deploy
-        kind: Task
+        name: tkn
+        kind: ClusterTask
       runAfter:
         - push-test-image
       params:
-        - name: NAME
-          value: client
-        - name: NAMESPACE
-          value: product-catalog-test
+        - name: SCRIPT
+          value: |
+            tkn pipeline start --showlog --use-param-defaults --param application=client --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --param environment=test --workspace name=manifest-source,claimName=manifest-source gitops-deploy
     - name: create-prod-pr
       taskRef:
         name: tkn

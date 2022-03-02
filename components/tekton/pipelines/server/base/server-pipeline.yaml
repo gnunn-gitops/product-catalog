@@ -293,7 +293,7 @@ spec:
         name: tkn
         kind: ClusterTask
       runAfter:
-        - push-dev-image
+        - push-test-image
       params:
         - name: SCRIPT
           value: |
