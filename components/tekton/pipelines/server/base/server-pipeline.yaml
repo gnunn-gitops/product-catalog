@@ -10,16 +10,10 @@ spec:
   params:
     - name: git_revision
       type: string
-      default: main
+      default: master
     - name: git_url
       type: string
       default: https://github.com/gnunn-gitops/product-catalog-server
-    - name: manifest_git_revision
-      type: string
-      default: main
-    - name: manifest_git_url
-      type: string
-      default: https://github.com/gnunn-gitops/product-catalog
     - name: MAVEN_MIRROR_URL
       default: ""
     - name: image_dest_url
