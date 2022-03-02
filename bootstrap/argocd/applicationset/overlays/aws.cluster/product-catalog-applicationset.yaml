@@ -48,10 +48,6 @@ spec:
         argocd.argoproj.io/sync-options: Prune=false
     spec:
       project: apps-product-catalog
-      syncPolicy:
-        automated:
-          prune: false
-          selfHeal: true
       source:
         repoURL: https://github.com/gnunn-gitops/product-catalog
         targetRevision: master
