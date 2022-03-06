@@ -4,9 +4,9 @@ kind: Kustomization
 images:
 - name: quay.io/gnunn/client
   newName: quay.io/gnunn/client
-  newTag: b8a2b2a-349792197
+  newTag: b8a2b2a-1654567386
 - name: quay.io/gnunn/server
   newName: quay.io/gnunn/server
-  newTag: 813e347-149679524
+  newTag: 1c31276-3472302593
 resources:
 - ../../../../environments/overlays/test
