@@ -34,8 +34,8 @@ spec:
       default: HEAD
     - name: flags
       default: --
-    - name: argocd-version
-      default: v2.2.2
+    - name: gitops-version
+      default: v1.4.2
   stepTemplate:
     envFrom:
       - configMapRef:
@@ -44,7 +44,7 @@ spec:
           name: argocd-env-secret  # used for authentication (username/password or auth token)
   steps:
     - name: login
-      image: quay.io/argoproj/argocd:$(params.argocd-version)
+      image: registry.redhat.io/openshift-gitops-1/argocd-rhel8:($params.gitops-version)
       script: |
         if [ -z "$ARGOCD_AUTH_TOKEN" ]; then
           yes | argocd login "$ARGOCD_SERVER" --username="$ARGOCD_USERNAME" --password="$ARGOCD_PASSWORD";
