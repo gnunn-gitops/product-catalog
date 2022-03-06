@@ -104,6 +104,12 @@ spec:
           value: product-catalog-$(params.environment)
         - name: revision
           value: $(params.git_revision)
+        - name: deployment
+          value: $(params.application)
+        - name: namespace
+          value: product-catalog-$(params.environment)
+        - name: image-tag
+          value: $(params.tag)
         - name: flags
           value: "--grpc-web"
   finally:

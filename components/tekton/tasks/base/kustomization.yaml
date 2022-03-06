@@ -24,4 +24,4 @@ resources:
 - task-generate-id.yaml
 - task-send-to-webhook-slack.yaml
 - task-kustomize.yaml
-- https://raw.githubusercontent.com/tektoncd/catalog/main/task/argocd-task-sync-and-wait/0.2/argocd-task-sync-and-wait.yaml
+- argocd-sync-and-wait-task.yaml
