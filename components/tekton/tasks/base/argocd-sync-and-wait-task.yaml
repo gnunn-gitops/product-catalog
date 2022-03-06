@@ -44,7 +44,7 @@ spec:
           name: argocd-env-secret  # used for authentication (username/password or auth token)
   steps:
     - name: login
-      image: registry.redhat.io/openshift-gitops-1/argocd-rhel8:($params.gitops-version)
+      image: registry.redhat.io/openshift-gitops-1/argocd-rhel8:$(params.gitops-version)
       script: |
         if [ -z "$ARGOCD_AUTH_TOKEN" ]; then
           yes | argocd login "$ARGOCD_SERVER" --username="$ARGOCD_USERNAME" --password="$ARGOCD_PASSWORD";
