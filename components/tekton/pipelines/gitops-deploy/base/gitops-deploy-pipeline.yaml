@@ -85,6 +85,7 @@ spec:
               echo "No changes staged, skipping add/commit"
             else
               echo "Changes made, committing"
+              git config --global user.name "pipeline"
               git config --global user.email "pipelines@nomail.com"
               git add clusters/$(params.cluster)/overlays/$(params.environment)/kustomization.yaml
               git commit -m 'Update image in git to quay.io/gnunn/$(params.application):$(params.tag)'
