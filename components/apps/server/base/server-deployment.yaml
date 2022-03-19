@@ -49,13 +49,13 @@ spec:
             protocol: TCP
           livenessProbe:
             httpGet:
-              path: /health
+              path: /q/health/live
               port: 8080
             initialDelaySeconds: 3
             periodSeconds: 10
           readinessProbe:
               httpGet:
-                path: /health
+                path: /q/health/ready
                 port: 8080
                 scheme: HTTP
               timeoutSeconds: 1
