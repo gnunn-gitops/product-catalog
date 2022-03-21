@@ -1,0 +1,31 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: run-tekton-pipeline
+spec:
+  params:
+    - name: pipeline
+      type: string
+      description: The pipeline to execute
+    - name: args
+      type: string
+      description: A space separated list of pipeline arguments (i.e. --param param1=value --param param2=value --workspace workspace)
+
+  steps:
+  - name: tkn
+    image: quay.io/gnunn/pipelines-cli-tkn-rhel8:0.19.0-3
+    script: |
+      #!/usr/bin/env sh
+      export PIPELINERUN=$(tkn pipeline start $(params.pipeline) $(params.args) --output=json | jq -r .metadata.name)
+      echo "Executing PipelineRun $PIPELINERUN"
+      tkn pipelinerun logs $PIPELINERUN --follow
+
+      export RESULT=$(oc get pipelinerun $PIPELINERUN -o=jsonpath='{.status.conditions[?(@.type=="Succeeded")].status}')
+
+      if [ "$RESULT" = "True" ]; then
+        echo "PipelineRun $PIPELINERUN completed successfully"
+        exit 0
+      else
+        echo "PipelineRun $PIPELINERUN failed"
+        exit 1
+      fi

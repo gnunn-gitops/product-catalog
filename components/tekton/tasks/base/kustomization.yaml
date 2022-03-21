@@ -25,3 +25,4 @@ resources:
 - task-send-to-webhook-slack.yaml
 - task-kustomize.yaml
 - argocd-sync-and-wait-task.yaml
+- task-run-pipeline.yaml
