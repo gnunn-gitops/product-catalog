@@ -169,17 +169,6 @@ spec:
           value: $(params.image_dest_url)
         - name: dest-tags
           value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid),dev
-    # - name: deploy-dev
-    #   taskRef:
-    #     name: deploy
-    #     kind: Task
-    #   runAfter:
-    #     - push-dev-image
-    #   params:
-    #     - name: NAME
-    #       value: client
-    #     - name: NAMESPACE
-    #       value: product-catalog-dev
     - name: deploy-dev
       taskRef:
         name: run-tekton-pipeline
@@ -191,16 +180,6 @@ spec:
           value: gitops-deploy
         - name: args
           value: --use-param-defaults --param application=client --param environment=dev --prefix-name=client-gitops-deploy-dev --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,claimName=manifest-source
-    - name: deploy-dev
-      taskRef:
-        name: tkn
-        kind: ClusterTask
-      runAfter:
-        - push-dev-image
-      params:
-        - name: SCRIPT
-          value: |
-            tkn pipeline start --showlog --use-param-defaults --param application=client --param environment=dev --prefix-name=client-gitops-deploy-dev --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,claimName=manifest-source gitops-deploy
     - name: push-test-image
       taskRef:
         name: push-image
@@ -214,18 +193,7 @@ spec:
           value: $(params.image_dest_url)
         - name: dest-tags
           value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid),test,latest
-    # - name: deploy-test
-    #   taskRef:
-    #     name: deploy
-    #     kind: Task
-    #   runAfter:
-    #     - push-test-image
-    #   params:
-    #     - name: NAME
-    #       value: client
-    #     - name: NAMESPACE
-    #       value: product-catalog-test
-    - name: deploy-dev
+    - name: deploy-test
       taskRef:
         name: run-tekton-pipeline
         kind: Task
