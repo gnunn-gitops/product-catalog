@@ -10,13 +10,19 @@ spec:
     - name: args
       type: string
       description: A space separated list of pipeline arguments (i.e. --param param1=value --param param2=value --workspace workspace)
-
   steps:
   - name: tkn
-    image: quay.io/gnunn/pipelines-cli-tkn-rhel8:0.19.0-3
+    image: quay.io/gnunn/pipelines-cli-tkn-rhel8:v1.6.2-3
     script: |
       #!/usr/bin/env sh
+      echo "Starting pipeline with command 'tkn pipeline start $(params.pipeline) $(params.args) --output=json'"
       export PIPELINERUN=$(tkn pipeline start $(params.pipeline) $(params.args) --output=json | jq -r .metadata.name)
+      if [ -z "$PIPELINERUN" ]
+      then
+        echo "\$PIPELINERUN is empty, error occurred aborting"
+        exit 1
+      fi
+
       echo "Executing PipelineRun $PIPELINERUN"
       tkn pipelinerun logs $PIPELINERUN --follow
 

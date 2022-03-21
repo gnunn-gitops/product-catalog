@@ -182,6 +182,17 @@ spec:
     #       value: product-catalog-dev
     - name: deploy-dev
       taskRef:
+        name: run-tekton-pipeline
+        kind: Task
+      runAfter:
+        - push-dev-image
+      params:
+        - name: pipeline
+          value: gitops-deploy
+        - name: args
+          value: --use-param-defaults --param application=client --param environment=dev --prefix-name=client-gitops-deploy-dev --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,claimName=manifest-source
+    - name: deploy-dev
+      taskRef:
         name: tkn
         kind: ClusterTask
       runAfter:
@@ -214,16 +225,17 @@ spec:
     #       value: client
     #     - name: NAMESPACE
     #       value: product-catalog-test
-    - name: deploy-test
+    - name: deploy-dev
       taskRef:
-        name: tkn
-        kind: ClusterTask
+        name: run-tekton-pipeline
+        kind: Task
       runAfter:
         - push-test-image
       params:
-        - name: SCRIPT
-          value: |
-            tkn pipeline start --showlog --use-param-defaults --param application=client --param environment=test --prefix-name=client-gitops-deploy-test --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,claimName=manifest-source gitops-deploy
+        - name: pipeline
+          value: gitops-deploy
+        - name: args
+          value: --use-param-defaults --param application=client --param environment=test --prefix-name=client-gitops-deploy-test --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,claimName=manifest-source
     - name: create-prod-pr
       taskRef:
         name: tkn

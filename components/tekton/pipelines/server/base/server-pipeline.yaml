@@ -235,14 +235,15 @@ spec:
     #       value: product-catalog-dev
     - name: deploy-dev
       taskRef:
-        name: tkn
-        kind: ClusterTask
+        name: run-tekton-pipeline
+        kind: Task
       runAfter:
         - push-dev-image
       params:
-        - name: SCRIPT
-          value: |
-            tkn pipeline start --showlog --use-param-defaults --param application=server --param environment=dev --prefix-name=server-gitops-deploy-dev --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,claimName=manifest-source gitops-deploy
+        - name: pipeline
+          value: gitops-deploy
+        - name: args
+          value: --use-param-defaults --param application=server --param environment=dev --prefix-name=server-gitops-deploy-dev --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,claimName=manifest-source
     - name: dev-test
       taskRef:
         name: newman
@@ -283,14 +284,15 @@ spec:
     #       value: product-catalog-test
     - name: deploy-test
       taskRef:
-        name: tkn
-        kind: ClusterTask
+        name: run-tekton-pipeline
+        kind: Task
       runAfter:
         - push-test-image
       params:
-        - name: SCRIPT
-          value: |
-            tkn pipeline start --showlog --use-param-defaults --param application=server --param environment=test --prefix-name=server-gitops-deploy-test --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,claimName=manifest-source gitops-deploy
+        - name: pipeline
+          value: gitops-deploy
+        - name: args
+          value: --use-param-defaults --param application=server --param environment=test --prefix-name=server-gitops-deploy-test --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,claimName=manifest-source
     - name: test-test
       taskRef:
         name: newman
