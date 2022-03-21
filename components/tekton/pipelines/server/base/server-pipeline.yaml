@@ -111,27 +111,27 @@ spec:
           value:
             - "sonar:sonar"
             - "-Pquality"
-    - name: deploy-nexus
-      taskRef:
-        name: maven
-        kind: Task
-      workspaces:
-        - name: source
-          workspace: git-source
-        - name: maven-settings
-          workspace: maven-settings
-      runAfter:
-        - quality
-      params:
-        - name: MAVEN_IMAGE
-          value: $(params.MAVEN_IMAGE)
-        - name: MAVEN_MIRROR_URL
-          value: "$(params.MAVEN_MIRROR_URL)"
-        - name: MAVEN_REPO_CONFIG_SECRET
-          value: "maven-repo-creds"
-        - name: GOALS
-          value:
-            - deploy
+    # - name: deploy-nexus
+    #   taskRef:
+    #     name: maven
+    #     kind: Task
+    #   workspaces:
+    #     - name: source
+    #       workspace: git-source
+    #     - name: maven-settings
+    #       workspace: maven-settings
+    #   runAfter:
+    #     - quality
+    #   params:
+    #     - name: MAVEN_IMAGE
+    #       value: $(params.MAVEN_IMAGE)
+    #     - name: MAVEN_MIRROR_URL
+    #       value: "$(params.MAVEN_MIRROR_URL)"
+    #     - name: MAVEN_REPO_CONFIG_SECRET
+    #       value: "maven-repo-creds"
+    #     - name: GOALS
+    #       value:
+    #         - deploy
     - name: build-image
       taskRef:
         name: binary-s2i
