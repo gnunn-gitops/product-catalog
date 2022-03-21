@@ -50,8 +50,8 @@ spec:
           yes | argocd login "$ARGOCD_SERVER" --username="$ARGOCD_USERNAME" --password="$ARGOCD_PASSWORD";
         fi
         # Application may already be syncing due to webhook
-        echo "Waiting for automatic sync if it was already triggered"
-        argocd app wait "$(params.application-name)" --health "$(params.flags)"
+        echo "Waiting for automatic sync if it was already triggered (or other pending operation)"
+        argocd app wait "$(params.application-name)" --operation "$(params.flags)"
 
         echo "Checking current tag in namespace $(params.namespace)"
         CURRENT_TAG=$(oc get deploy $(params.deployment) -n $(params.namespace) -o jsonpath="{.spec.template.spec.containers[$(params.container)].image}" | cut -d ":" -f2)
