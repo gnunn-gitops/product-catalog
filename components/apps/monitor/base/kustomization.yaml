@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
 # - grafana-ds.yaml
-- grafana-server-dashboard.yaml
+# - grafana-server-dashboard.yaml
+- grafana-micrometer-dashboard.yaml
 # - patch-grafana-ds-sa.yaml
 # - patch-grafana-ds-job.yaml

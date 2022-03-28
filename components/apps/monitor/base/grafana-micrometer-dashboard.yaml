@@ -1,0 +1,11 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  labels:
+    app: grafana
+  name: micrometer-dashboard
+spec:
+  url: https://grafana.com/api/dashboards/14370/revisions/6/download
+  datasources:
+    - inputName: DS_PROMETHEUS
+      datasourceName: Prometheus
