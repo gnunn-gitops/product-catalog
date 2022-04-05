@@ -35,6 +35,12 @@ spec:
           # - mountPath: /opt/app-root/src/config.js
           #   name: config-data
           #   subPath: config.js
+          resources:
+            requests:
+              memory: "50Mi"
+              cpu: "50m"
+            limits:
+              memory: "100Mi"
           livenessProbe:
             httpGet:
               path: /health.html
