@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: product-catalog-dev
 
 bases:
+- cicd-networkpolicy.yaml
 - ../../../components/apps/database/base
 - ../../../components/apps/client/base
 - ../../../components/apps/server/base
