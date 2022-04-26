@@ -5,4 +5,4 @@ else
     OVERLAY=$1
     echo "Configuring cluster ${OVERLAY}"
 fi
-kustomize build bootstrap/argocd/applicationset/overlays/${OVERLAY} | oc apply -f -
+kustomize build bootstrap/argocd/apps/overlays/${OVERLAY} --enable-helm | oc apply -f -

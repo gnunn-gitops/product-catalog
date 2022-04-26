@@ -1,0 +1,44 @@
+default:
+  app:
+    enabled: true
+    enableAutoSync: true
+    autoSyncPrune: false
+    project: apps-product-catalog
+    destination:
+      namespace: product-catalog-gitops
+      server: https://kubernetes.default.svc
+    source:
+      repoURL: https://github.com/gnunn-gitops/product-catalog
+      targetRevision: HEAD
+
+applications:
+
+  product-catalog-dev:
+    destination:
+      namespace: product-catalog-dev
+    source:
+      path: clusters/aws.cluster/overlays/dev
+
+  product-catalog-test:
+    destination:
+      namespace: product-catalog-test
+    source:
+      path: clusters/aws.cluster/overlays/test
+
+  product-catalog-prod:
+    destination:
+      namespace: product-catalog-prod
+    source:
+      path: clusters/aws.cluster/overlays/prod
+
+  product-catalog-cicd:
+    destination:
+      namespace: product-catalog-cicd
+    source:
+      path: clusters/aws.cluster/overlays/cicd
+
+  product-catalog-monitor:
+    destination:
+      namespace: product-catalog-monitor
+    source:
+      path: product-catalog-monitor

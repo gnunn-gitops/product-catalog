@@ -1,3 +1,4 @@
 .dockerconfigjson
 .vscode
 optional
+charts
