@@ -19,6 +19,8 @@ spec:
           - "Content-Type: application/json"
           - "--data"
           - "{}"
+          - "--connect-timeout"
+          - "60"
           - "http://el-server-post-prod.product-catalog-cicd:8080"
           imagePullPolicy: Always
           name: post-sync-pipeline
