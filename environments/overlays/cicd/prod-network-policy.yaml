@@ -5,7 +5,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      eventlistener: server
+      eventlistener: server-post-prod
   ingress:
   - from:
     - namespaceSelector:
