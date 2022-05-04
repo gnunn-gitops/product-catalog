@@ -41,4 +41,4 @@ applications:
     destination:
       namespace: product-catalog-monitor
     source:
-      path: product-catalog-monitor
+      path: environments/overlays/monitor
