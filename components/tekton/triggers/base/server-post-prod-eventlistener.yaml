@@ -1,5 +1,5 @@
 ---
-apiVersion: triggers.tekton.dev/v1alpha1
+apiVersion: triggers.tekton.dev/v1beta1
 kind: EventListener
 metadata:
   name: server-post-prod
@@ -20,7 +20,7 @@ metadata:
     eventlistener: server-post-prod
 spec:
   port:
-    targetPort: 8000
+    targetPort: 8080
   to:
     kind: "Service"
     name: el-server-post-prod
