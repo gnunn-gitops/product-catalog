@@ -9,7 +9,7 @@ default:
       server: https://kubernetes.default.svc
     source:
       repoURL: https://github.com/gnunn-gitops/product-catalog
-      targetRevision: HEAD
+      targetRevision: main
 
 applications:
 
