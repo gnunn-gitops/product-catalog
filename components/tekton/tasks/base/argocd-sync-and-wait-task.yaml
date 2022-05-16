@@ -62,6 +62,8 @@ spec:
 
         echo "Running argocd sync..."
         argocd app sync "$(params.application-name)" --revision "$(params.revision)" "$(params.flags)"
+
+        echo "Waiting for argocd sync..."
         argocd app wait "$(params.application-name)" --health "$(params.flags)"
 
         CURRENT_TAG=$(oc get deploy $(params.deployment) -n $(params.namespace) -o jsonpath="{.spec.template.spec.containers[$(params.container)].image}" | cut -d ":" -f2)
