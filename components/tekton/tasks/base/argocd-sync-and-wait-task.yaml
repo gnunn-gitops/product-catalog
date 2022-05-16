@@ -61,8 +61,8 @@ spec:
         fi
 
         echo "Running argocd sync..."
-        OUTPUT=$(argocd app sync "$(params.application-name)" --revision "$(params.revision)" "$(params.flags)")
-        echo $OUTPUT
+        EXIT_CODE=0
+        argocd app sync "$(params.application-name)" --revision "$(params.revision)" "$(params.flags)" || EXIT_CODE=$?
 
         echo "Waiting for argocd sync..."
         argocd app wait "$(params.application-name)" --health "$(params.flags)"
