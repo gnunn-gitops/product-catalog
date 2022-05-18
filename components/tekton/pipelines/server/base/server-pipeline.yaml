@@ -155,8 +155,8 @@ spec:
       params:
         - name: SCRIPT
           value: |
-            echo "Taging image server@$(tasks.build-image.results.digest) to server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)"
-            oc tag server@$(tasks.build-image.results.digest) server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+            echo "Taging image server@$(tasks.build-image.results.image_digest) to server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)"
+            oc tag server@$(tasks.build-image.results.image_digest) server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
     - name: acs-scan-image
       taskRef:
         name: rox-image-scan
@@ -207,7 +207,7 @@ spec:
         - name: webhook-secret
           value: slack-deployments-webhook
         - name: message
-          value: "The image scan for server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) failed, please view test results here: https://central-stackrox.apps.home.ocplab.com/main/vulnerability-management/images/$(tasks.build-image.results.digest)"
+          value: "The image scan for server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) failed, please view test results here: https://central-stackrox.apps.home.ocplab.com/main/vulnerability-management/images/$(tasks.build-image.results.image_digest)"
     - name: push-dev-image
       taskRef:
         name: push-image
@@ -326,7 +326,7 @@ spec:
               tkn pipeline start push-prod-pr --prefix-name server -p git_revision=pipelines-1.6 -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/server -p cluster=$(params.cluster) -p app=server -s github-pipeline -w name=git-source,claimName=manifest-source
             else
               echo "ACS enabled, pass results"
-              tkn pipeline start push-prod-pr --prefix-name server -p git_revision=pipelines-1.6 -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/server -p cluster=$(params.cluster) -p app=server -p acs_image_scan_results=https://central-stackrox.apps.home.ocplab.com/main/vulnerability-management/images/$(tasks.build-image.results.digest) -s github-pipeline -w name=git-source,claimName=manifest-source
+              tkn pipeline start push-prod-pr --prefix-name server -p git_revision=pipelines-1.6 -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/server -p cluster=$(params.cluster) -p app=server -p acs_image_scan_results=https://central-stackrox.apps.home.ocplab.com/main/vulnerability-management/images/$(tasks.build-image.results.image_digest) -s github-pipeline -w name=git-source,claimName=manifest-source
             fi
   finally:
     - name: release-lease
