@@ -17,11 +17,9 @@ spec:
       image: quay.io/skopeo/stable:latest
       script: |
         #!/usr/bin/env bash
-        TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
-        USER="pipeline"
 
         # echo "Copying image docker://$(params.src-image) to docker://$(params.dest-image):latest"
-        # skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds="${USER}:${TOKEN}" --dest-authfile=/workspace/dest/.docker/config.json docker://$(params.src-image) docker://$(params.dest-image):latest
+        # skopeo copy --src-tls-verify=false --dest-tls-verify=false docker://$(params.src-image) docker://$(params.dest-image):latest
 
         if [ "$(params.dest-tags)" != "" ];
         then
@@ -30,16 +28,6 @@ spec:
           for i in ${tags//,/ }
           do
             echo "Copying image docker://$(params.src-image) to docker://$(params.dest-image):$i"
-            skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds="${USER}:${TOKEN}" --dest-authfile=/workspace/dest/.docker/config.json docker://$(params.src-image) docker://$(params.dest-image):$i
+            skopeo copy --src-tls-verify=false --dest-tls-verify=false docker://$(params.src-image) docker://$(params.dest-image):$i
           done
         fi
-      volumeMounts:
-        - name: dest-docker-config
-          mountPath: /workspace/dest/.docker/
-  volumes:
-    - name: dest-docker-config
-      secret:
-        secretName: dest-docker-config
-        items:
-          - key: .dockerconfigjson
-            path: config.json

@@ -146,30 +146,19 @@ spec:
           value: "$(workspaces.source.path)/target/*-runner.jar"
         - name: buildconfig
           value: server
-    - name: tag-image
-      taskRef:
-        name: openshift-client
-        kind: ClusterTask
-      runAfter:
-        - build-image
-      params:
-        - name: SCRIPT
-          value: |
-            echo "Taging image server@$(tasks.build-image.results.image_digest) to server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)"
-            oc tag server@$(tasks.build-image.results.image_digest) server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
     - name: acs-scan-image
       taskRef:
         name: rox-image-scan
         kind: ClusterTask
       runAfter:
-        - tag-image
+        - build-image
       params:
         - name: rox_central_endpoint
           value: $(params.acs-secret)
         - name: rox_api_token
           value: $(params.acs-secret)
         - name: image
-          value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+          value: quay.io/gnunn/server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
         - name: output_format
           value: table
       when:
@@ -188,7 +177,7 @@ spec:
         - name: rox_api_token
           value: $(params.acs-secret)
         - name: image
-          value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+          value: quay.io/gnunn/product-catalog-cicd/server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
       when:
         - input: "$(params.acs-secret)"
           operator: notin
@@ -208,37 +197,26 @@ spec:
           value: slack-deployments-webhook
         - name: message
           value: "The image scan for server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) failed, please view test results here: https://central-stackrox.apps.home.ocplab.com/main/vulnerability-management/images/$(tasks.build-image.results.image_digest)"
-    - name: push-dev-image
+    - name: tag-dev-image
       taskRef:
         name: push-image
         kind: Task
       runAfter:
-        - tag-image
+        - build-image
         # - deploy-nexus
       params:
         - name: src-image
-          value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+          value: quay.io/gnunn/server@$(tasks.build-image.results.image_digest)
         - name: dest-image
           value: $(params.image_dest_url)
         - name: dest-tags
           value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid),dev
-    # - name: deploy-dev
-    #   taskRef:
-    #     name: deploy
-    #     kind: Task
-    #   runAfter:
-    #     - push-dev-image
-    #   params:
-    #     - name: NAME
-    #       value: server
-    #     - name: NAMESPACE
-    #       value: product-catalog-dev
     - name: deploy-dev
       taskRef:
         name: run-tekton-pipeline
         kind: Task
       runAfter:
-        - push-dev-image
+        - tag-dev-image
       params:
         - name: pipeline
           value: gitops-deploy
@@ -258,7 +236,7 @@ spec:
       workspaces:
         - name: newman-env
           workspace: newman-env
-    - name: push-test-image
+    - name: tag-test-image
       taskRef:
         name: push-image
         kind: Task
@@ -266,28 +244,17 @@ spec:
         - dev-test
       params:
         - name: src-image
-          value: image-registry.openshift-image-registry.svc:5000/product-catalog-cicd/server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+          value: quay.io/gnunn/server@$(tasks.build-image.results.image_digest)
         - name: dest-image
           value: $(params.image_dest_url)
         - name: dest-tags
-          value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid),test,latest
-    # - name: deploy-test
-    #   taskRef:
-    #     name: deploy
-    #     kind: Task
-    #   runAfter:
-    #     - push-test-image
-    #   params:
-    #     - name: NAME
-    #       value: server
-    #     - name: NAMESPACE
-    #       value: product-catalog-test
+          value: test
     - name: deploy-test
       taskRef:
         name: run-tekton-pipeline
         kind: Task
       runAfter:
-        - push-test-image
+        - tag-test-image
       params:
         - name: pipeline
           value: gitops-deploy

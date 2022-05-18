@@ -8,8 +8,8 @@ spec:
   failedBuildsHistoryLimit: 5
   output:
     to:
-      kind: ImageStreamTag
-      name: server:latest
+      kind: DockerImage
+      name: quay.io/gnunn/server:latest
   postCommit: {}
   resources: {}
   runPolicy: Serial

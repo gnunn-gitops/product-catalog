@@ -7,8 +7,8 @@ metadata:
 spec:
   output:
     to:
-      kind: ImageStreamTag
-      name: client:latest
+      kind: DockerImage
+      name: quay.io/gnunn/client:latest
   postCommit: {}
   resources: {}
   runPolicy: Serial

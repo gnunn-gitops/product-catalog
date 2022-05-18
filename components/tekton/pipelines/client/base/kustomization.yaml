@@ -6,7 +6,6 @@ generatorOptions:
 
 resources:
 # Client pipeline
-- client-imagestream.yaml
 - client-buildconfig.yaml
 - client-pvc.yaml
 - client-pipeline.yaml

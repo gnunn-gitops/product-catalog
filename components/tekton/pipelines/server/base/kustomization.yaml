@@ -17,7 +17,6 @@ configMapGenerator:
 resources:
 - secrets/maven-repo-creds.yaml
 # Server pipeline
-- server-imagestream.yaml
 - server-buildconfig.yaml
 - server-pvc.yaml
 - server-pipeline.yaml
