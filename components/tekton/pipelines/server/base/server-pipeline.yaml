@@ -208,7 +208,7 @@ spec:
         # - deploy-nexus
       params:
         - name: src-image
-          value: quay.io/gnunn/server@$(tasks.build-image.results.image_digest)
+          value: quay.io/gnunn/server@$(tasks.build-image.results.IMAGE_DIGEST)
         - name: dest-image
           value: $(params.image_dest_url)
         - name: dest-tags
