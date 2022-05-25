@@ -148,12 +148,26 @@ spec:
           value: server
         - name: IMAGE
           value: quay.io/gnunn/server
+    - name: tag-dev-image
+      taskRef:
+        name: push-image
+        kind: Task
+      runAfter:
+        - build-image
+        # - deploy-nexus
+      params:
+        - name: src-image
+          value: quay.io/gnunn/server@$(tasks.build-image.results.IMAGE_DIGEST)
+        - name: dest-image
+          value: $(params.image_dest_url)
+        - name: dest-tags
+          value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid),dev
     - name: acs-scan-image
       taskRef:
         name: rox-image-scan
         kind: ClusterTask
       runAfter:
-        - build-image
+        - tag-dev-image
       params:
         - name: rox_central_endpoint
           value: $(params.acs-secret)
@@ -199,20 +213,6 @@ spec:
           value: slack-deployments-webhook
         - name: message
           value: "The image scan for server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) failed, please view test results here: https://central-stackrox.apps.home.ocplab.com/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)"
-    - name: tag-dev-image
-      taskRef:
-        name: push-image
-        kind: Task
-      runAfter:
-        - build-image
-        # - deploy-nexus
-      params:
-        - name: src-image
-          value: quay.io/gnunn/server@$(tasks.build-image.results.IMAGE_DIGEST)
-        - name: dest-image
-          value: $(params.image_dest_url)
-        - name: dest-tags
-          value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid),dev
     - name: deploy-dev
       taskRef:
         name: run-tekton-pipeline

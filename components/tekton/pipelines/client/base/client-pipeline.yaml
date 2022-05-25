@@ -101,7 +101,7 @@ spec:
         name: rox-image-scan
         kind: ClusterTask
       runAfter:
-        - build-image
+        - tag-dev-image
       params:
         - name: rox_central_endpoint
           value: $(params.acs-secret)
