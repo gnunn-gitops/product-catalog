@@ -101,14 +101,14 @@ spec:
         name: rox-image-scan
         kind: ClusterTask
       runAfter:
-        - tag-dev-image
+        - build-image
       params:
         - name: rox_central_endpoint
           value: $(params.acs-secret)
         - name: rox_api_token
           value: $(params.acs-secret)
         - name: image
-          value: quay.io/gnunn/client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+          value: quay.io/gnunn/client:@$(tasks.build-image.results.IMAGE_DIGEST)
         - name: output_format
           value: table
       when:
@@ -127,7 +127,7 @@ spec:
         - name: rox_api_token
           value: $(params.acs-secret)
         - name: image
-          value: quay.io/gnunn/client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+          value: quay.io/gnunn/client:@$(tasks.build-image.results.IMAGE_DIGEST)
       when:
         - input: "$(params.acs-secret)"
           operator: notin
