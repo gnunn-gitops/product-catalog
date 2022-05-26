@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: product-catalog-cicd
 
 bases:
+- workspace-template.yaml
 - prod-network-policy.yaml
 - docker-sealed-secret.yaml
 - github-sealed-secret.yaml

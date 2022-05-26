@@ -9,6 +9,10 @@ spec:
     - name: commands
       type: string
       description: The set of commands to run
+  stepTemplate:
+    env:
+      - name: "HOME"
+        value: "/tekton/home"
   steps:
   - name: git
     workingDir: $(workspaces.source.path)

@@ -223,7 +223,7 @@ spec:
         - name: pipeline
           value: gitops-deploy
         - name: args
-          value: --use-param-defaults --param application=server --param environment=dev --prefix-name=server-gitops-deploy-dev --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,claimName=manifest-source
+          value: --use-param-defaults --param application=server --param environment=dev --prefix-name=server-gitops-deploy-dev --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,volumeClaimTemplateFile=/templates/workspace-template.yaml
     - name: dev-test
       taskRef:
         name: newman
@@ -261,7 +261,7 @@ spec:
         - name: pipeline
           value: gitops-deploy
         - name: args
-          value: --use-param-defaults --param application=server --param environment=test --prefix-name=server-gitops-deploy-test --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,claimName=manifest-source
+          value: --use-param-defaults --param application=server --param environment=test --prefix-name=server-gitops-deploy-test --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,volumeClaimTemplateFile=/templates/workspace-template.yaml
     - name: test-test
       taskRef:
         name: newman
@@ -292,10 +292,10 @@ spec:
           value: |
             if ["$(params.acs-secret)" = "ignore"]; then
               echo "ACS was not enabled for this run"
-              tkn pipeline start push-prod-pr --prefix-name server -p git_revision=pipelines-1.6 -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/server -p cluster=$(params.cluster) -p app=server -s github-pipeline -w name=git-source,claimName=manifest-source
+              tkn pipeline start push-prod-pr --prefix-name server -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/server -p cluster=$(params.cluster) -p app=server -s github-pipeline -w name=git-source,volumeClaimTemplateFile=/templates/workspace-template.yaml
             else
               echo "ACS enabled, pass results"
-              tkn pipeline start push-prod-pr --prefix-name server -p git_revision=pipelines-1.6 -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/server -p cluster=$(params.cluster) -p app=server -p acs_image_scan_results=https://central-stackrox.apps.home.ocplab.com/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST) -s github-pipeline -w name=git-source,claimName=manifest-source
+              tkn pipeline start push-prod-pr --prefix-name server -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/server -p cluster=$(params.cluster) -p app=server -p acs_image_scan_results=https://central-stackrox.apps.home.ocplab.com/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST) -s github-pipeline -w name=git-source,volumeClaimTemplateFile=/templates/workspace-template.yaml
             fi
   finally:
     - name: release-lease

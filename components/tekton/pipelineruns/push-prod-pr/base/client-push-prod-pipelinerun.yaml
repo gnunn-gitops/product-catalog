@@ -12,12 +12,21 @@ spec:
     name: push-prod-pr
   params:
     - name: image_dest_tag
-      value: 3b49f65-1319977405
+      value: b8a2b2a-135791192
     - name: image_dest_url
       value: quay.io/gnunn/client
     - name: app
       value: client
+    - name: cluster
+      value: local.home
+    - name: git_revision
+      value: main
   workspaces:
   - name: git-source
-    persistentVolumeClaim:
-      claimName: manifest-source
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi

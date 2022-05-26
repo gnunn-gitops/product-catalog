@@ -14,3 +14,11 @@ spec:
         #!/usr/bin/env sh
         echo "Running command '$(params.commands)'"
         $(params.commands)
+      volumeMounts:
+        - name: templates
+          mountPath: /templates
+  volumes:
+  - name: templates
+    configMap:
+      name: workspace-template
+      optional: true

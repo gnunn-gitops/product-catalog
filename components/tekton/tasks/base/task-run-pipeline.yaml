@@ -35,3 +35,11 @@ spec:
         echo "PipelineRun $PIPELINERUN failed"
         exit 1
       fi
+    volumeMounts:
+      - name: templates
+        mountPath: /templates
+  volumes:
+  - name: templates
+    configMap:
+      name: workspace-template
+      optional: true

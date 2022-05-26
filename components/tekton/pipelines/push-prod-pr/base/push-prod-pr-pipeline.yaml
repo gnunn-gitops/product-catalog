@@ -8,7 +8,7 @@ spec:
   params:
     - name: git_revision
       type: string
-      default: master
+      default: main
     - name: git_url
       type: string
       default: https://github.com/gnunn-gitops/product-catalog
@@ -86,12 +86,26 @@ spec:
       params:
         - name: commands
           value: |
-            git status
-            cat ~/.gitconfig
-            git config --global user.email "pipeline@redhat.com"
-            git add -u
-            git commit -m 'Pushing image $(params.image_dest_url):$(params.image_dest_tag) to production'
-            git push origin push-$(params.image_dest_tag)
+            "Current Directory"
+            pwd
+            ls -l
+            echo "Home directory"
+            echo $HOME
+            ls $HOME
+
+            if git diff --exit-code;
+            then
+              echo "No changes staged, skipping add/commit"
+            else
+              echo "Changes made, committing"
+              echo "Changes made, committing"
+              git config --global user.name "pipeline"
+              git config --global user.email "pipelines@nomail.com"
+              git add -u
+              git commit -m 'Update image in git to $(params.image_dest_url):$(params.image_dest_tag) for production'
+              echo "Running 'git push origin push-$(params.image_dest_tag)'"
+              git push origin push-$(params.image_dest_tag)
+            fi
     - name: prod-pr-deploy
       taskRef:
         name: task-create-pr
