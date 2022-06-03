@@ -2,8 +2,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-# - grafana-ds.yaml
-# - grafana-server-dashboard.yaml
-- grafana-micrometer-dashboard.yaml
-# - patch-grafana-ds-sa.yaml
-# - patch-grafana-ds-job.yaml
+- grafana-quarkus-dashboard.yaml
