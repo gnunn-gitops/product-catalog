@@ -5,4 +5,8 @@ metadata:
   labels:
     app: product-catalog
 spec:
+  customFolderName: Quarkus
   url: https://raw.githubusercontent.com/gnunn-gitops/product-catalog/main/components/apps/monitor/base/quarkus-dashboard.json
+  datasources:
+  - datasourceName: Prometheus
+    inputName: Prometheus
