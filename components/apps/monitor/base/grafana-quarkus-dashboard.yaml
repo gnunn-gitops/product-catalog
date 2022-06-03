@@ -1,0 +1,8 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: quarkus-dashboard
+  labels:
+    app: product-catalog
+spec:
+  url: https://raw.githubusercontent.com/gnunn-gitops/product-catalog/main/components/apps/monitor/base/quarkus-dashboard.json
