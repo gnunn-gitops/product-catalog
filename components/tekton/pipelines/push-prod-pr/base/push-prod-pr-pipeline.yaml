@@ -120,8 +120,8 @@ spec:
           value: Update image to $(params.image_dest_tag)
         - name: body
           value: |-
-            Please review the following links before accepting the PR:
+            Please review the following links for compliance before accepting and merging the PR:
 
-            Quay Image Vulnerabilities: https://$(params.image_dest_url):$(params.image_dest_tag)
-            ACS Image Vulnerabilities: $(params.acs_image_scan_results)
-            Sonarqube Results: http://$(params.sonarqube_host)/dashboard?id=product-catalog-$(params.app)
+            1. [Quay Image Vulnerabilities](https://$(params.image_dest_url):$(params.image_dest_tag))
+            2. [Advanced Cluster Security Image Vulnerabilities and Policies]($(params.acs_image_scan_results))
+            3. [Sonarqube Results](http://$(params.sonarqube_host)/dashboard?id=product-catalog-$(params.app))
