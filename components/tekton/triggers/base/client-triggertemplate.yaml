@@ -34,5 +34,10 @@ spec:
             value: "true"
         workspaces:
           - name: git-source
-            persistentVolumeClaim:
-              claimName: client-source
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 5Gi

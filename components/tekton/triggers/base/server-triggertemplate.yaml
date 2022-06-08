@@ -36,8 +36,13 @@ spec:
             value: "false"
         workspaces:
           - name: git-source
-            persistentVolumeClaim:
-              claimName: server-source
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 5Gi
           - name: maven-settings
             configmap:
               name: maven-settings
