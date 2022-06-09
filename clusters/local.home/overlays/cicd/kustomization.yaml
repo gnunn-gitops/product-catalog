@@ -8,6 +8,36 @@ resources:
 - pipeline-rolebinding.yaml
 - argocd-env-cm.yaml
 
+patches:
+- target:
+    kind: TriggerTemplate
+    name: server
+  patch: |-
+    - op: add
+      path: /spec/resourcetemplates/0/spec/params/-
+      value:
+        name: cluster
+        value: local.home
+    - op: add
+      path: /spec/resourcetemplates/0/spec/params/-
+      value:
+        name: acs-secret
+        value: roxsecrets
+- target:
+    kind: TriggerTemplate
+    name: client
+  patch: |-
+    - op: add
+      path: /spec/resourcetemplates/0/spec/params/-
+      value:
+        name: cluster
+        value: local.home
+    - op: add
+      path: /spec/resourcetemplates/0/spec/params/-
+      value:
+        name: acs-secret
+        value: roxsecrets
+
 # generatorOptions:
 #   disableNameSuffixHash: true
 
