@@ -41,3 +41,11 @@ spec:
                 resources:
                   requests:
                     storage: 5Gi
+          - name: gitops-manifests
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 5Gi
