@@ -26,3 +26,4 @@ resources:
 - task-kustomize.yaml
 - argocd-sync-and-wait-task.yaml
 - task-run-pipeline.yaml
+- task-update-image.yaml

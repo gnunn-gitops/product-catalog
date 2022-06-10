@@ -7,13 +7,20 @@ spec:
     - name: git-source
     - name: maven-settings
     - name: newman-env
+    - name: gitops-manifests
   params:
-    - name: git_revision
+    - name: source_git_revision
       type: string
       default: master
-    - name: git_url
+    - name: source_git_url
       type: string
       default: https://github.com/gnunn-gitops/product-catalog-server
+    - name: gitops_git_revision
+      type: string
+      default: main
+    - name: gitops_git_url
+      type: string
+      default: https://github.com/gnunn-gitops/product-catalog
     - name: MAVEN_MIRROR_URL
       default: ""
     - name: image_dest_url
@@ -54,9 +61,9 @@ spec:
           workspace: git-source
       params:
         - name: url
-          value: "$(params.git_url)"
+          value: "$(params.source_git_url)"
         - name: revision
-          value: "$(params.git_revision)"
+          value: "$(params.source_git_revision)"
         - name: deleteExisting
           value: "true"
     - name: generate-id
@@ -213,23 +220,61 @@ spec:
           value: slack-deployments-webhook
         - name: message
           value: "The image scan for server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) failed, please view test results here: https://central-stackrox.apps.home.ocplab.com/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)"
-    - name: deploy-dev
+    - name: clone-gitops-manifests
       taskRef:
-        name: run-tekton-pipeline
-        kind: Task
+        name: git-clone
+        kind: ClusterTask
       runAfter:
         - tag-dev-image
+      workspaces:
+        - name: output
+          workspace: gitops-manifests
       params:
-        - name: pipeline
-          value: gitops-deploy
-        - name: args
-          value: --use-param-defaults --param application=server --param environment=dev --prefix-name=server-gitops-deploy-dev --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,volumeClaimTemplateFile=/templates/workspace-template.yaml
+        - name: url
+          value: "$(params.gitops_git_url)"
+        - name: revision
+          value: "$(params.gitops_git_revision)"
+        - name: deleteExisting
+          value: "true"
+    - name: dev-update-image
+      taskRef:
+        name: update-image
+      runAfter:
+        - clone-gitops-manifests
+      params:
+        - name: git_revision
+          value: "$(params.gitops_git_revision)"
+        - name: path
+          value: clusters/$(params.cluster)/overlays/dev
+        - name: image
+          value: "quay.io/gnunn/server"
+        - name: image_tag
+          value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+      workspaces:
+        - name: gitops-manifests
+          workspace: gitops-manifests
+    - name: dev-gitops-deploy
+      taskRef:
+        name: argocd-task-sync-and-wait
+      runAfter:
+        - dev-update-image
+      params:
+        - name: application-name
+          value: product-catalog-dev
+        - name: revision
+          value: $(params.gitops_git_revision)
+        - name: deployment
+          value: server
+        - name: namespace
+          value: product-catalog-dev
+        - name: image-tag
+          value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
     - name: dev-test
       taskRef:
         name: newman
         kind: Task
       runAfter:
-        - deploy-dev
+        - dev-gitops-deploy
       params:
         - name: COLLECTION
           value: https://raw.githubusercontent.com/gnunn-gitops/product-catalog-server/master/tests/product-catalog-server-tests.json
@@ -251,23 +296,45 @@ spec:
           value: $(params.image_dest_url)
         - name: dest-tags
           value: test
-    - name: deploy-test
+    - name: test-update-image
       taskRef:
-        name: run-tekton-pipeline
-        kind: Task
+        name: update-image
       runAfter:
         - tag-test-image
       params:
-        - name: pipeline
-          value: gitops-deploy
-        - name: args
-          value: --use-param-defaults --param application=server --param environment=test --prefix-name=server-gitops-deploy-test --param tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) --workspace name=manifest-source,volumeClaimTemplateFile=/templates/workspace-template.yaml
+        - name: git_revision
+          value: "$(params.gitops_git_revision)"
+        - name: path
+          value: clusters/$(params.cluster)/overlays/test
+        - name: image
+          value: "quay.io/gnunn/server"
+        - name: image_tag
+          value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+      workspaces:
+        - name: gitops-manifests
+          workspace: gitops-manifests
+    - name: test-gitops-deploy
+      taskRef:
+        name: argocd-task-sync-and-wait
+      runAfter:
+        - test-update-image
+      params:
+        - name: application-name
+          value: product-catalog-test
+        - name: revision
+          value: $(params.gitops_git_revision)
+        - name: deployment
+          value: server
+        - name: namespace
+          value: product-catalog-test
+        - name: image-tag
+          value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
     - name: test-test
       taskRef:
         name: newman
         kind: Task
       runAfter:
-        - deploy-test
+        - test-gitops-deploy
       params:
         - name: COLLECTION
           value: https://raw.githubusercontent.com/gnunn-gitops/product-catalog-server/master/tests/product-catalog-server-tests.json

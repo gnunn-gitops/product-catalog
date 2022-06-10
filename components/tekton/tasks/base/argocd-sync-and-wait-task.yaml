@@ -33,7 +33,7 @@ spec:
       description: the revision to sync to
       default: HEAD
     - name: flags
-      default: --
+      default: "--grpc-web"
     - name: gitops-version
       default: v1.5.0
   stepTemplate:
@@ -43,7 +43,7 @@ spec:
       - secretRef:
           name: argocd-env-secret  # used for authentication (username/password or auth token)
   steps:
-    - name: login
+    - name: wait-and-sync
       image: registry.redhat.io/openshift-gitops-1/argocd-rhel8:$(params.gitops-version)
       script: |
         if [ -z "$ARGOCD_AUTH_TOKEN" ]; then

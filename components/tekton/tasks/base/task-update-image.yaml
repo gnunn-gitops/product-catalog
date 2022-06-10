@@ -1,0 +1,80 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: update-image
+spec:
+  workspaces:
+  - name: gitops-manifests
+  params:
+    - name: git_revision
+      type: string
+      default: main
+    - name: path
+      type: string
+      description: The path of the kustomization file which we will use to update the image reference
+    - name: image
+      type: string
+      description: The name of the image that is being updated
+    - name: image_tag
+      type: string
+      description: The tag of the new image that will be deployed
+    - name: push_retry_count
+      type: string
+      description: The number of times to re-attempt a push to git in case of failure (does a push-pull with retry)
+      default: "3"
+  results:
+  - description: Whether the image was updated and committed
+    name: image_updated
+  - description: The short commit hash for the update
+    name: image_updated_short_commit
+  stepTemplate:
+    env:
+      - name: "HOME"
+        value: "/tekton/home"
+  steps:
+  - name: update-image
+    workingDir: $(workspaces.gitops-manifests.path)
+    image: quay.io/redhatworkshops/kustomize-task:v4.0.5
+    script: |
+      echo "Kustomizing image"
+      echo "Running: kustomize edit set image $(params.image)=$(params.image):$(params.image_tag)"
+
+      cd $(params.path)
+      kustomize edit set image $(params.image)=$(params.image):$(params.image_tag)
+
+      echo "Updated file kustomization.yaml file"
+      cat kustomization.yaml
+  - name: commit-and-push-change
+    workingDir: $(workspaces.gitops-manifests.path)
+    image: docker.io/alpine/git:v2.26.2@sha256:23618034b0be9205d9cc0846eb711b12ba4c9b468efdd8a59aac1d7b1a23363f
+    script: |
+      if git diff --exit-code;
+      then
+        echo "No changes staged, skipping add/commit"
+        echo -n "false" > $(results.image_updated.path)
+      else
+        echo "Changes made, committing"
+        git config --global user.name "pipeline"
+        git config --global user.email "pipelines@nomail.com"
+        git add -u
+        git commit -m 'Update image in git to $(params.image):$(params.image_tag)'
+        echo "Running 'git push origin HEAD:$(params.git_revision)'"
+
+
+        n=0
+        until [ "$n" -ge $(params.push_retry_count) ]
+        do
+          git push origin HEAD:$(params.git_revision) && break
+          git pull origin HEAD:$(params.git_revision)
+          n=$((n+1))
+        done
+
+        if [ "$n" -ge $(params.push_retry_count) ];
+        then
+          echo "Failed to push change to git"
+          exit 1
+        fi
+
+        echo -n "true" > $(results.image_updated.path)
+        git rev-parse --short HEAD > $(results.image_updated_short_commit.path)
+      fi
