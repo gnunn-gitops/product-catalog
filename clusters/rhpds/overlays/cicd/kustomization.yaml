@@ -1,0 +1,62 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+- ../../../../environments/overlays/cicd
+
+resources:
+- pipeline-rolebinding.yaml
+- argocd-env-cm.yaml
+
+patches:
+- target:
+    kind: TriggerTemplate
+    name: server
+  patch: |-
+    - op: add
+      path: /spec/resourcetemplates/0/spec/params/-
+      value:
+        name: cluster
+        value: local.home
+    - op: add
+      path: /spec/resourcetemplates/0/spec/params/-
+      value:
+        name: acs-secret
+        value: roxsecrets
+- target:
+    kind: TriggerTemplate
+    name: client
+  patch: |-
+    - op: add
+      path: /spec/resourcetemplates/0/spec/params/-
+      value:
+        name: cluster
+        value: local.home
+    - op: add
+      path: /spec/resourcetemplates/0/spec/params/-
+      value:
+        name: acs-secret
+        value: roxsecrets
+
+# generatorOptions:
+#   disableNameSuffixHash: true
+
+# secretGenerator:
+#   - name: dest-docker-config
+#     type: kubernetes.io/dockerconfigjson
+#     files:
+#       - secrets/.dockerconfigjson
+
+# patchesJson6902:
+#   - path: patch-pvc-block.yaml
+#     target:
+#       group: ""
+#       kind: PersistentVolumeClaim
+#       name: m2-cache
+#       version: v1
+  # - path: patch-pvc-block.yaml
+  #   target:
+  #     group: ""
+  #     kind: PersistentVolumeClaim
+  #     name: npm-cache
+  #     version: v1
