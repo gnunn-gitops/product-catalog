@@ -46,37 +46,39 @@ spec:
     - name: wait-and-sync
       image: registry.redhat.io/openshift-gitops-1/argocd-rhel8:$(params.gitops-version)
       script: |
-        echo "Pause for push to be recoghnized"
-        sleep 5
-
         if [ -z "$ARGOCD_AUTH_TOKEN" ]; then
           yes | argocd login "$ARGOCD_SERVER" --username="$ARGOCD_USERNAME" --password="$ARGOCD_PASSWORD";
         fi
+        # Refresh application first
+        echo "#### Refreshing application ####"
+        argocd app get "$(params.application-name)" --refresh
+
+
         # Application may already be syncing due to webhook
-        echo "Waiting for automatic sync if it was already triggered (or other pending operation)"
+        echo "#### Waiting for automatic sync if it was already triggered (or other pending operation) ####"
         argocd app wait "$(params.application-name)" --operation "$(params.flags)"
 
-        echo "Checking current tag in namespace $(params.namespace)"
+        echo "#### Checking current tag in namespace $(params.namespace) ####"
         CURRENT_TAG=$(oc get deploy $(params.deployment) -n $(params.namespace) -o jsonpath="{.spec.template.spec.containers[$(params.container)].image}" | cut -d ":" -f2)
         if [ "$CURRENT_TAG" = "$(params.image-tag)" ]; then
           echo "Image has been synced, exiting"
           exit 0
         fi
 
-        echo "Running argocd sync..."
+        echo "#### Running argocd sync... ####"
         EXIT_CODE=0
         argocd app sync "$(params.application-name)" --revision "$(params.revision)" "$(params.flags)" || EXIT_CODE=$?
 
-        echo "Waiting for argocd sync..."
+        echo "#### Waiting for argocd sync... ####"
         argocd app wait "$(params.application-name)" --health "$(params.flags)"
 
-        echo "Checking that rollout is finished"
+        echo "#### Checking that rollout is finished ####"
         oc rollout status deploy $(params.deployment) -n $(params.namespace)
 
         CURRENT_TAG=$(oc get deploy $(params.deployment) -n $(params.namespace) -o jsonpath="{.spec.template.spec.containers[$(params.container)].image}" | cut -d ":" -f2)
         if [ "$CURRENT_TAG" = "$(params.image-tag)" ]; then
-          echo "Image has been synced"
+          echo "#### Image has been synced ####"
         else
-          echo "Image failed to sync, requested tag is $(params.image-tag) but current tag is $CURRENT_TAG"
+          echo "#### Image failed to sync, requested tag is $(params.image-tag) but current tag is $CURRENT_TAG ####"
           exit 1;
         fi
