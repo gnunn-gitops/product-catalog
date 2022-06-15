@@ -46,6 +46,9 @@ spec:
     - name: wait-and-sync
       image: registry.redhat.io/openshift-gitops-1/argocd-rhel8:$(params.gitops-version)
       script: |
+        echo "Pause for push to be recoghnized"
+        sleep 5
+
         if [ -z "$ARGOCD_AUTH_TOKEN" ]; then
           yes | argocd login "$ARGOCD_SERVER" --username="$ARGOCD_USERNAME" --password="$ARGOCD_PASSWORD";
         fi
