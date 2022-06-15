@@ -67,6 +67,9 @@ spec:
         echo "Waiting for argocd sync..."
         argocd app wait "$(params.application-name)" --health "$(params.flags)"
 
+        echo "Checking that rollout is finished"
+        oc rollout status deploy $(params.deployment) -n $(params.namespace)
+
         CURRENT_TAG=$(oc get deploy $(params.deployment) -n $(params.namespace) -o jsonpath="{.spec.template.spec.containers[$(params.container)].image}" | cut -d ":" -f2)
         if [ "$CURRENT_TAG" = "$(params.image-tag)" ]; then
           echo "Image has been synced"
