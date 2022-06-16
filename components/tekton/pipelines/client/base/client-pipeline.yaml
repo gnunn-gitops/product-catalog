@@ -34,6 +34,9 @@ spec:
     - name: acs-secret
       description: Name of the secret with the central endpoint and api token. If not set no scan is done
       default: "ignore"
+    - name: slack-secret
+      description: Name of the secret with the slack authentication. If not set no slack messages are sent
+      default: "ignore"
   tasks:
     - name: acquire-lease
       taskRef:
@@ -149,9 +152,12 @@ spec:
         - input: "$(tasks.acs-check-image.results.check_passed)"
           operator: in
           values: ["false"]
+        - input: "$(params.slack-secret)"
+          operator: notin
+          values: ["ignore"]
       params:
         - name: webhook-secret
-          value: slack-deployments-webhook
+          value: $(params.slack-secret)
         - name: message
           value: "The image scan for client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) failed, please view test results here: https://central-stackrox.apps.home.ocplab.com/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)"
     - name: tag-dev-image
@@ -299,8 +305,11 @@ spec:
         - input: $(tasks.status)
           operator: in
           values: ["Failed"]
+        - input: "$(params.slack-secret)"
+          operator: notin
+          values: ["ignore"]
       params:
         - name: webhook-secret
-          value: slack-deployments-webhook
+          value: $(params.slack-secret)
         - name: message
           value: "Some tasks in the $(context.pipeline.name) have failed in pipelinerun $(context.pipelinerun.name) failed, please investigate"
