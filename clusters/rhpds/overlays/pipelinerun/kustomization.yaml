@@ -21,3 +21,8 @@ patches:
       value:
         name: acs-secret
         value: roxsecrets
+    - op: add
+      path: /spec/params/-
+      value:
+        name: acs_central_host
+        value: central-stackrox.apps.cluster-nc7gf.nc7gf.sandbox597.opentlc.com

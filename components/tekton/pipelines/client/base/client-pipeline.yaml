@@ -31,6 +31,9 @@ spec:
       type: string
       description: Cluster to push to
       default: "local.home"
+    - name: acs_central_host
+      type: string
+      default: central-stackrox.apps.home.ocplab.com
     - name: acs-secret
       description: Name of the secret with the central endpoint and api token. If not set no scan is done
       default: "ignore"
@@ -159,7 +162,7 @@ spec:
         - name: webhook-secret
           value: $(params.slack-secret)
         - name: message
-          value: "The image scan for client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) failed, please view test results here: https://central-stackrox.apps.home.ocplab.com/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)"
+          value: "The image scan for client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) failed, please view test results here: https://$(params.acs_central_host)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)"
     - name: tag-dev-image
       taskRef:
         name: push-image
@@ -287,7 +290,7 @@ spec:
               tkn pipeline start push-prod-pr --prefix-name client -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/client -p cluster=$(params.cluster) -p app=client -s github-pipeline -w name=git-source,volumeClaimTemplateFile=/templates/workspace-template.yaml
             else
               echo "ACS enabled, pass results"
-              tkn pipeline start push-prod-pr --prefix-name client -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/client -p cluster=$(params.cluster) -p app=server -p acs_image_scan_results=https://central-stackrox.apps.home.ocplab.com/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST) -s github-pipeline -w name=git-source,volumeClaimTemplateFile=/templates/workspace-template.yaml
+              tkn pipeline start push-prod-pr --prefix-name client -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/client -p cluster=$(params.cluster) -p app=server -p acs_image_scan_results=https://$(params.acs_central_host)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST) -s github-pipeline -w name=git-source,volumeClaimTemplateFile=/templates/workspace-template.yaml
             fi
   finally:
     - name: release-lease
