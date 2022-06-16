@@ -21,6 +21,9 @@ spec:
     - name: gitops_git_url
       type: string
       default: https://github.com/gnunn-gitops/product-catalog
+    - name: api-test-collection-url
+      type: string
+      default: https://raw.githubusercontent.com/gnunn-gitops/product-catalog-server/master/tests/product-catalog-server-tests.json
     - name: MAVEN_MIRROR_URL
       default: ""
     - name: image_dest_url
@@ -283,7 +286,7 @@ spec:
         - dev-gitops-deploy
       params:
         - name: COLLECTION
-          value: https://raw.githubusercontent.com/gnunn-gitops/product-catalog-server/master/tests/product-catalog-server-tests.json
+          value: $(params.api-test-collection-url)
         - name: ENVIRONMENT
           value: newman-dev-env.json
       workspaces:
@@ -343,7 +346,7 @@ spec:
         - test-gitops-deploy
       params:
         - name: COLLECTION
-          value: https://raw.githubusercontent.com/gnunn-gitops/product-catalog-server/master/tests/product-catalog-server-tests.json
+          value: $(params.api-test-collection-url)
         - name: ENVIRONMENT
           value: newman-test-env.json
       workspaces:

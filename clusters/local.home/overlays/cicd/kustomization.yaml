@@ -23,6 +23,11 @@ patches:
       value:
         name: acs-secret
         value: roxsecrets
+    - op: add
+      path: /spec/resourcetemplates/0/spec/params/-
+      value:
+        name: slack-secret
+        value: slack-deployments-webhook
 - target:
     kind: TriggerTemplate
     name: client
@@ -37,6 +42,12 @@ patches:
       value:
         name: acs-secret
         value: roxsecrets
+    - op: add
+      path: /spec/resourcetemplates/0/spec/params/-
+      value:
+        name: slack-secret
+        value: slack-deployments-webhook
+
 
 # generatorOptions:
 #   disableNameSuffixHash: true
