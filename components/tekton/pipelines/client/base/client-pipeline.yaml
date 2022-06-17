@@ -108,7 +108,7 @@ spec:
         - name: buildconfig
           value: client
         - name: IMAGE
-          value: quay.io/gnunn/client
+          value: $(params.image_dest_url)
     - name: acs-scan-image
       taskRef:
         name: rox-image-scan
@@ -121,7 +121,7 @@ spec:
         - name: rox_api_token
           value: $(params.acs-secret)
         - name: image
-          value: quay.io/gnunn/client@$(tasks.build-image.results.IMAGE_DIGEST)
+          value: $(params.image_dest_url)@$(tasks.build-image.results.IMAGE_DIGEST)
         - name: output_format
           value: table
       when:
@@ -171,7 +171,7 @@ spec:
         - build-image
       params:
         - name: src-image
-          value: quay.io/gnunn/client@$(tasks.build-image.results.IMAGE_DIGEST)
+          value: $(params.image_dest_url)@$(tasks.build-image.results.IMAGE_DIGEST)
         - name: dest-image
           value: $(params.image_dest_url)
         - name: dest-tags
@@ -203,7 +203,7 @@ spec:
         - name: path
           value: clusters/$(params.cluster)/overlays/dev
         - name: image
-          value: "quay.io/gnunn/client"
+          value: "$(params.image_dest_url)"
         - name: image_tag
           value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
       workspaces:
@@ -233,7 +233,7 @@ spec:
         - dev-gitops-deploy
       params:
         - name: src-image
-          value: quay.io/gnunn/client@$(tasks.build-image.results.IMAGE_DIGEST)
+          value: $(params.image_dest_url)@$(tasks.build-image.results.IMAGE_DIGEST)
         - name: dest-image
           value: $(params.image_dest_url)
         - name: dest-tags
@@ -249,7 +249,7 @@ spec:
         - name: path
           value: clusters/$(params.cluster)/overlays/test
         - name: image
-          value: "quay.io/gnunn/client"
+          value: "$(params.image_dest_url)"
         - name: image_tag
           value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
       workspaces:
@@ -287,10 +287,10 @@ spec:
           value: |
             if ["$(params.acs-secret)" = "ignore"]; then
               echo "ACS was not enabled for this run"
-              tkn pipeline start push-prod-pr --prefix-name client -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/client -p cluster=$(params.cluster) -p app=client -s github-pipeline -w name=git-source,volumeClaimTemplateFile=/templates/workspace-template.yaml
+              tkn pipeline start push-prod-pr --prefix-name client -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=$(params.image_dest_url) -p cluster=$(params.cluster) -p app=client -s github-pipeline -w name=git-source,volumeClaimTemplateFile=/templates/workspace-template.yaml
             else
               echo "ACS enabled, pass results"
-              tkn pipeline start push-prod-pr --prefix-name client -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=quay.io/gnunn/client -p cluster=$(params.cluster) -p app=server -p acs_image_scan_results=https://$(params.acs_central_host)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST) -s github-pipeline -w name=git-source,volumeClaimTemplateFile=/templates/workspace-template.yaml
+              tkn pipeline start push-prod-pr --prefix-name client -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=$(params.image_dest_url) -p cluster=$(params.cluster) -p app=server -p acs_image_scan_results=https://$(params.acs_central_host)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST) -s github-pipeline -w name=git-source,volumeClaimTemplateFile=/templates/workspace-template.yaml
             fi
   finally:
     - name: release-lease
