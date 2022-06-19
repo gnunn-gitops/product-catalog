@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: argocd-env-configmap
 data:
-  ARGOCD_SERVER: argocd-server-product-catalog-gitops.apps.cluster-nc7gf.nc7gf.sandbox597.opentlc.com
+  ARGOCD_SERVER: argocd-server-product-catalog-gitops.apps.cluster-xjv8v.xjv8v.sandbox1202.opentlc.com
