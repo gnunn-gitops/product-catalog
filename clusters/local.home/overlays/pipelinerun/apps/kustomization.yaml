@@ -4,8 +4,8 @@ kind: Kustomization
 namespace: product-catalog-cicd
 
 resources:
-- ../../../../components/tekton/pipelineruns/client/base
-- ../../../../components/tekton/pipelineruns/server/base
+- ../../../../../components/tekton/pipelineruns/client/base
+- ../../../../../components/tekton/pipelineruns/server/base
 
 patches:
 - target:
@@ -15,7 +15,7 @@ patches:
       path: /spec/params/-
       value:
         name: cluster
-        value: rhpds
+        value: local.home
     - op: add
       path: /spec/params/-
       value:
@@ -24,5 +24,5 @@ patches:
     - op: add
       path: /spec/params/-
       value:
-        name: acs_central_host
-        value: central-stackrox.apps.cluster-nc7gf.nc7gf.sandbox597.opentlc.com
+        name: slack-secret
+        value: slack-deployments-webhook

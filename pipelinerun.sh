@@ -5,4 +5,4 @@ else
     CLUSTER=$1
     echo "Running pipelines for cluster: ${CLUSTER}"
 fi
-kustomize build clusters/${CLUSTER}/overlays/pipelinerun | oc apply -f -
+kustomize build clusters/${CLUSTER}/overlays/pipelinerun/apps | oc apply -f -

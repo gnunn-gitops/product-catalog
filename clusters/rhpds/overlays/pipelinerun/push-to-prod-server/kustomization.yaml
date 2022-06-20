@@ -1,0 +1,38 @@
+resources:
+- ../../../../../components/tekton/pipelineruns/push-prod-pr/base
+
+patches:
+- target:
+    kind: PipelineRun
+  patch: |-
+    - op: add
+      path: /spec/params/-
+      value:
+        name: cluster
+        value: local.home
+    - op: add
+      path: /spec/params/-
+      value:
+        name: app
+        value: server
+    - op: add
+      path: /spec/params/-
+      value:
+        name: image_dest_url
+        value: quay.io/gnunn/server
+    - op: add
+      path: /spec/params/-
+      value:
+        name: image_dest_tag
+        value: 7f192d4-1427400123
+    - op: add
+      path: /spec/params/-
+      value:
+        name: sonarqube_host
+        value: sonarqube-dev-tools.apps.cluster-xjv8v.xjv8v.sandbox1202.opentlc.com
+    - op: add
+      path: /spec/params/-
+      value:
+        name: acs_image_scan_results
+        value: https://central-stackrox.apps.cluster-xjv8v.xjv8v.sandbox1202.opentlc.com/main/vulnerability-management/images/7f192d4-1427400123
+
