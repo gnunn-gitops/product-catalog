@@ -6,6 +6,10 @@ spec:
   workspaces:
     - name: git-source
     - name: gitops-manifests
+    - name: slack-secret
+      optional: true
+    - name: acs-central
+      optional: true
   params:
     - name: source_git_revision
       type: string
@@ -23,23 +27,10 @@ spec:
       type: string
       description: External registry location to copy image to
       default: quay.io/gnunn/client
-    - name: push-to-prod
-      description: "Set to true if you want the pipeline to create a PR to push to prod"
-      type: string
-      default: "false"
     - name: cluster
       type: string
       description: Cluster to push to
       default: "local.home"
-    - name: acs_central_host
-      type: string
-      default: central-stackrox.apps.home.ocplab.com
-    - name: acs-secret
-      description: Name of the secret with the central endpoint and api token. If not set no scan is done
-      default: "ignore"
-    - name: slack-secret
-      description: Name of the secret with the slack authentication. If not set no slack messages are sent
-      default: "ignore"
   tasks:
     - name: acquire-lease
       taskRef:
@@ -116,18 +107,17 @@ spec:
       runAfter:
         - build-image
       params:
-        - name: rox_central_endpoint
-          value: $(params.acs-secret)
-        - name: rox_api_token
-          value: $(params.acs-secret)
-        - name: image
-          value: $(params.image_dest_url)@$(tasks.build-image.results.IMAGE_DIGEST)
         - name: output_format
           value: table
+        - name: image
+          value: $(params.image_dest_url)@$(tasks.build-image.results.IMAGE_DIGEST)
       when:
-        - input: "$(params.acs-secret)"
-          operator: notin
-          values: ["ignore"]
+        - input: "$(workspaces.acs-central.bound)"
+          operator: in
+          values: ["true"]
+      workspaces:
+        - name: acs-central
+          workspace: acs-central
     - name: acs-check-image
       taskRef:
         name: rox-image-check
@@ -135,16 +125,15 @@ spec:
       runAfter:
         - acs-scan-image
       params:
-        - name: rox_central_endpoint
-          value: $(params.acs-secret)
-        - name: rox_api_token
-          value: $(params.acs-secret)
         - name: image
           value: quay.io/gnunn/client@$(tasks.build-image.results.IMAGE_DIGEST)
       when:
-        - input: "$(params.acs-secret)"
-          operator: notin
-          values: ["ignore"]
+        - input: "$(workspaces.acs-central.bound)"
+          operator: in
+          values: ["true"]
+      workspaces:
+        - name: acs-central
+          workspace: acs-central
     - name: notify-on-scan-fail
       taskRef:
         name: send-to-webhook-slack
@@ -155,14 +144,12 @@ spec:
         - input: "$(tasks.acs-check-image.results.check_passed)"
           operator: in
           values: ["false"]
-        - input: "$(params.slack-secret)"
-          operator: notin
-          values: ["ignore"]
       params:
-        - name: webhook-secret
-          value: $(params.slack-secret)
         - name: message
-          value: "The image scan for client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) failed, please view test results here: https://$(params.acs_central_host)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)"
+          value: "The image scan for client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) failed, please view test results here: https://(params.acs_central_host)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)"
+      workspaces:
+        - name: slack-secret
+          workspace: slack-secret
     - name: tag-dev-image
       taskRef:
         name: push-image
@@ -271,27 +258,17 @@ spec:
           value: product-catalog-test
         - name: image-tag
           value: $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
-    - name: create-prod-pr
+    - name: notify-build-complete
       taskRef:
-        name: tkn
+        name: send-to-webhook-slack
         kind: Task
-      when:
-        - input: "$(params.push-to-prod)"
-          operator: in
-          values: ["true","yes"]
       runAfter:
-        - test-gitops-deploy
+        - test-test
         - notify-on-scan-fail
       params:
-        - name: commands
+        - name: message
           value: |
-            if ["$(params.acs-secret)" = "ignore"]; then
-              echo "ACS was not enabled for this run"
-              tkn pipeline start push-prod-pr --prefix-name client -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=$(params.image_dest_url) -p cluster=$(params.cluster) -p app=client -s github-pipeline -w name=git-source,volumeClaimTemplateFile=/templates/workspace-template.yaml
-            else
-              echo "ACS enabled, pass results"
-              tkn pipeline start push-prod-pr --prefix-name client -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=$(params.image_dest_url) -p cluster=$(params.cluster) -p app=server -p acs_image_scan_results=https://$(params.acs_central_host)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST) -s github-pipeline -w name=git-source,volumeClaimTemplateFile=/templates/workspace-template.yaml
-            fi
+            The build of image $(params.image_dest_url):$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) has been completed
   finally:
     - name: release-lease
       taskRef:
@@ -308,11 +285,12 @@ spec:
         - input: $(tasks.status)
           operator: in
           values: ["Failed"]
-        - input: "$(params.slack-secret)"
-          operator: notin
-          values: ["ignore"]
+        - input: "$(workspaces.slack-secret.bound)"
+          operator: in
+          values: ["true"]
       params:
-        - name: webhook-secret
-          value: $(params.slack-secret)
         - name: message
           value: "Some tasks in the $(context.pipeline.name) have failed in pipelinerun $(context.pipelinerun.name) failed, please investigate"
+      workspaces:
+        - name: slack-secret
+          workspace: slack-secret

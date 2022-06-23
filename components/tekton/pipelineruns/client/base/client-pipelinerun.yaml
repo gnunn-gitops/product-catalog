@@ -9,9 +9,6 @@ metadata:
 spec:
   pipelineRef:
     name: client
-  params:
-    - name: push-to-prod
-      value: "false"
   workspaces:
   - name: git-source
     volumeClaimTemplate:

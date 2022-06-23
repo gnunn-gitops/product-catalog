@@ -12,8 +12,6 @@ spec:
   params:
     - name: MAVEN_MIRROR_URL
       value: http://nexus:8081/content/groups/public/
-    - name: push-to-prod
-      value: "true"
   workspaces:
   - name: git-source
     volumeClaimTemplate:
