@@ -215,7 +215,7 @@ spec:
           values: ["false"]
       params:
         - name: message
-          value: "The image scan for server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) failed, please view test results here: https://(params.acs_central_host)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)"
+          value: "The image scan for server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) failed, please view test results here: https://acs_central_host/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)"
       workspaces:
         - name: slack-secret
           workspace: slack-secret
