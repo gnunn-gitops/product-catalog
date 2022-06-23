@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: product-catalog-cicd
 
 resources:
-# - ../../../../../components/tekton/pipelineruns/client/base
+- ../../../../../components/tekton/pipelineruns/client/base
 - ../../../../../components/tekton/pipelineruns/server/base
 
 patches:

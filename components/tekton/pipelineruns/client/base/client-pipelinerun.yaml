@@ -10,6 +10,7 @@ spec:
   pipelineRef:
     name: client
   params:
+    # todo: Need at least one param for kustomize to add via patch, looking into this more
     - name: source_git_revision
       value: master
   workspaces:
