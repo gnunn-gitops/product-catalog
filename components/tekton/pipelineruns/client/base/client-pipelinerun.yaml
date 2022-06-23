@@ -9,7 +9,9 @@ metadata:
 spec:
   pipelineRef:
     name: client
-  params: {}
+  params:
+    - name: source_git_revision
+      value: master
   workspaces:
   - name: git-source
     volumeClaimTemplate:
