@@ -9,6 +9,7 @@ metadata:
 spec:
   pipelineRef:
     name: client
+  params: {}
   workspaces:
   - name: git-source
     volumeClaimTemplate:
