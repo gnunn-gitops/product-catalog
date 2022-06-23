@@ -22,12 +22,12 @@ spec:
     optional: true
   steps:
   - name: post
-    image: registry.access.redhat.com/ubi8
+    image: registry.redhat.io/openshift4/ose-tools-rhel8:v4.10
     script: |
       #!/bin/sh
 
       # Always echo message locally for logging purposes
-      echo $(params.message)
+      echo "$(params.message)"
 
       if [ $(workspaces.slack-secret.bound) == "true" ] ; then
         if [ -f "$(workspaces.slack-secret.path)/url" ]; then

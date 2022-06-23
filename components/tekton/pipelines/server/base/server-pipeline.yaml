@@ -40,6 +40,9 @@ spec:
       default: "local.home"
     - name: MAVEN_IMAGE
       default: image-registry.openshift-image-registry.svc:5000/openshift/java:openjdk-11-ubi8
+    - name: sonarqube_host
+      default: sonarqube-dev-tools.apps.home.ocplab.com
+      description: Where sonarqube is located to support project scanning
   tasks:
     - name: acquire-lease
       taskRef:
@@ -50,12 +53,20 @@ spec:
           value: "$(context.pipeline.name)"
         - name: owner
           value: "$(context.pipelineRun.name)"
+    - name: variables
+      taskRef:
+        name: variables-from-k8s
+      runAfter:
+        - acquire-lease
+      workspaces:
+        - name: acs-central
+          workspace: acs-central
     - name: clone
       taskRef:
         name: git-clone
         kind: ClusterTask
       runAfter:
-        - acquire-lease
+        - variables
       workspaces:
         - name: output
           workspace: git-source
@@ -215,7 +226,7 @@ spec:
           values: ["false"]
       params:
         - name: message
-          value: "The image scan for server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) failed, please view test results here: https://acs_central_host/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)"
+          value: "The image scan for server:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) failed, please view test results here: https://$(tasks.variables.results.acs-central-endpoint)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)"
       workspaces:
         - name: slack-secret
           workspace: slack-secret
@@ -351,8 +362,16 @@ spec:
         - notify-on-scan-fail
       params:
         - name: message
-          value: |
+          value: |-
             The build of image $(params.image_dest_url):$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) has been completed
+
+            Quay Image: https://$(params.image_dest_url):$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+            ACS Scan: https://$(tasks.variables.results.acs-central-endpoint)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)
+            SonarQube Results: http://$(params.sonarqube_host)/dashboard?id=product-catalog-server
+
+            To create a production release run the following command:
+
+            > tkn pipeline start push-prod-pr --prefix-name server -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=$(params.image_dest_url) -p cluster=$(params.cluster) -p app=server -p acs_image_scan_results=https://$(tasks.variables.results.acs-central-endpoint)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST) -s github-pipeline -w name=git-source,volumeClaimTemplateFile=/templates/workspace-template.yaml
   finally:
     - name: release-lease
       taskRef:
