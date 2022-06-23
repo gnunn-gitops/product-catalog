@@ -263,7 +263,7 @@ spec:
         name: send-to-webhook-slack
         kind: Task
       runAfter:
-        - test-test
+        - test-gitops-deploy
         - notify-on-scan-fail
       params:
         - name: message
