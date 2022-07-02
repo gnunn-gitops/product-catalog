@@ -28,3 +28,4 @@ resources:
 - task-run-pipeline.yaml
 - task-update-image.yaml
 - task-variables.yaml
+- task-image-tag-to-digest.yaml

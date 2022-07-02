@@ -1,0 +1,26 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: image-tag-to-digest
+spec:
+  params:
+    - name: image_dest_url
+      description: The location of the image without the tag
+      type: string
+    - name: image_dest_tag
+      description: the tag of the image to return the hash for
+      type: string
+  results:
+  - description: The digest for the image created
+    name: image_digest
+  steps:
+    - name: get-image-digest
+      image: quay.io/gnunn/tools:4.10-1
+      script: |
+        #!/usr/bin/env bash
+
+        DIGEST=$(skopeo inspect docker://$(params.image_dest_url):$(params.image_dest_tag) | jq -r .Digest)
+
+        echo "Digest for image $(params.image_dest_url):$(params.image_dest_tag) is '${DIGEST}'"
+
+        echo -n "$DIGEST" > $(results.image_digest.path)

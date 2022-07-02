@@ -371,7 +371,7 @@ spec:
 
             To create a production release run the following command:
 
-            > tkn pipeline start push-prod-pr --prefix-name server -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=$(params.image_dest_url) -p cluster=$(params.cluster) -p app=server -p acs_image_scan_results=https://$(tasks.variables.results.acs-central-endpoint)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST) -s github-pipeline -w name=git-source,volumeClaimTemplateFile=/templates/workspace-template.yaml
+            > tkn pipeline start push-prod-pr --use-param-defaults --prefix-name server -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=$(params.image_dest_url) -p cluster=$(params.cluster) -p app=server -s github-pipeline -w name=acs-central,secret=roxsecrets -w name=gitops-manifests,claimName=gitops-manifests
       workspaces:
         - name: slack-secret
           workspace: slack-secret

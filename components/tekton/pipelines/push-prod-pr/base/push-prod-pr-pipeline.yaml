@@ -4,7 +4,9 @@ metadata:
   name: push-prod-pr
 spec:
   workspaces:
-    - name: git-source
+    - name: gitops-manifests
+    - name: acs-central
+      optional: true
   params:
     - name: git_revision
       type: string
@@ -28,17 +30,32 @@ spec:
       type: string
       description: Hostname for sonarqube
       default: sonarqube-dev-tools.apps.home.ocplab.com
-    - name: acs_image_scan_results
-      description: URL to view the ACS image scan results
-      default: none
   tasks:
+    - name: variables
+      taskRef:
+        name: variables-from-k8s
+      workspaces:
+        - name: acs-central
+          workspace: acs-central
+    - name: get-image-digest
+      taskRef:
+        name: image-tag-to-digest
+      runAfter:
+        - variables
+      params:
+        - name: image_dest_url
+          value: $(params.image_dest_url)
+        - name: image_dest_tag
+          value: $(params.image_dest_tag)
     - name: clone
       taskRef:
         name: git-clone
         kind: ClusterTask
+      runAfter:
+        - get-image-digest
       workspaces:
         - name: output
-          workspace: git-source
+          workspace: gitops-manifests
       params:
         - name: url
           value: "$(params.git_url)"
@@ -53,68 +70,41 @@ spec:
         - clone
       workspaces:
         - name: source
-          workspace: git-source
+          workspace: gitops-manifests
       params:
         - name: commands
           value: |
             git checkout -b push-$(params.image_dest_tag)
-    - name: patch
+    - name: update-image
       taskRef:
-        name: kustomize
-      params:
-        - name: image-name
-          value: "$(params.image_dest_url)"
-        - name: new-image
-          value: "$(params.image_dest_url)"
-        - name: new-tag
-          value: "$(params.image_dest_tag)"
-        - name: overlaypath
-          value: "clusters/$(params.cluster)/overlays/prod"
+        name: update-image
       runAfter:
         - branch
-      workspaces:
-        - name: source
-          workspace: git-source
-    - name: commit
-      taskRef:
-        name: git
-      runAfter:
-        - patch
-      workspaces:
-        - name: source
-          workspace: git-source
       params:
-        - name: commands
-          value: |
-            "Current Directory"
-            pwd
-            ls -l
-            echo "Home directory"
-            echo $HOME
-            ls $HOME
-
-            if git diff --exit-code;
-            then
-              echo "No changes staged, skipping add/commit"
-            else
-              echo "Changes made, committing"
-              echo "Changes made, committing"
-              git config --global user.name "pipeline"
-              git config --global user.email "pipelines@nomail.com"
-              git add -u
-              git commit -m 'Update image in git to $(params.image_dest_url):$(params.image_dest_tag) for production'
-              echo "Running 'git push origin push-$(params.image_dest_tag)'"
-              git push origin push-$(params.image_dest_tag)
-            fi
+        - name: git_revision
+          value: "push-$(params.image_dest_tag)"
+        - name: path
+          value: clusters/$(params.cluster)/overlays/prod
+        - name: image
+          value: "$(params.image_dest_url)"
+        - name: image_tag
+          value: $(params.image_dest_tag)
+      workspaces:
+        - name: gitops-manifests
+          workspace: gitops-manifests
     - name: prod-pr-deploy
       taskRef:
         name: task-create-pr
         kind: Task
       runAfter:
-        - commit
+        - update-image
       workspaces:
         - name: source
-          workspace: git-source
+          workspace: gitops-manifests
+      when:
+        - input: "$(tasks.update-image.results.image_updated)"
+          operator: in
+          values: ["true"]
       params:
         - name: title
           value: Update image to $(params.image_dest_tag)
@@ -123,5 +113,5 @@ spec:
             ## Security Checklist
 
             - [ ] [Quay Image Vulnerabilities](https://$(params.image_dest_url):$(params.image_dest_tag))
-            - [ ] [Advanced Cluster Security Image Vulnerabilities and Policies]($(params.acs_image_scan_results))
+            - [ ] [Advanced Cluster Security Image Vulnerabilities and Policies](https://$(tasks.variables.results.acs-central-endpoint)/main/vulnerability-management/images/$(tasks.get-image-digest.results.image_digest))
             - [ ] [Sonarqube Results](http://$(params.sonarqube_host)/dashboard?id=product-catalog-$(params.app))
