@@ -17,11 +17,6 @@ patches:
         name: cluster
         value: local.home
     - op: add
-      path: /spec/params/-
-      value:
-        name: acs-secret
-        value: roxsecrets
-    - op: add
       path: /spec/workspaces/-
       value:
           name: slack-secret

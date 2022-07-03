@@ -19,15 +19,17 @@ patches:
         name: cluster
         value: local.home
     - op: add
-      path: /spec/resourcetemplates/0/spec/params/-
+      path: /spec/resourcetemplates/0/spec/workspaces/-
       value:
-        name: acs-secret
-        value: roxsecrets
+          name: acs-central
+          secret:
+            secretName: roxsecrets
     - op: add
-      path: /spec/resourcetemplates/0/spec/params/-
+      path: /spec/resourcetemplates/0/spec/workspaces/-
       value:
-        name: slack-secret
-        value: slack-deployments-webhook
+          name: slack-secret
+          secret:
+            secretName: slack-deployments-webhook
 - target:
     kind: TriggerTemplate
     name: client
@@ -38,16 +40,17 @@ patches:
         name: cluster
         value: local.home
     - op: add
-      path: /spec/resourcetemplates/0/spec/params/-
+      path: /spec/resourcetemplates/0/spec/workspaces/-
       value:
-        name: acs-secret
-        value: roxsecrets
+          name: acs-central
+          secret:
+            secretName: roxsecrets
     - op: add
-      path: /spec/resourcetemplates/0/spec/params/-
+      path: /spec/resourcetemplates/0/spec/workspaces/-
       value:
-        name: slack-secret
-        value: slack-deployments-webhook
-
+          name: slack-secret
+          secret:
+            secretName: slack-deployments-webhook
 
 # generatorOptions:
 #   disableNameSuffixHash: true
