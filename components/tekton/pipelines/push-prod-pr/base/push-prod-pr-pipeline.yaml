@@ -107,7 +107,7 @@ spec:
           values: ["true"]
       params:
         - name: title
-          value: Update image to $(params.image_dest_tag)
+          value: Update $(params.app) image to $(params.image_dest_tag)
         - name: body
           value: |-
             ## Security Checklist
