@@ -33,10 +33,12 @@ spec:
         if [ -f "$(workspaces.slack-secret.path)/url" ]; then
           printf "\nSending to slack...\n\n"
           URL=$(cat $(workspaces.slack-secret.path)/url)
-          /usr/bin/curl -X POST -H 'Content-type: application/json' --data '{"text":"$(params.message)"}' $URL
+
+          echo "Sending slack message"
+
+          /usr/bin/curl -X POST -H 'Content-type: application/json' --data '{"type": "mrkdwn", "text":"$(params.message)"}' $URL
           exit 0
         fi
       fi
 
       echo "Note: Slack message was not sent as it was not configured"
-

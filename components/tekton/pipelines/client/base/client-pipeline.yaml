@@ -157,7 +157,9 @@ spec:
           values: ["false"]
       params:
         - name: message
-          value: "The image scan for client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) failed, please view test results here: https://acs_central_host/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)"
+          value: |-
+           *Client Image Scan Failed*
+           The image scan for client:$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) failed, please view test results here: https://acs_central_host/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)
       workspaces:
         - name: slack-secret
           workspace: slack-secret
@@ -279,13 +281,13 @@ spec:
       params:
         - name: message
           value: |
-            **Client Build $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) Completed**
+            *Client Build $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) Completed*
 
             The build of image $(params.image_dest_url):$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) has been completed
 
-            * Quay Image: https://$(params.image_dest_url):$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
-            * ACS Scan: https://$(tasks.variables.results.acs-central-endpoint)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)
-            * SonarQube Results: https://$(params.sonarqube_host)/dashboard?id=product-catalog-client
+            \t* <https://$(params.image_dest_url):$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)|Quay Image>
+            \t* <https://$(tasks.variables.results.acs-central-endpoint)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)|ACS Scan>
+            \t* <https://$(params.sonarqube_host)/dashboard?id=product-catalog-client|SonarQube Results>
 
             To create a production release run the following command:
 
