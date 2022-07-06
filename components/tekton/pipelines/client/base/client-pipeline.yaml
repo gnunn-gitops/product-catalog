@@ -279,11 +279,13 @@ spec:
       params:
         - name: message
           value: |
+            **Client Build $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) Completed**
+
             The build of image $(params.image_dest_url):$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) has been completed
 
-            Quay Image: https://$(params.image_dest_url):$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
-            ACS Scan: https://$(tasks.variables.results.acs-central-endpoint)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)
-            SonarQube Results: https://$(params.sonarqube_host)/dashboard?id=product-catalog-client
+            * Quay Image: https://$(params.image_dest_url):$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+            * ACS Scan: https://$(tasks.variables.results.acs-central-endpoint)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)
+            * SonarQube Results: https://$(params.sonarqube_host)/dashboard?id=product-catalog-client
 
             To create a production release run the following command:
 
