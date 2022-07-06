@@ -1,0 +1,38 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: create-commit-list
+spec:
+  description: >-
+    This task creates a message with a link to the commit list between current deployment and PR
+  params:
+    - name: deployment
+      description: name of the deployment
+    - name: container
+      description: the ordinal position in the container (0,1,2) in .spec.template.spec.containers
+      default: "0"
+    - name: namespace
+      description: namespace where the deployment is located
+    - name: image-tag
+      description: tag of the image that is expected to be deployed
+    - name: git_source_url
+      description: The URL of the repo containing the source code, used to construct a link for code changes
+  results:
+  - description: The message or link reflecting the list of commits between current image and proposed image
+    name: commit-list-message
+  steps:
+    - name: create-commit-list
+      image: quay.io/gnunn/tools:4.10-1
+      script: |
+        echo "#### Checking current tag in namespace $(params.namespace) ####"
+        CURRENT_TAG=$(oc get deploy $(params.deployment) -n $(params.namespace) -o jsonpath="{.spec.template.spec.containers[$(params.container)].image}" | cut -d ":" -f2)
+        CURRENT_COMMIT=${CURRENT_TAG%-*}
+
+        NEW_TAG=$(params.image-tag)
+        NEW_COMMIT=${NEW_TAG%-*}
+
+        if [ "$CURRENT_COMMIT" == "$NEW_COMMIT" ]; then
+          echo -n "No code changes between images" > $(results.commit-list-message.path)
+        else
+          echo -n "[$CURRENT_COMMIT to $NEW_COMMIT]($(params.git_source_url)/compare/$CURRENT_COMMIT..$NEW_COMMIT") > $(results.commit-list-message.path)
+        fi

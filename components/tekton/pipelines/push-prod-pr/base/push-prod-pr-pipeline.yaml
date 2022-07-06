@@ -14,6 +14,8 @@ spec:
     - name: git_url
       type: string
       default: https://github.com/gnunn-gitops/product-catalog
+    - name: git_source_url
+      description: The URL of the repo containing the source code for the application, used to construct a link for code changes
     - name: image_dest_url
       type: string
       description: External registry location of image to push without tag
@@ -92,12 +94,26 @@ spec:
       workspaces:
         - name: gitops-manifests
           workspace: gitops-manifests
+    - name: create-commit-list
+      taskRef:
+        name: create-commit-list
+      runAfter:
+        - update-image
+      params:
+        - name: deployment
+          value: $(params.app)
+        - name: namespace
+          value: product-catalog-prod
+        - name: image-tag
+          value: $(params.image_dest_tag)
+        - name: git_source_url
+          value: $(params.git_source_url)
     - name: prod-pr-deploy
       taskRef:
         name: task-create-pr
         kind: Task
       runAfter:
-        - update-image
+        - create-commit-list
       workspaces:
         - name: source
           workspace: gitops-manifests
@@ -115,3 +131,6 @@ spec:
             - [ ] [Quay Image Vulnerabilities](https://$(params.image_dest_url):$(params.image_dest_tag))
             - [ ] [Advanced Cluster Security Image Vulnerabilities and Policies](https://$(tasks.variables.results.acs-central-endpoint)/main/vulnerability-management/images/$(tasks.get-image-digest.results.image_digest))
             - [ ] [Sonarqube Results](https://$(params.sonarqube_host)/dashboard?id=product-catalog-$(params.app))
+
+            ## Code Changes
+            - $(tasks.create-commit-list.results.commit-list-message)
