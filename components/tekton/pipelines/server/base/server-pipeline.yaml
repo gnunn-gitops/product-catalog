@@ -353,7 +353,7 @@ spec:
 
             To create a production release run the following command:
 
-            > tkn pipeline start push-prod-pr --use-param-defaults --prefix-name server -p git_source_url=$(params.git_source_url) -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=$(params.image_dest_url) -p cluster=$(params.cluster) -p app=server -s github-pipeline -w name=acs-central,secret=roxsecrets -w name=gitops-manifests,claimName=gitops-manifests
+            > tkn pipeline start push-prod-pr --use-param-defaults --prefix-name server -p git_source_url=$(params.source_git_url) -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=$(params.image_dest_url) -p cluster=$(params.cluster) -p app=server -s github-pipeline -w name=acs-central,secret=roxsecrets -w name=gitops-manifests,claimName=gitops-manifests
       workspaces:
         - name: slack-secret
           workspace: slack-secret
