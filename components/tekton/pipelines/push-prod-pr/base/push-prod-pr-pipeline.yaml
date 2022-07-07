@@ -133,4 +133,4 @@ spec:
             - [ ] [Sonarqube Results](https://$(params.sonarqube_host)/dashboard?id=product-catalog-$(params.app))
 
             ## Code Changes
-            - $(tasks.create-commit-list.results.commit-list-message)
+            - [ ] $(tasks.create-commit-list.results.commit-list-message)
