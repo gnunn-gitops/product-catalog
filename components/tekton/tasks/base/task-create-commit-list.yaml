@@ -36,5 +36,5 @@ spec:
         if [ "$CURRENT_COMMIT" == "$NEW_COMMIT" ]; then
           echo -n "No code changes between images" > $(results.commit-list-message.path)
         else
-          echo -n "[$CURRENT_COMMIT to $NEW_COMMIT]($(params.git_source_url)/compare/$CURRENT_COMMIT..$NEW_COMMIT" > $(results.commit-list-message.path)
+          echo -n "[$CURRENT_COMMIT to $NEW_COMMIT]($(params.git_source_url)/compare/$CURRENT_COMMIT..$NEW_COMMIT)" > $(results.commit-list-message.path)
         fi
