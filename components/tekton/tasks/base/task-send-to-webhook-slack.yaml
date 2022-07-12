@@ -63,7 +63,7 @@ spec:
             /usr/bin/curl -s -S -X POST -H 'Content-type: application/json' --data "${MESSAGE}" $URL
           else
             echo "Sending message to slack"
-            /usr/bin/curl -s -S -X POST -H 'Content-type: application/json' --data '{"type": "mrkdwn", "text":"${MESSAGE}"}' $URL
+            /usr/bin/curl -s -S -X POST -H 'Content-type: application/json' --data '{"type": "mrkdwn", "text":"$(params.message)"}' $URL
           fi
         fi
       else
