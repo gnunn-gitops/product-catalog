@@ -343,19 +343,65 @@ spec:
         - test-test
         - notify-on-scan-fail
       params:
-        - name: message
+        - name: console_message
           value: |-
-            *Server Build $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) Completed*
+            Server Build $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) Completed
 
             The build of image $(params.image_dest_url):$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) has been completed
 
-            \t* <https://$(params.image_dest_url):$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)|Quay Image>
-            \t* <https://$(tasks.variables.results.acs-central-endpoint)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)|ACS Scan>
-            \t* <https://$(params.sonarqube_host)/dashboard?id=product-catalog-server|SonarQube Results>
-
-            To create a production release run the following command:
-
-            > tkn pipeline start push-prod-pr --use-param-defaults --prefix-name server -p git_source_url=$(params.source_git_url) -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=$(params.image_dest_url) -p cluster=$(params.cluster) -p app=server -s github-pipeline -w name=acs-central,secret=roxsecrets -w name=gitops-manifests,claimName=gitops-manifests
+            * Quay Image: https://$(params.image_dest_url):$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)
+            * ACS Scan: https://$(tasks.variables.results.acs-central-endpoint)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)
+            * SonarQube Results: https://$(params.sonarqube_host)/dashboard?id=product-catalog-server
+        - name: message_type
+          value: raw
+        - name: message
+          value: |-
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Server Pipeline Complete",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Server pipeline for image $(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) has completed"
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Pipeline Results*"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "* <$(params.image_dest_url):$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid)|Quay Image>\n* <https://$(tasks.variables.results.acs-central-endpoint)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)|ACS Scan>\n* <https://$(params.sonarqube_host)/dashboard?id=product-catalog-server|SonarQube>"
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "To push this image to production run the following command to generate a pull request:\n>tkn pipeline start push-prod-pr --use-param-defaults --prefix-name server -p git_source_url=$(params.source_git_url) -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.short-commit)-$(tasks.generate-id.results.build-uid) -p image_dest_url=$(params.image_dest_url) -p cluster=$(params.cluster) -p app=server -s github-pipeline -w name=acs-central,secret=roxsecrets -w name=gitops-manifests,claimName=gitops-manifests"
+                  }
+                }
+              ]
+            }
       workspaces:
         - name: slack-secret
           workspace: slack-secret

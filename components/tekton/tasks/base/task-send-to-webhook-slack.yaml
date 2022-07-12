@@ -16,7 +16,15 @@ spec:
   params:
   - name: message
     type: string
-    description: plain text message
+    description: Basic message, markdown can be used for formatting
+  - name: console_message
+    type: string
+    description: Message to log to console
+    default: ""
+  - name: message_type
+    type: string
+    description: The type of message to send, can be set to "raw" or "markdown". If set to "raw" the user is expected to provide a full json payload conforming to slack's specifications.
+    default: "markdown"
   workspaces:
   - name: slack-secret
     optional: true
@@ -26,19 +34,38 @@ spec:
     script: |
       #!/bin/sh
 
-      # Always echo message locally for logging purposes
-      echo "$(params.message)"
+      echo "Preparing to send message..."
+
+      MESSAGE=$(cat <<-END
+      $(params.message)
+      END
+      )
+
+      CONSOLE_MESSAGE=$(cat <<-END
+      $(params.console_message)
+      END
+      )
+
+      # Echo message locally for logging purposes
+      if [ -n "$CONSOLE_MESSAGE" ]; then
+        echo "$CONSOLE_MESSAGE"
+      elif [ -n "$MESSAGE" ]; then
+        echo "$MESSAGE"
+      fi
 
       if [ $(workspaces.slack-secret.bound) == "true" ] ; then
         if [ -f "$(workspaces.slack-secret.path)/url" ]; then
           printf "\nSending to slack...\n\n"
           URL=$(cat $(workspaces.slack-secret.path)/url)
 
-          echo "Sending slack message"
-
-          /usr/bin/curl -X POST -H 'Content-type: application/json' --data '{"type": "mrkdwn", "text":"$(params.message)"}' $URL
-          exit 0
+          if [ "$(params.message_type)" == "raw" ]; then
+            echo "Sending raw message to slack"
+            /usr/bin/curl -s -S -X POST -H 'Content-type: application/json' --data "${MESSAGE}" $URL
+          else
+            echo "Sending message to slack"
+            /usr/bin/curl -s -S -X POST -H 'Content-type: application/json' --data '{"type": "mrkdwn", "text":"${MESSAGE}"}' $URL
+          fi
         fi
+      else
+        echo "Note: Slack message was not sent as it was not configured"
       fi
-
-      echo "Note: Slack message was not sent as it was not configured"
