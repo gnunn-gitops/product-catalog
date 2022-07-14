@@ -27,7 +27,7 @@ spec:
           name: client
         params:
           - name: git-url
-            value: $(params.git-url)
+            value: $(params.git-repo-url)
           - name: git-revision
             value: $(params.git-revision)
           - name: push-to-prod

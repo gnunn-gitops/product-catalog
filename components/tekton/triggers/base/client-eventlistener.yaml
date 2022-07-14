@@ -8,7 +8,8 @@ spec:
   triggers:
     - name: client-webhook
       bindings:
-        - ref: github-triggerbinding
+        - kind: ClusterTriggerBinding
+          ref: github-push
       template:
         ref: client
 ---
