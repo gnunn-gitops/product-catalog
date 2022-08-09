@@ -14,30 +14,40 @@ default:
 applications:
 
   product-catalog-dev:
+    annotations:
+      app.kubernetes.io/name: product-catalog-dev
     destination:
       namespace: product-catalog-dev
     source:
       path: clusters/local.home/overlays/dev
 
   product-catalog-test:
+    annotations:
+      app.kubernetes.io/name: product-catalog-test
     destination:
       namespace: product-catalog-test
     source:
       path: clusters/local.home/overlays/test
 
   product-catalog-prod:
+    annotations:
+      app.kubernetes.io/name: product-catalog-prod
     destination:
       namespace: product-catalog-prod
     source:
       path: clusters/local.home/overlays/prod
 
   product-catalog-cicd:
+    annotations:
+      app.kubernetes.io/name: product-catalog-cicd
     destination:
       namespace: product-catalog-cicd
     source:
       path: clusters/local.home/overlays/cicd
 
   product-catalog-monitor:
+    annotations:
+      app.kubernetes.io/name: product-catalog-monitor
     destination:
       namespace: product-catalog-monitor
     source:
