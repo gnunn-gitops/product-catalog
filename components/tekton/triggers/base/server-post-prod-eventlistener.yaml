@@ -25,3 +25,5 @@ spec:
     kind: "Service"
     name: el-server-post-prod
     weight: 100
+  tls:
+    termination: edge    

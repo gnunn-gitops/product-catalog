@@ -28,3 +28,5 @@ spec:
     kind: "Service"
     name: el-server
     weight: 100
+  tls:
+    termination: edge    
