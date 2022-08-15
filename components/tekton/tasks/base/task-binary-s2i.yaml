@@ -52,6 +52,13 @@ spec:
         echo -n "$BUILD" > $(results.build.path)
         echo "Build created was $BUILD"
 
+        STATUS=$(oc get build $BUILD -o=jsonpath='{.status.phase}')
+        if [ $STATUS == "Failed" ];
+        then
+          echo "Build $BUILD failed"
+          exit 1
+        fi
+
         DIGEST=$(oc get build $BUILD -o jsonpath="{.status.output.to.imageDigest}")
         echo -n "$DIGEST" > $(results.IMAGE_DIGEST.path)
         echo "Digest for image build was $DIGEST"
