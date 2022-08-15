@@ -53,7 +53,7 @@ spec:
         echo "Build created was $BUILD"
 
         STATUS=$(oc get build $BUILD -o=jsonpath='{.status.phase}')
-        if [ $STATUS == "Failed" ];
+        if [ "$STATUS" == "Failed" ];
         then
           echo "Build $BUILD failed"
           exit 1
