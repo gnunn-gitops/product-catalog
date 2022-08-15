@@ -15,7 +15,7 @@ applications:
 
   product-catalog-dev:
     labels:
-      app.kubernetes.io/name: product-catalog-dev
+      app.kubernetes.io/name: product-catalog
     destination:
       namespace: product-catalog-dev
     source:
@@ -23,7 +23,7 @@ applications:
 
   product-catalog-test:
     labels:
-      app.kubernetes.io/name: product-catalog-test
+      app.kubernetes.io/name: product-catalog
     destination:
       namespace: product-catalog-test
     source:
@@ -31,23 +31,19 @@ applications:
 
   product-catalog-prod:
     labels:
-      app.kubernetes.io/name: product-catalog-prod
+      app.kubernetes.io/name: product-catalog
     destination:
       namespace: product-catalog-prod
     source:
       path: clusters/local.home/overlays/prod
 
   product-catalog-cicd:
-    labels:
-      app.kubernetes.io/name: product-catalog-cicd
     destination:
       namespace: product-catalog-cicd
     source:
       path: clusters/local.home/overlays/cicd
 
   product-catalog-monitor:
-    labels:
-      app.kubernetes.io/name: product-catalog-monitor
     destination:
       namespace: product-catalog-monitor
     source:
