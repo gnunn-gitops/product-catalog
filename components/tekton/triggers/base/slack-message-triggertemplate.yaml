@@ -28,11 +28,11 @@ spec:
           argocd.argoproj.io/compare-options: IgnoreExtraneous
           argocd.argoproj.io/sync-options: Prune=false
         labels:
-          tekton.dev/pipeline: push-to-prod
+          tekton.dev/pipeline: push-prod-pr
         generateName: slack-message-webhook-
       spec:
         pipelineRef:
-          name: push-to-prod
+          name: push-prod-pr
         params:
           - name: git-revision
             value: $(params.git-revision)
