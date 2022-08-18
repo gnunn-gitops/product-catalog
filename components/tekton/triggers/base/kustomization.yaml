@@ -8,3 +8,6 @@ resources:
 - client-triggertemplate.yaml
 - server-post-prod-eventlistener.yaml
 - server-post-prod-triggertemplate.yaml
+- slack-message-eventlistener.yaml
+- slack-message-triggerbinding.yaml
+- slack-message-triggertemplate.yaml

@@ -1,0 +1,18 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: slack-message
+spec:
+  params:
+    - name: gitrevision
+      value: $(body.git-revision)
+    - name: git-url
+      value: $(body.git-url)
+    - name: image_dest_url
+      value: $(body.image_dest_url)
+    - name: image_dest_tag
+      value: $(body.image_dest_tag)
+    - name: cluster
+      value: $(body.cluster)
+    - name: app
+      value: $(body.app)

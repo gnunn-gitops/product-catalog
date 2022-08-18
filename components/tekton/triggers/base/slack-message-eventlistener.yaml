@@ -1,0 +1,14 @@
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: slack-message
+spec:
+  serviceAccountName: pipeline
+  triggers:
+    - name: slack-message-webhook
+      bindings:
+        - kind: TriggerBinding
+          ref: slack-message
+      template:
+        ref: slack-message

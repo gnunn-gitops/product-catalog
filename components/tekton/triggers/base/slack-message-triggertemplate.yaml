@@ -1,0 +1,58 @@
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: slack-message
+spec:
+  params:
+    - name: git-revision
+      description: The git revision
+      default: master
+    - name: git-url
+      description: The git repository url
+    - name: content-type
+      description: The Content-Type of the event
+    - name: image_dest_url
+      description: External registry location of image to push without tag
+    - name: image_dest_tag
+      description: Tag of image to push to production
+    - name: cluster
+      description: Cluster to push to
+    - name: app
+      description: Either 'server' or 'client'
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        annotations:
+          argocd.argoproj.io/compare-options: IgnoreExtraneous
+          argocd.argoproj.io/sync-options: Prune=false
+        labels:
+          tekton.dev/pipeline: push-to-prod
+        generateName: slack-message-webhook-
+      spec:
+        pipelineRef:
+          name: push-to-prod
+        params:
+          - name: git-revision
+            value: $(params.git-revision)
+          - name: image_dest_tag
+            value: $(params.image_dest_tag)
+          - name: image_dest_url
+            value: $(params.image_dest_url)
+          - name: cluster
+            value: $(params.cluster)
+          - name: app
+            value: $(params.app)
+        workspaces:
+          - name: gitops-manifests
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 5Gi
+          - name: acs-central
+            secret:
+              secretName: roxsecrets          
