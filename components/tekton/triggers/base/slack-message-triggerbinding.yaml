@@ -4,10 +4,12 @@ metadata:
   name: slack-message
 spec:
   params:
-    - name: gitrevision
+    - name: git_revision
       value: $(body.git-revision)
-    - name: git-url
+    - name: git_url
       value: $(body.git-url)
+    - name: git_source_url
+      value: $(body.git-source-url)
     - name: image_dest_url
       value: $(body.image_dest_url)
     - name: image_dest_tag
