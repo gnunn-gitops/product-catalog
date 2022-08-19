@@ -8,10 +8,8 @@ spec:
     - name: git-revision
       description: The git revision
       default: master
-    - name: git-url
+    - name: git-repo-url
       description: The git repository url
-    - name: content-type
-      description: The Content-Type of the event
   resourcetemplates:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
@@ -26,10 +24,10 @@ spec:
         pipelineRef:
           name: server
         params:
-          - name: git-url
-            value: $(params.git-repo-url)
-          - name: git-revision
-            value: $(params.git-revision)
+          - name: source_git_url
+            value: $(tt.params.git-repo-url)
+          - name: source_git_revision
+            value: $(tt.params.git-revision)
           - name: MAVEN_MIRROR_URL
             value: http://nexus:8081/content/groups/public/
           - name: push-to-prod
