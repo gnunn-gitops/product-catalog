@@ -251,7 +251,7 @@ spec:
       runAfter:
         - dev-update-image
       params:
-        - name: application-name
+        - name: application_name
           value: product-catalog-dev
         - name: revision
           value: $(params.gitops_git_revision)
@@ -259,7 +259,7 @@ spec:
           value: server
         - name: namespace
           value: product-catalog-dev
-        - name: image-tag
+        - name: image_tag
           value: $(tasks.generate-id.results.tag_id)
     - name: dev-test
       taskRef:
@@ -311,7 +311,7 @@ spec:
       runAfter:
         - test-update-image
       params:
-        - name: application-name
+        - name: application_name
           value: product-catalog-test
         - name: revision
           value: $(params.gitops_git_revision)
@@ -319,7 +319,7 @@ spec:
           value: server
         - name: namespace
           value: product-catalog-test
-        - name: image-tag
+        - name: image_tag
           value: $(tasks.generate-id.results.tag_id)
     - name: test-test
       taskRef:
