@@ -41,7 +41,7 @@ spec:
           - name: git_revision
             value: $(params.git-revision)
           - name: git_source_url
-            value: $(params.git-source_url)
+            value: $(params.git-source-url)
           - name: image_dest_tag
             value: $(params.image_dest_tag)
           - name: image_dest_url
