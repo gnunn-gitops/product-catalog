@@ -170,11 +170,11 @@ spec:
       runAfter:
         - build-image
       params:
-        - name: src-image
+        - name: src_image
           value: $(params.image_dest_url)@$(tasks.build-image.results.IMAGE_DIGEST)
-        - name: dest-image
+        - name: dest_image
           value: $(params.image_dest_url)
-        - name: dest-tags
+        - name: dest_tags
           value: $(tasks.generate-id.results.tag_id),dev
     - name: clone-gitops-manifests
       taskRef:
@@ -232,11 +232,11 @@ spec:
       runAfter:
         - dev-gitops-deploy
       params:
-        - name: src-image
+        - name: src_image
           value: $(params.image_dest_url)@$(tasks.build-image.results.IMAGE_DIGEST)
-        - name: dest-image
+        - name: dest_image
           value: $(params.image_dest_url)
-        - name: dest-tags
+        - name: dest_tags
           value: $(tasks.generate-id.results.tag_id),test,latest
     - name: test-update-image
       taskRef:
