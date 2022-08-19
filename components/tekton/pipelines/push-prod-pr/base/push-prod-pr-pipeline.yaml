@@ -104,7 +104,7 @@ spec:
           value: $(params.app)
         - name: namespace
           value: product-catalog-prod
-        - name: image-tag
+        - name: image_tag
           value: $(params.image_dest_tag)
         - name: git_source_url
           value: $(params.git_source_url)

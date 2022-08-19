@@ -4,11 +4,11 @@ metadata:
   name: push-image
 spec:
   params:
-  - name: src-image
+  - name: src_image
     type: string
-  - name: dest-image
+  - name: dest_image
     type: string
-  - name: dest-tags
+  - name: dest_tags
     type: string
     default: ""
   steps:
@@ -17,16 +17,16 @@ spec:
       script: |
         #!/usr/bin/env bash
 
-        # echo "Copying image docker://$(params.src-image) to docker://$(params.dest-image):latest"
-        # skopeo copy --src-tls-verify=false --dest-tls-verify=false docker://$(params.src-image) docker://$(params.dest-image):latest
+        # echo "Copying image docker://$(params.src_image) to docker://$(params.dest_image):latest"
+        # skopeo copy --src-tls-verify=false --dest-tls-verify=false docker://$(params.src_image) docker://$(params.dest_image):latest
 
-        if [ "$(params.dest-tags)" != "" ];
+        if [ "$(params.dest_tags)" != "" ];
         then
 
-          tags=$(params.dest-tags)
+          tags=$(params.dest_tags)
           for i in ${tags//,/ }
           do
-            echo "Copying image docker://$(params.src-image) to docker://$(params.dest-image):$i"
-            skopeo copy --src-tls-verify=false --dest-tls-verify=false docker://$(params.src-image) docker://$(params.dest-image):$i
+            echo "Copying image docker://$(params.src_image) to docker://$(params.dest_image):$i"
+            skopeo copy --src-tls-verify=false --dest-tls-verify=false docker://$(params.src_image) docker://$(params.dest_image):$i
           done
         fi

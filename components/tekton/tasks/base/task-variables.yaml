@@ -4,7 +4,7 @@ metadata:
   name: variables-from-k8s
 spec:
   results:
-    - name: acs-central-endpoint
+    - name: acs_central_endpoint
   workspaces:
     - name: acs-central
       optional: true
@@ -14,7 +14,7 @@ spec:
       script: |
         #!/usr/bin/env sh
         if [ $(workspaces.acs-central.bound) == "true" ] ; then
-          cat $(workspaces.acs-central.path)/rox_central_endpoint > $(results.acs-central-endpoint.path)
+          cat $(workspaces.acs-central.path)/rox_central_endpoint > $(results.acs_central_endpoint.path)
         else
-          echo "not-set" > $(results.acs-central-endpoint.path)
+          echo "not-set" > $(results.acs_central_endpoint.path)
         fi

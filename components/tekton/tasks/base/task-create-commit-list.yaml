@@ -13,7 +13,7 @@ spec:
       default: "0"
     - name: namespace
       description: namespace where the deployment is located
-    - name: image-tag
+    - name: image_tag
       description: tag of the image that is expected to be deployed
     - name: git_source_url
       description: The URL of the repo containing the source code, used to construct a link for code changes
@@ -29,7 +29,7 @@ spec:
         CURRENT_COMMIT=${CURRENT_TAG%-*}
         echo "Currently deployed commit is $CURRENT_COMMIT"
 
-        NEW_TAG=$(params.image-tag)
+        NEW_TAG=$(params.image_tag)
         NEW_COMMIT=${NEW_TAG%-*}
         echo "New commit in PR will be $NEW_COMMIT"
 

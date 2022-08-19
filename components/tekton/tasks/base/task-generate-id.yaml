@@ -7,9 +7,9 @@ spec:
     - name: source
   results:
   - description: The short commit SHA that was fetched by this Task
-    name: short-commit
+    name: short_commit
   - description: Unique build identifier
-    name: build-uid
+    name: build_uid
   steps:
   - name: generate
     workingDir: $(workspaces.source.path)
@@ -19,10 +19,10 @@ spec:
 
       # Get short commit
       export SHORT_SHA=$(git rev-parse --short HEAD)
-      echo -n "$SHORT_SHA" > $(results.short-commit.path)
+      echo -n "$SHORT_SHA" > $(results.short_commit.path)
 
       # Generate uinque UID
       export BUILD_UID=$(printf '%s ' $(date) | cksum | cut -f -1 -d ' ')
-      echo -n "$BUILD_UID" > $(results.build-uid.path)
+      echo -n "$BUILD_UID" > $(results.build_uid.path)
 
       echo "Generated ID $SHORT_SHA-$BUILD_UID"
