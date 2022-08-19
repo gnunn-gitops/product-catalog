@@ -335,6 +335,23 @@ spec:
                     "type": "mrkdwn",
                     "text": "To push this image to production run the following command to generate a pull request:\n>tkn pipeline start push-prod-pr --use-param-defaults --prefix-name client -p git_source_url=$(params.source_git_url) -p git_revision=main -p image_dest_tag=$(tasks.generate-id.results.tag_id) -p image_dest_url=$(params.image_dest_url) -p cluster=$(params.cluster) -p app=client -s github-pipeline -w name=acs-central,secret=roxsecrets -w name=gitops-manifests,claimName=gitops-manifests"
                   }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "Create Release Pull Request",
+                        "emoji": true
+                      },
+                      "value": "client,$(params.image_dest_url),$(tasks.generate-id.results.tag_id),$(params.cluster)",
+                    }
+                  ]
                 }
               ]
             }

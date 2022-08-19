@@ -410,11 +410,10 @@ spec:
                       "type": "button",
                       "text": {
                         "type": "plain_text",
-                        "text": "Build Application",
+                        "text": "Create Release Pull Request",
                         "emoji": true
                       },
-                      "value": "click_me_123",
-                      "url": "https://google.com"
+                      "value": "server,$(params.image_dest_url),$(tasks.generate-id.results.tag_id),$(params.cluster)",
                     }
                   ]
                 }             
