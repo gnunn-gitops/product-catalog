@@ -7,7 +7,7 @@ spec:
   params:
     - name: git_revision
       description: The git revision
-      default: master
+      default: main
     - name: git_url
       description: The git repository url
     - name: git_source_url
@@ -24,9 +24,6 @@ spec:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
-        annotations:
-          argocd.argoproj.io/compare-options: IgnoreExtraneous
-          argocd.argoproj.io/sync-options: Prune=false
         labels:
           tekton.dev/pipeline: push-prod-pr
         generateName: slack-message-webhook-
@@ -35,19 +32,19 @@ spec:
           name: push-prod-pr
         params:
           - name: git_url
-            value: $(params.git_url)
+            value: $(tt.params.git_url)
           - name: git_revision
-            value: $(params.git_revision)
+            value: $(tt.params.git_revision)
           - name: git_source_url
-            value: $(params.git_source_url)
+            value: $(tt.params.git_source_url)
           - name: image_dest_tag
-            value: $(params.image_dest_tag)
+            value: $(tt.params.image_dest_tag)
           - name: image_dest_url
-            value: $(params.image_dest_url)
+            value: $(tt.params.image_dest_url)
           - name: cluster
-            value: $(params.cluster)
+            value: $(tt.params.cluster)
           - name: app
-            value: $(params.app)
+            value: $(tt.params.app)
         workspaces:
           - name: gitops-manifests
             volumeClaimTemplate:

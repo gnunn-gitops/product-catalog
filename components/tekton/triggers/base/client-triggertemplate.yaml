@@ -8,10 +8,8 @@ spec:
     - name: git-revision
       description: The git revision
       default: master
-    - name: git-url
+    - name: git-repo-url
       description: The git repository url
-    - name: content-type
-      description: The Content-Type of the event
   resourcetemplates:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
@@ -27,9 +25,9 @@ spec:
           name: client
         params:
           - name: git-url
-            value: $(params.git-repo-url)
+            value: $(tt.params.git-repo-url)
           - name: git-revision
-            value: $(params.git-revision)
+            value: $(tt.params.git-revision)
           - name: push-to-prod
             value: "true"
         workspaces:
