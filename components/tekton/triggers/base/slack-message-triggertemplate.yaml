@@ -8,12 +8,10 @@ spec:
     - name: git_revision
       description: The git revision
       default: master
-    - name: giturl
+    - name: git_url
       description: The git repository url
     - name: git_source_url
       description: The git repository source code URL
-    - name: content_type
-      description: The Content-Type of the event
     - name: image_dest_url
       description: External registry location of image to push without tag
     - name: image_dest_tag

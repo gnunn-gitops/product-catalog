@@ -6,7 +6,7 @@ spec:
   params:
     - name: git_revision
       value: $(body.git_revision)
-    - name: git-url
+    - name: git_url
       value: $(body.git_url)
     - name: git_source_url
       value: $(body.git_source_url)

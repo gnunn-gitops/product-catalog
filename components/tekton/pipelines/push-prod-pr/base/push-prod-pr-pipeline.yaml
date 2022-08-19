@@ -33,9 +33,19 @@ spec:
       description: Hostname for sonarqube
       default: sonarqube-dev-tools.apps.home.ocplab.com
   tasks:
+    - name: debug-params
+      taskRef:
+        name: openshift-client
+      params:
+        - name: SCRIPT
+          value: |-
+            echo "git-url: $(params.git_url)"
+            echo "git_revision: $(params.git_revision)"
     - name: variables
       taskRef:
         name: variables-from-k8s
+      runAfter:
+        - debug-params
       workspaces:
         - name: acs-central
           workspace: acs-central
