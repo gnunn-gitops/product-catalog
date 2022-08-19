@@ -129,7 +129,7 @@ spec:
             ## Security Checklist
 
             - [ ] [Quay Image Vulnerabilities](https://$(params.image_dest_url):$(params.image_dest_tag))
-            - [ ] [Advanced Cluster Security Image Vulnerabilities and Policies](https://$(tasks.variables.results.acs-central-endpoint)/main/vulnerability-management/images/$(tasks.get-image-digest.results.image_digest))
+            - [ ] [Advanced Cluster Security Image Vulnerabilities and Policies](https://$(tasks.variables.results.acs_central_endpoint)/main/vulnerability-management/images/$(tasks.get-image-digest.results.image_digest))
             - [ ] [Sonarqube Results](https://$(params.sonarqube_host)/dashboard?id=product-catalog-$(params.app))
 
             ## Code Changes
