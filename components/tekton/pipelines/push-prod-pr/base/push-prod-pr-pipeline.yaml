@@ -40,8 +40,8 @@ spec:
       params:
         - name: SCRIPT
           value: |-
-            echo "git-url: $(params.git_url)"
-            echo "git_revision: $(params.git_revision)"
+            echo "git-url: $(params.image_dest_url)"
+            echo "git_revision: $(params.image_dest_tag)"
     - name: variables
       taskRef:
         name: variables-from-k8s
