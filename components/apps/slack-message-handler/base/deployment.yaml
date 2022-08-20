@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: slack-message-handler
+    app.kubernetes.io/component: slack-message-handler
+    app.kubernetes.io/instance: slack-message-handler
+    app.kubernetes.io/name: slack-message-handler
+    app.openshift.io/runtime: quarkus
+    app.openshift.io/runtime-namespace: product-catalog-cicd
+  name: slack-message-handler
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: slack-message-handler
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftWebConsole
+      labels:
+        app: slack-message-handler
+        deployment: slack-message-handler
+    spec:
+      containers:
+      - image: quay.io/gnunn/slack-message-handler:latest
+        imagePullPolicy: Always
+        name: slack-message-handler
+        resources:
+          requests:
+            memory: "50Mi"
+            cpu: "50m"
+          limits:
+            memory: "100Mi"
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 8443
+          protocol: TCP
+        - containerPort: 8778
+          protocol: TCP
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30

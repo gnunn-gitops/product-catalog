@@ -1,0 +1,21 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: slack-message-handler
+    app.kubernetes.io/component: slack-message-handler
+    app.kubernetes.io/instance: slack-message-handler
+    app.kubernetes.io/name: slack-message-handler
+    app.openshift.io/runtime-version: latest
+  name: slack-message-handler
+spec:
+  port:
+    targetPort: 8080-tcp
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: slack-message-handler
+    weight: 100
+  wildcardPolicy: None

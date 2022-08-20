@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: slack-message-handler
+    app.kubernetes.io/component: slack-message-handler
+    app.kubernetes.io/instance: slack-message-handler
+    app.kubernetes.io/name: slack-message-handler
+    app.openshift.io/runtime-version: latest
+  name: slack-message-handler
+spec:
+  ports:
+  - name: 8080-tcp
+    port: 8080
+  - name: 8443-tcp
+    port: 8443
+  - name: 8778-tcp
+    port: 8778
+  selector:
+    app: slack-message-handler
+    deployment: slack-message-handler
