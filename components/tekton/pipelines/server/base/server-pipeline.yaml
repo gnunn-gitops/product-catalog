@@ -142,6 +142,8 @@ spec:
       params:
       - name: IMAGE
         value: $(params.image_dest_url):latest
+      - name: CONTEXT
+        value: $(workspaces.source.path)
     # - name: build-image
     #   taskRef:
     #     name: binary-s2i
