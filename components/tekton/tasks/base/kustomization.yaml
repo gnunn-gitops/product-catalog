@@ -16,6 +16,7 @@ resources:
 - task-npm.yaml
 - task-npm-quality.yaml
 - task-binary-s2i.yaml
+- task-buildah.yaml
 - task-push-image.yaml
 - task-deploy.yaml
 - https://github.com/redhat-cop/gitops-catalog/openshift-pipelines-tasks/newman/base
