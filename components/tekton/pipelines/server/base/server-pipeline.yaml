@@ -143,7 +143,7 @@ spec:
       - name: IMAGE
         value: $(params.image_dest_url):latest
       - name: CONTEXT
-        value: $(workspaces.source.path)
+        value: product-catalog-server
     # - name: build-image
     #   taskRef:
     #     name: binary-s2i
