@@ -132,20 +132,32 @@ spec:
             - "-Pquality"
     - name: build-image
       taskRef:
-        name: binary-s2i
-        kind: Task
+        name: buildah
+        kind: ClusterTask
       workspaces:
         - name: source
           workspace: git-source
       runAfter:
         - quality
       params:
-        - name: file
-          value: "$(workspaces.source.path)/target/*-runner.jar"
-        - name: buildconfig
-          value: server
-        - name: IMAGE
-          value: $(params.image_dest_url)
+      - name: IMAGE
+        value: $(params.image_dest_url):latest
+    # - name: build-image
+    #   taskRef:
+    #     name: binary-s2i
+    #     kind: Task
+    #   workspaces:
+    #     - name: source
+    #       workspace: git-source
+    #   runAfter:
+    #     - quality
+    #   params:
+    #     - name: file
+    #       value: "$(workspaces.source.path)/target/*-runner.jar"
+    #     - name: buildconfig
+    #       value: server
+    #     - name: IMAGE
+    #       value: $(params.image_dest_url)
     - name: tag-dev-image
       taskRef:
         name: push-image
