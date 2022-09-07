@@ -97,7 +97,7 @@ spec:
           workspace: git-source
     - name: build-image
       taskRef:
-        name: binary-s2i
+        name: buildah
         kind: Task
       workspaces:
         - name: source
@@ -105,12 +105,10 @@ spec:
       runAfter:
         - quality
       params:
-        - name: directory
-          value: "$(workspaces.source.path)/dist"
-        - name: buildconfig
-          value: client
-        - name: IMAGE
-          value: $(params.image_dest_url)
+      - name: IMAGE
+        value: $(params.image_dest_url):latest
+      - name: DOCKERFILE
+        value: ./Containerfile        
     - name: acs-scan-image
       taskRef:
         name: rox-image-scan
