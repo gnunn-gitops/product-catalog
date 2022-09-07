@@ -6,5 +6,4 @@ generatorOptions:
 
 resources:
 # Client pipeline
-- client-buildconfig.yaml
 - client-pipeline.yaml
