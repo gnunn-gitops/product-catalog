@@ -3,6 +3,6 @@ if [ $# -lt 1 ]; then
     exit 1
 else
     OVERLAY=$1
-    echo "Configuring cluster ${OVERLAY}"
+    echo "Deploying product catalog to cluster ${OVERLAY}"
 fi
 kustomize build bootstrap/argocd/apps/overlays/${OVERLAY} --enable-helm | oc apply -f -
