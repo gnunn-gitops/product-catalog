@@ -7,18 +7,18 @@ spec:
   serviceAccountName: pipeline
   triggers:
     - name: server-post-prod-webhook
+      interceptors:
+        - name: "Only accept sync succeeded"
+          ref:
+            name: "cel"
+          params:
+          - name: "filter"
+            value: "body.state in ['success']"        
       bindings:
         - kind: TriggerBinding
           ref: argocd-notification
       template:
         ref: server-post-prod
-  interceptors:
-    - name: "Only accept sync succeeded"
-      ref:
-        name: "cel"
-      params:
-      - name: "filter"
-        value: "body.state in ['success']"        
 ---
 apiVersion: route.openshift.io/v1
 kind: Route
