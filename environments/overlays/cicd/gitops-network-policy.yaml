@@ -1,0 +1,18 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-namespace-gitops
+spec:
+  podSelector:
+    matchLabels:
+      eventlistener: server-post-prod
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: product-catalog-gitops
+    ports:
+      - protocol: TCP
+        port: 8080
+  policyTypes:
+    - Ingress

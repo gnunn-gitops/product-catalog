@@ -5,7 +5,7 @@ namespace: product-catalog-cicd
 
 bases:
 - workspace-template-cm.yaml
-- prod-network-policy.yaml
+- gitops-network-policy.yaml
 - docker-sealed-secret.yaml
 - github-sealed-secret.yaml
 - slack-deployments-webhook-sealed-secret.yaml
