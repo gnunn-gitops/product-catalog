@@ -4,11 +4,9 @@ metadata:
   name: argocd-notification
 spec:
   params:
-  - name: git-revision
-    value: $(body.changes[0].ref.displayId)
-  - name: gitrepo-url
-    value: $(body.repository.links.clone[0].href)
-  - name: git-repo-name
-    value: $(body.repository.name)
-  - name: pusher-name
-    value: $(body.actor.name)
+  - name: state
+    value: $(body.state)
+  - name: application
+    value: $(body.application)
+  - name: description
+    value: $(body.description)
