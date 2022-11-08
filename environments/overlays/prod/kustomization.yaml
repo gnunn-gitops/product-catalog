@@ -8,4 +8,4 @@ resources:
 - ../../../components/apps/database/base
 - ../../../components/apps/server/base
 - ../../../components/apps/client/base
-- post-sync-pipeline-job.yaml
+# - post-sync-pipeline-job.yaml

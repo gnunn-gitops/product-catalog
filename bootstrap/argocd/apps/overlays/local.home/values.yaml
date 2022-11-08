@@ -32,6 +32,8 @@ applications:
   product-catalog-prod:
     labels:
       app.kubernetes.io/name: product-catalog
+    annotations:
+      notifications.argoproj.io/subscribe.on-sync-success.tekton: ""
     destination:
       namespace: product-catalog-prod
     source:
