@@ -13,7 +13,7 @@ spec:
             name: "cel"
           params:
           - name: "filter"
-            value: "body.state in ['success']"        
+            value: "body.state in ['failed']"        
       bindings:
         - kind: TriggerBinding
           ref: argocd-notification
