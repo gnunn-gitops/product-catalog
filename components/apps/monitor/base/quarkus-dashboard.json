@@ -2700,7 +2700,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "irate(http_server_requests_seconds_sum{pod=\"$pod\", service=\"$service\", uri!~\"\\\\/q\\\\/.*\"}[5m]) / irate(http_server_requests_seconds_count{pod=\"$pod\", service=\"$service\", uri!~\"\\\\/q\\\\/.*\"}[5m])",
+            "expr": "rate(http_server_requests_seconds_sum{pod=\"$pod\", service=\"$service\", uri!~\"\\\\/q\\\\/.*\"}[2m]) / rate(http_server_requests_seconds_count{pod=\"$pod\", service=\"$service\", uri!~\"\\\\/q\\\\/.*\"}[2m])",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 1,
