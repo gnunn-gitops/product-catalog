@@ -38,10 +38,8 @@ spec:
       default: v1.5.0
   stepTemplate:
     envFrom:
-      - configMapRef:
-          name: argocd-env-configmap  # used for server address
       - secretRef:
-          name: argocd-env-secret  # used for authentication (username/password or auth token)
+          name: argocd-env-secret  # used for authentication (username/password or auth token) and server address
   steps:
     - name: wait-and-sync
       image: registry.redhat.io/openshift-gitops-1/argocd-rhel8:$(params.gitops-version)
@@ -50,7 +48,7 @@ spec:
         alias argocd='argocd --insecure'
 
         if [ -z "$ARGOCD_AUTH_TOKEN" ]; then
-          yes | argocd login "$ARGOCD_SERVER" --username="$ARGOCD_USERNAME" --password="$ARGOCD_PASSWORD" "$(params.flags)";
+          yes | argocd login "$SERVER_HOST" --username="$ACCOUNT" --password="$ARGOCD_AUTH_TOKEN" "$(params.flags)";
         fi
         # Refresh application first
         echo "#### Refreshing application ####"

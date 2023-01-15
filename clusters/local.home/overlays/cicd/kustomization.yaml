@@ -6,7 +6,6 @@ bases:
 
 resources:
 - pipeline-rolebinding.yaml
-- argocd-env-cm.yaml
 
 patches:
 - target:

@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: argocd-env-configmap
-data:
-  ARGOCD_SERVER: argocd-server-product-catalog-gitops.apps.cluster.ocplab.com

@@ -4,35 +4,5 @@ kind: Kustomization
 bases:
 - ../../../../environments/overlays/cicd
 
-# generatorOptions:
-#   disableNameSuffixHash: true
-
-# secretGenerator:
-#   - name: dest-docker-config
-#     type: kubernetes.io/dockerconfigjson
-#     files:
-#       - secrets/.dockerconfigjson
-
 resources:
 - pipeline-rolebinding.yaml
-- argocd-env-cm.yaml
-
-# patchesJson6902:
-#   - path: patch-pvc-block.yaml
-#     target:
-#       group: ""
-#       kind: PersistentVolumeClaim
-#       name: nexus
-#       version: v1
-#   - path: patch-pvc-block.yaml
-#     target:
-#       group: ""
-#       kind: PersistentVolumeClaim
-#       name: m2-cache
-#       version: v1
-#   - path: patch-pvc-block.yaml
-#     target:
-#       group: ""
-#       kind: PersistentVolumeClaim
-#       name: npm-cache
-#       version: v1
