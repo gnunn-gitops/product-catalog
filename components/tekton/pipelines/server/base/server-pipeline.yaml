@@ -143,7 +143,7 @@ spec:
       - name: IMAGE
         value: $(params.image_dest_url):latest
       - name: DOCKERFILE
-        value: ./Containerfile        
+        value: ./Containerfile
     - name: tag-dev-image
       taskRef:
         name: push-image
@@ -250,7 +250,7 @@ spec:
         - dev-update-image
       params:
         - name: application_name
-          value: product-catalog-dev
+          value: product-catalog-gitops/product-catalog-dev
         - name: revision
           value: $(params.gitops_git_revision)
         - name: deployment
@@ -310,7 +310,7 @@ spec:
         - test-update-image
       params:
         - name: application_name
-          value: product-catalog-test
+          value: product-catalog-gitops/product-catalog-test
         - name: revision
           value: $(params.gitops_git_revision)
         - name: deployment
@@ -414,7 +414,7 @@ spec:
                       "value": "server,$(params.image_dest_url),$(tasks.generate-id.results.tag_id),$(params.cluster)",
                     }
                   ]
-                }             
+                }
               ]
             }
       workspaces:
