@@ -1,9 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-resources:
-- test-blacklist.yaml
-
 images:
 - name: quay.io/gnunn/client
   newName: quay.io/gnunn/client
@@ -11,5 +8,7 @@ images:
 - name: quay.io/gnunn/server
   newName: quay.io/gnunn/server
   newTag: fa7de4d-586590414
+
 resources:
 - ../../../../environments/overlays/dev
+- test-blacklist.yaml
