@@ -157,7 +157,7 @@ spec:
         - name: dest_image
           value: $(params.image_dest_url)
         - name: dest_tags
-          value: $(tasks.generate-id.results.tag_id),dev
+          value: "$(tasks.generate-id.results.tag_id),dev"
     - name: acs-scan-image
       taskRef:
         name: rox-image-scan
@@ -239,7 +239,7 @@ spec:
         - name: image
           value: "$(params.image_dest_url)"
         - name: image_tag
-          value: $(tasks.generate-id.results.tag_id)
+          value: "$(tasks.generate-id.results.tag_id)"
       workspaces:
         - name: gitops-manifests
           workspace: gitops-manifests
@@ -258,7 +258,7 @@ spec:
         - name: namespace
           value: product-catalog-dev
         - name: image_tag
-          value: $(tasks.generate-id.results.tag_id)
+          value: "$(tasks.generate-id.results.tag_id)"
     - name: dev-test
       taskRef:
         name: newman
@@ -299,7 +299,7 @@ spec:
         - name: image
           value: "$(params.image_dest_url)"
         - name: image_tag
-          value: $(tasks.generate-id.results.tag_id)
+          value: "$(tasks.generate-id.results.tag_id)"
       workspaces:
         - name: gitops-manifests
           workspace: gitops-manifests
@@ -318,7 +318,7 @@ spec:
         - name: namespace
           value: product-catalog-test
         - name: image_tag
-          value: $(tasks.generate-id.results.tag_id)
+          value: "$(tasks.generate-id.results.tag_id)"
     - name: test-test
       taskRef:
         name: newman
