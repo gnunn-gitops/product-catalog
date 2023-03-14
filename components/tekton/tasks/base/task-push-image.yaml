@@ -13,7 +13,7 @@ spec:
     default: ""
   steps:
     - name: run-commands
-      image: quay.io/skopeo/stable:latest
+      image: quay.io/skopeo/stable:v1.10.0
       script: |
         #!/usr/bin/env bash
 
