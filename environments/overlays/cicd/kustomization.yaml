@@ -16,3 +16,4 @@ bases:
 - ../../../components/tekton/pipelines/push-prod-pr/base
 - ../../../components/tekton/triggers/base
 - setup-local-credentials-job.yaml
+- roxsecrets.yaml
