@@ -3,7 +3,7 @@ default:
     enabled: true
     enableAutoSync: true
     autoSyncPrune: false
-    project: apps-product-catalog
+    project: product-catalog
     destination:
       namespace: product-catalog-gitops
       server: https://kubernetes.default.svc
