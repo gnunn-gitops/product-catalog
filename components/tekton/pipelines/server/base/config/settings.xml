@@ -31,8 +31,8 @@
         <profile>
           <id>nexus-internal</id>
           <properties>
-            <repository.snapshots>http://nexus.dev-tools:8081/content/repositories/snapshots</repository.snapshots>
-            <repository.releases>http://nexus.dev-tools:8081/content/repositories/releases</repository.releases>
+            <repository.snapshots>https://nexus-dev-tools.apps.hub.ocplab.com/content/repositories/snapshots</repository.snapshots>
+            <repository.releases>https://nexus-dev-tools.apps.hub.ocplab.com//content/repositories/releases</repository.releases>
             <!--
             <repository.snapshots>http://nexus:8081/content/repositories/snapshots</repository.snapshots>
             <repository.releases>http://nexus:8081/content/repositories/releases</repository.releases>
@@ -43,7 +43,7 @@
           <id>sonar</id>
           <properties>
             <sonar.host.url>
-              http://sonarqube.dev-tools:9000
+              https://sonarqube-dev-tools.apps.hub.ocplab.com
             </sonar.host.url>
             <sonar.login>admin</sonar.login>
             <sonar.password>R@dhat1234</sonar.password>
