@@ -18,11 +18,8 @@
       <mirrors>
         <mirror>
           <id>local-repository</id>
-          <name>Local Nexus Maven Mirror</name>
-          <url>http://nexus.dev-tools:8081/content/groups/public</url>
-          <!--
-          <url>http://nexus:8081/content/groups/public</url>
-          -->
+          <name>Nexus Maven Mirror</name>
+          <url>https://nexus-dev-tools.apps.hub.ocplab.com/content/groups/public</url>
           <mirrorOf>*</mirrorOf>
         </mirror>
       </mirrors>
