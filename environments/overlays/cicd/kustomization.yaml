@@ -6,9 +6,9 @@ namespace: product-catalog-cicd
 bases:
 - workspace-template-cm.yaml
 - gitops-network-policy.yaml
-- docker-sealed-secret.yaml
-- github-sealed-secret.yaml
-- slack-deployments-webhook-sealed-secret.yaml
+- docker-external-secret.yaml
+- github-external-secret.yaml
+- slack-deployments-webhook-external-secret.yaml
 - ../../../components/apps/slack-message-handler/base
 - ../../../components/tekton/tasks/base
 - ../../../components/tekton/pipelines/client/base
@@ -16,4 +16,4 @@ bases:
 - ../../../components/tekton/pipelines/push-prod-pr/base
 - ../../../components/tekton/triggers/base
 - setup-local-credentials-job.yaml
-- roxsecrets.yaml
+- acs-external-secret.yaml
