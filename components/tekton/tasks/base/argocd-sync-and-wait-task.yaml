@@ -64,6 +64,10 @@ spec:
         echo "#### Waiting for automatic sync if it was already triggered (or other pending operation) ####"
         argocd app wait "$(params.application_name)" --operation "$(params.flags)"
 
+        # Make sure everything is rolled out properly
+        echo "Waiting for deployment to rollout"
+        oc rollout status deploy $(params.deployment) -n $(params.namespace)
+
         # Validate image is what we expect
         CURRENT_TAG=$(oc get deploy $(params.deployment) -n $(params.namespace) -o jsonpath="{.spec.template.spec.containers[$(params.container)].image}" | cut -d ":" -f2)
         if [ "$CURRENT_TAG" = "$(params.image_tag)" ]; then
@@ -72,7 +76,3 @@ spec:
           echo "#### Image failed to sync, requested tag is $(params.image_tag) but current tag is $CURRENT_TAG ####"
           exit 1;
         fi
-
-        # Make sure everything is rolled out properly
-        echo "Waiting for deployment to rollout"
-        oc rollout status deploy $(params.deployment) -n $(params.namespace)
