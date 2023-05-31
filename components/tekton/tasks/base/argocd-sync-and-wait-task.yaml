@@ -74,4 +74,5 @@ spec:
         fi
 
         # Make sure everything is rolled out properly
-        sleep 5
+        echo "Waiting for deployment to rollout"
+        oc rollout status deploy $(params.deployment) -n $(params.namespace)
