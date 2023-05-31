@@ -72,3 +72,6 @@ spec:
           echo "#### Image failed to sync, requested tag is $(params.image_tag) but current tag is $CURRENT_TAG ####"
           exit 1;
         fi
+
+        # Make sure everything is rolled out properly
+        sleep 5
