@@ -7,7 +7,7 @@ images:
   newTag: 6f50f7d-3027303906
 - name: quay.io/gnunn/server
   newName: quay.io/gnunn/server
-  newTag: 870db88-1449373843
+  newTag: 71ac659-696750216
 
 resources:
 - ../../../../environments/overlays/dev
