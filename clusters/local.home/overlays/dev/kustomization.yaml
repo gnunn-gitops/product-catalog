@@ -11,4 +11,3 @@ images:
 
 resources:
 - ../../../../environments/overlays/dev
-- test-blacklist.yaml
