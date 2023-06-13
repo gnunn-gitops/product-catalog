@@ -5,7 +5,7 @@ metadata:
   name: server-post-prod
 spec:
   resourcetemplates:
-    - apiVersion: tekton.dev/v1beta1
+    - apiVersion: tekton.dev/v1
       kind: PipelineRun
       metadata:
         annotations:

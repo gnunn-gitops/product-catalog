@@ -1,4 +1,4 @@
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   annotations:
@@ -58,7 +58,7 @@ spec:
     name: IMAGE_DIGEST
     type: string
   - name: IMAGE_URL
-    description: Image repository where the built image would be pushed to    
+    description: Image repository where the built image would be pushed to
   steps:
   - image: $(params.BUILDER_IMAGE)
     name: build-and-push

@@ -21,7 +21,7 @@ spec:
     - name: app
       description: Either 'server' or 'client'
   resourcetemplates:
-    - apiVersion: tekton.dev/v1beta1
+    - apiVersion: tekton.dev/v1
       kind: PipelineRun
       metadata:
         labels:
@@ -57,4 +57,4 @@ spec:
                     storage: 5Gi
           - name: acs-central
             secret:
-              secretName: roxsecrets          
+              secretName: roxsecrets

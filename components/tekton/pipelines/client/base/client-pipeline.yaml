@@ -1,4 +1,4 @@
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
   name: client
@@ -108,7 +108,7 @@ spec:
       - name: IMAGE
         value: $(params.image_dest_url):latest
       - name: DOCKERFILE
-        value: ./Containerfile        
+        value: ./Containerfile
     - name: acs-scan-image
       taskRef:
         name: rox-image-scan
