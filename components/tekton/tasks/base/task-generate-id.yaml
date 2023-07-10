@@ -19,6 +19,9 @@ spec:
     script: |
       #!/usr/bin/env sh
 
+      # Make safe directory
+      git config --global --add safe.directory /workspace/source
+
       # Get short commit
       export SHORT_SHA=$(git rev-parse --short HEAD)
       echo -n "$SHORT_SHA" > $(results.short_commit.path)
