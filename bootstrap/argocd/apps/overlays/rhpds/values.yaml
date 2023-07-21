@@ -4,6 +4,8 @@ default:
     enableAutoSync: true
     autoSyncPrune: false
     project: apps-product-catalog
+    labels:
+      gitops.openshift.io/controllerNamespace: gitops
     destination:
       namespace: product-catalog-gitops
       server: https://kubernetes.default.svc
