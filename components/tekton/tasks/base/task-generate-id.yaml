@@ -12,6 +12,10 @@ spec:
     name: build_uid
   - description: Unique tag identifier
     name: tag_id
+  stepTemplate:
+    env:
+      - name: "HOME"
+        value: "/tekton/home"
   steps:
   - name: generate
     workingDir: $(workspaces.source.path)
