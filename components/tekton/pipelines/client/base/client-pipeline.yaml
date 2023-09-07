@@ -32,7 +32,7 @@ spec:
       description: Cluster to push to
       default: "local.home"
     - name: sonarqube_host
-      default: sonarqube-dev-tools.apps.home.ocplab.com
+      default: sonarqube-dev-tools.apps.hub.ocplab.com
       description: Where sonarqube is located to support project scanning
   tasks:
     - name: acquire-lease

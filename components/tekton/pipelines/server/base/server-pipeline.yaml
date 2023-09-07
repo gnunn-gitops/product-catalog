@@ -41,7 +41,7 @@ spec:
     - name: MAVEN_IMAGE
       default: image-registry.openshift-image-registry.svc:5000/openshift/java:openjdk-11-ubi8
     - name: sonarqube_host
-      default: sonarqube-dev-tools.apps.home.ocplab.com
+      default: sonarqube-dev-tools.apps.hub.ocplab.com
       description: Where sonarqube is located to support project scanning
   tasks:
     - name: acquire-lease
