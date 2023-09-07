@@ -17,9 +17,6 @@ spec:
       script: |
         #!/usr/bin/env bash
 
-        # echo "Copying image docker://$(params.src_image) to docker://$(params.dest_image):latest"
-        # skopeo copy --src-tls-verify=false --dest-tls-verify=false docker://$(params.src_image) docker://$(params.dest_image):latest
-
         if [ "$(params.dest_tags)" != "" ];
         then
 
@@ -27,6 +24,6 @@ spec:
           for i in ${tags//,/ }
           do
             echo "Copying image docker://$(params.src_image) to docker://$(params.dest_image):$i"
-            skopeo copy --src-tls-verify=false --dest-tls-verify=false docker://$(params.src_image) docker://$(params.dest_image):$i
+            skopeo copy --src-tls-verify=false --dest-tls-verify=false docker://$(params.src_image) --dest-authfile=/tekton/creds-secrets/dest-docker-config/.dockerconfigjson docker://$(params.dest_image):$i
           done
         fi
