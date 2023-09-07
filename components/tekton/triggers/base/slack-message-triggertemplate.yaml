@@ -28,7 +28,6 @@ spec:
           tekton.dev/pipeline: push-prod-pr
         generateName: slack-message-webhook-
       spec:
-        serviceAccountName: github-pipeline
         pipelineRef:
           name: push-prod-pr
         params:
