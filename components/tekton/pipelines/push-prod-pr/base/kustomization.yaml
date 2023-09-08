@@ -6,5 +6,4 @@ generatorOptions:
 
 resources:
 - gitops-manifests-pvc.yaml
-- github-pipeline-sa.yaml
 - push-prod-pr-pipeline.yaml

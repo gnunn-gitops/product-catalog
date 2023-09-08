@@ -5,6 +5,7 @@ namespace: product-catalog-prod
 
 resources:
 - cicd-networkpolicy.yaml
+- cicd-pipeline-view.yaml
 - ../../../components/apps/database/base
 - ../../../components/apps/server/base
 - ../../../components/apps/client/base
