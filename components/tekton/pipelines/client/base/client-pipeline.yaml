@@ -328,6 +328,13 @@ spec:
                   "type": "divider"
                 },
                 {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "To push this specific release to production, use the button below to create a new pull request to be approved."
+                  }
+                },
+                {
                   "type": "divider"
                 },
                 {
