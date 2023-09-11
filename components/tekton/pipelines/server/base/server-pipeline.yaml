@@ -385,7 +385,7 @@ spec:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "* <$(params.image_dest_url):$(tasks.generate-id.results.tag_id)|Quay Image>\n* <https://$(tasks.variables.results.acs_central_endpoint)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)|ACS Scan>\n* <https://$(params.sonarqube_host)/dashboard?id=product-catalog-server|SonarQube>"
+                    "text": "* <https://$(params.image_dest_url):$(tasks.generate-id.results.tag_id)|Quay Image>\n* <https://$(tasks.variables.results.acs_central_endpoint)/main/vulnerability-management/images/$(tasks.build-image.results.IMAGE_DIGEST)|ACS Scan>\n* <https://$(params.sonarqube_host)/dashboard?id=product-catalog-server|SonarQube>"
                   }
                 },
                 {
