@@ -44,11 +44,11 @@ spec:
       taskRef:
         name: send-to-webhook-slack
       params:
+        - name: message
+          value: "SUCCEEDED: Production has been synchronized by ArgoCD"
       workspaces:
         - name: slack-secret
           workspace: slack-secret
-        - name: message
-          value: "SUCCEEDED: Production has been synchronized by ArgoCD"
     - name: notify-failed
       when:
         - input: $(tasks.prod-test.status)
@@ -57,8 +57,8 @@ spec:
       taskRef:
         name: send-to-webhook-slack
       params:
+        - name: message
+          value: "FAILED: Production has been synchronized by ArgoCD"
       workspaces:
         - name: slack-secret
           workspace: slack-secret
-        - name: message
-          value: "FAILED: Production has been synchronized by ArgoCD"
