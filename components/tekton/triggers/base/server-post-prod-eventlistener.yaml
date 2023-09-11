@@ -1,4 +1,7 @@
 ---
+
+# Use with post-sync job
+
 apiVersion: triggers.tekton.dev/v1beta1
 kind: EventListener
 metadata:
@@ -7,18 +10,31 @@ spec:
   serviceAccountName: pipeline
   triggers:
     - name: server-post-prod-webhook
-      interceptors:
-        - name: "Only accept sync succeeded"
-          ref:
-            name: "cel"
-          params:
-          - name: "filter"
-            value: "body.state in ['success']"        
-      bindings:
-        - kind: TriggerBinding
-          ref: argocd-notification
       template:
         ref: server-post-prod
+
+# Use with Argo CD Notifications
+#
+# apiVersion: triggers.tekton.dev/v1beta1
+# kind: EventListener
+# metadata:
+#   name: server-post-prod
+# spec:
+#   serviceAccountName: pipeline
+#   triggers:
+#     - name: server-post-prod-webhook
+#       interceptors:
+#         - name: "Only accept sync succeeded"
+#           ref:
+#             name: "cel"
+#           params:
+#           - name: "filter"
+#             value: "body.state in ['success']"
+#       bindings:
+#         - kind: TriggerBinding
+#           ref: argocd-notification
+#       template:
+#         ref: server-post-prod
 ---
 apiVersion: route.openshift.io/v1
 kind: Route
@@ -36,4 +52,4 @@ spec:
     name: el-server-post-prod
     weight: 100
   tls:
-    termination: edge    
+    termination: edge
