@@ -17,3 +17,4 @@ bases:
 - ../../../components/tekton/triggers/base
 - setup-local-credentials-job.yaml
 - acs-external-secret.yaml
+- prod-network-policy.yaml
