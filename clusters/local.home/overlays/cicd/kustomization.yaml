@@ -10,6 +10,16 @@ resources:
 patches:
 - target:
     kind: TriggerTemplate
+    name: server-post-prod
+  patch: |-
+    - op: add
+      path: /spec/resourcetemplates/0/spec/workspaces/-
+      value:
+          name: slack-secret
+          secret:
+            secretName: slack-deployments-webhook
+- target:
+    kind: TriggerTemplate
     name: server
   patch: |-
     - op: add
