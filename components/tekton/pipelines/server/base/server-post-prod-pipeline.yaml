@@ -48,7 +48,7 @@ spec:
           value: "SUCCEEDED: Production has been synchronized by ArgoCD"
       workspaces:
         - name: slack-secret
-          workspace: slack-secret
+          optional: true
     - name: notify-failed
       when:
         - input: $(tasks.prod-test.status)
@@ -61,4 +61,4 @@ spec:
           value: "FAILED: Production has been synchronized by ArgoCD"
       workspaces:
         - name: slack-secret
-          workspace: slack-secret
+          optional: true
