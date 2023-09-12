@@ -19,8 +19,6 @@ spec:
       workspaces:
         - name: newman-env
           workspace: newman-env
-        - name: slack-secret
-          workspace: slack-secret
   finally:
     # - name: notify
     #   taskRef:
