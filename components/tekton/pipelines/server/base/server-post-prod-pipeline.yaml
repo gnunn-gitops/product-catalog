@@ -20,7 +20,7 @@ spec:
         - name: newman-env
           workspace: newman-env
         - name: slack-secret
-          optional: true
+          workspace: slack-secret
   finally:
     # - name: notify
     #   taskRef:
@@ -48,7 +48,7 @@ spec:
           value: "SUCCEEDED: Production has been synchronized by ArgoCD"
       workspaces:
         - name: slack-secret
-          optional: true
+          workspace: slack-secret
     - name: notify-failed
       when:
         - input: $(tasks.prod-test.status)
@@ -61,4 +61,4 @@ spec:
           value: "FAILED: Production has been synchronized by ArgoCD"
       workspaces:
         - name: slack-secret
-          optional: true
+          workspace: slack-secret
