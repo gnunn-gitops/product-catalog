@@ -25,7 +25,7 @@ resources:
 - task-generate-id.yaml
 - task-send-to-webhook-slack.yaml
 - task-kustomize.yaml
-- argocd-sync-and-wait-task.yaml
+# - argocd-sync-and-wait-task.yaml
 - task-run-pipeline.yaml
 - task-update-image.yaml
 - task-variables.yaml
