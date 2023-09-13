@@ -245,10 +245,11 @@ spec:
           workspace: gitops-manifests
     - name: dev-gitops-deploy
       taskRef:
-        resolver: git
+        kind: Task
         params:
           - name: pathInRepo
             value: task/argocd-sync-and-wait/1.0/argocd-sync-and-wait.yaml
+        resolver: git
       runAfter:
         - dev-update-image
       params:
@@ -308,10 +309,11 @@ spec:
           workspace: gitops-manifests
     - name: test-gitops-deploy
       taskRef:
-        resolver: git
+        kind: Task
         params:
           - name: pathInRepo
             value: task/argocd-sync-and-wait/1.0/argocd-sync-and-wait.yaml
+        resolver: git
       runAfter:
         - test-update-image
       params:
