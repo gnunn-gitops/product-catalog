@@ -69,11 +69,12 @@ spec:
         - name: deleteExisting
           value: "true"
     - name: generate-id
-      kind: Task
-      params:
-        - name: pathInRepo
-          value: task/generate-build-id/1.0/generate-build-id.yaml
-      resolver: git
+      taskRef:
+        kind: Task
+        params:
+          - name: pathInRepo
+            value: task/generate-build-id/1.0/generate-build-id.yaml
+        resolver: git
       runAfter:
         - clone
       workspaces:
@@ -217,7 +218,11 @@ spec:
           workspace: gitops-manifests
     - name: dev-gitops-deploy
       taskRef:
-        name: argocd-task-sync-and-wait
+        kind: Task
+        params:
+          - name: pathInRepo
+            value: task/argocd-sync-and-wait/1.0/argocd-sync-and-wait.yaml
+        resolver: git
       runAfter:
         - dev-update-image
       params:
@@ -263,7 +268,11 @@ spec:
           workspace: gitops-manifests
     - name: test-gitops-deploy
       taskRef:
-        name: argocd-task-sync-and-wait
+        kind: Task
+        params:
+          - name: pathInRepo
+            value: task/argocd-sync-and-wait/1.0/argocd-sync-and-wait.yaml
+        resolver: git
       runAfter:
         - test-update-image
       params:

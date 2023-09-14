@@ -78,11 +78,12 @@ spec:
         - name: deleteExisting
           value: "true"
     - name: generate-id
-      kind: Task
-      params:
-        - name: pathInRepo
-          value: task/generate-build-id/1.0/generate-build-id.yaml
-      resolver: git
+      taskRef:
+        kind: Task
+        params:
+          - name: pathInRepo
+            value: task/generate-build-id/1.0/generate-build-id.yaml
+        resolver: git
       runAfter:
         - clone
       workspaces:
