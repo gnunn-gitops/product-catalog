@@ -37,8 +37,11 @@ spec:
   tasks:
     - name: acquire-lease
       taskRef:
-        name: acquire-lease
-        kind: ClusterTask
+        kind: Task
+        params:
+          - name: pathInRepo
+            value: task/acquire-lease/1.0/acquire-lease.yaml
+        resolver: git
       params:
         - name: lease-name
           value: "$(context.pipeline.name)"
@@ -376,8 +379,11 @@ spec:
   finally:
     - name: release-lease
       taskRef:
-        name: release-lease
-        kind: ClusterTask
+        kind: Task
+        params:
+          - name: pathInRepo
+            value: task/release-lease/1.0/release-lease.yaml
+        resolver: git
       params:
         - name: lease-name
           value: "$(context.pipeline.name)"
