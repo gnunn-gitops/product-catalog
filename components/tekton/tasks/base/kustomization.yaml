@@ -22,12 +22,10 @@ resources:
 - https://github.com/redhat-cop/gitops-catalog/openshift-pipelines-tasks/newman/base
 - task-create-pr.yaml
 - task-tekton.yaml
-- task-generate-id.yaml
 - task-send-to-webhook-slack.yaml
 - task-kustomize.yaml
 # - argocd-sync-and-wait-task.yaml
 - task-run-pipeline.yaml
 - task-update-image.yaml
 - task-variables.yaml
-- task-image-tag-to-digest.yaml
 - task-create-commit-list.yaml

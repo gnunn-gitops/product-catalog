@@ -78,9 +78,11 @@ spec:
         - name: deleteExisting
           value: "true"
     - name: generate-id
-      taskRef:
-        name: generate-id
-        kind: Task
+      kind: Task
+      params:
+        - name: pathInRepo
+          value: task/generate-build-id/1.0/generate-build-id.yaml
+      resolver: git
       runAfter:
         - clone
       workspaces:
@@ -160,8 +162,11 @@ spec:
           value: "$(tasks.generate-id.results.tag_id),dev"
     - name: acs-scan-image
       taskRef:
-        name: rox-image-scan
-        kind: ClusterTask
+        kind: Task
+        params:
+          - name: pathInRepo
+            value: task/acs-image-scan/1.0/acs-image-scan.yaml
+        resolver: git
       runAfter:
         - build-image
       params:
@@ -178,8 +183,11 @@ spec:
           workspace: acs-central
     - name: acs-check-image
       taskRef:
-        name: rox-image-check
-        kind: ClusterTask
+        kind: Task
+        params:
+          - name: pathInRepo
+            value: task/acs-image-check/1.0/acs-image-check.yaml
+        resolver: git
       runAfter:
         - acs-scan-image
       params:
