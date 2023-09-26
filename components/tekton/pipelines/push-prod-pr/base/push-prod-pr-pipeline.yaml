@@ -41,7 +41,11 @@ spec:
           workspace: acs-central
     - name: get-image-digest
       taskRef:
-        name: image-tag-to-digest
+        kind: Task
+        params:
+          - name: pathInRepo
+            value: task/image-tag-to-digest/1.0/image-tag-to-digest.yaml
+        resolver: git
       runAfter:
         - variables
       params:
