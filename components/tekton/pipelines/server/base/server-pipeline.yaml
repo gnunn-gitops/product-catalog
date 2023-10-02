@@ -426,7 +426,11 @@ spec:
                   "elements": [
                     {
                       "type": "button",
-                      "text": "Create Release Pull Request :repeat:"
+                      "text": {
+                          "type": "plain_text",
+                          "text": "Create Release Pull Request :repeat:",
+                          "emoji": true
+                      },
                       "url": "https://slack-message-handler-product-catalog-cicd.${SUB_DOMAIN}?application=server&cluster=$(params.cluster)&image=$(params.image_dest_url)&tag=$(tasks.generate-id.results.tag_id)"
                     }
                   ]
