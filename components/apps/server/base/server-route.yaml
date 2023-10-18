@@ -10,6 +10,9 @@ metadata:
     app.kubernetes.io/part-of: product-catalog
     endpoint: server
 spec:
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
   port:
     targetPort: http
   to:
