@@ -9,7 +9,7 @@
 		},
 		{
 			"key": "scheme",
-			"value": "http",
+			"value": "https",
 			"enabled": true
 		}
 	],
