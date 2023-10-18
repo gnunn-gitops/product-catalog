@@ -9,6 +9,9 @@ metadata:
     app.kubernetes.io/instance: client
     endpoint: client
 spec:
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
   port:
     targetPort: http
   to:
