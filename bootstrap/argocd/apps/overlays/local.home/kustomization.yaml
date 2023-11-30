@@ -5,7 +5,7 @@ namespace: product-catalog-gitops
 
 helmCharts:
 - name: argocd-app-of-app
-  version: 0.2.6
+  version: 0.4.0
   repo: https://gnunn-gitops.github.io/helm-charts
   valuesFile: values.yaml
   namespace: openshift-gitops

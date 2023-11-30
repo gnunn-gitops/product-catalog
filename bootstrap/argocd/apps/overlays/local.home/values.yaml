@@ -8,7 +8,7 @@ default:
       gitops.openshift.io/controllerNamespace: gitops
     destination:
       namespace: product-catalog-gitops
-      server: https://kubernetes.default.svc
+      name: in-cluster
     source:
       repoURL: https://github.com/gnunn-gitops/product-catalog
       targetRevision: main
