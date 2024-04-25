@@ -4,7 +4,7 @@ kind: Kustomization
 images:
 - name: quay.io/gnunn/client
   newName: quay.io/gnunn/client
-  newTag: 573225d-2Wwj1vjyzni1zhDinJsSfUs3y4y
+  newTag: fff9592-2fbdBT1Wxzx9uBS8uCeR2uyIsyr
 - name: quay.io/gnunn/server
   newName: quay.io/gnunn/server
   newTag: febabf7-2fZ14cnq5NdCe2VxwOlrURgmlbJ
