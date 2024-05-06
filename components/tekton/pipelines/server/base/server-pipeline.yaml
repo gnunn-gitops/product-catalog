@@ -172,7 +172,7 @@ spec:
             value: task/acs-image-scan/1.0/acs-image-scan.yaml
         resolver: git
       runAfter:
-        - verify-signature
+        - build-image
       params:
         - name: output_format
           value: table
