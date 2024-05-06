@@ -164,6 +164,28 @@ spec:
           value: $(params.image_dest_url)
         - name: dest_tags
           value: "$(tasks.generate-id.results.tag_id),dev"
+    - name: verify-signature
+      taskRef:
+        kind: Task
+        params:
+          - name: pathInRepo
+            value: task/verify-signature/1.0/verify-signature.yaml
+        resolver: git
+      runAfter:
+        - build-image
+      params:
+        - name: tuf_url
+          value: https://tuf-trusted-artifact-signer.apps.home.ocplab.com
+        - name: oidc_issuer_url
+          value: https://sso.ocplab.com/realms/ocplab
+        - name: fucio_url
+          value: https://fulcio-server-trusted-artifact-signer.apps.home.ocplab.com
+        - name: rekor_url
+          value: https://rekor-server-trusted-artifact-signer.apps.home.ocplab.com
+        - name: certificate_identity
+          value: tekton-builder@ocplab.com
+        - name: image_url
+          value: $(params.image_dest_url):$(tasks.generate-id.results.tag_id)
     - name: acs-scan-image
       taskRef:
         kind: Task
