@@ -178,7 +178,7 @@ spec:
           value: https://tuf-trusted-artifact-signer.apps.home.ocplab.com
         - name: oidc_issuer_url
           value: https://sso.ocplab.com/realms/ocplab
-        - name: fucio_url
+        - name: fulcio_url
           value: https://fulcio-server-trusted-artifact-signer.apps.home.ocplab.com
         - name: rekor_url
           value: https://rekor-server-trusted-artifact-signer.apps.home.ocplab.com
