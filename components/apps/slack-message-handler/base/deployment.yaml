@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    app.openshift.io/connects-to: '[{"apiVersion":"apps/v1","kind":"Deployment","name":"el-slack-message"}]'  
+    app.openshift.io/connects-to: '[{"apiVersion":"apps/v1","kind":"Deployment","name":"el-slack-message"}]'
   labels:
     app: slack-message-handler
     app.kubernetes.io/component: slack-message-handler
@@ -37,10 +37,10 @@ spec:
         name: slack-message-handler
         resources:
           requests:
-            memory: "50Mi"
+            memory: "100Mi"
             cpu: "50m"
           limits:
-            memory: "100Mi"
+            memory: "256Mi"
         livenessProbe:
           httpGet:
             path: /q/health/live
