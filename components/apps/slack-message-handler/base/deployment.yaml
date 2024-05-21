@@ -37,10 +37,10 @@ spec:
         name: slack-message-handler
         resources:
           requests:
-            memory: "100Mi"
+            memory: "200Mi"
             cpu: "50m"
           limits:
-            memory: "256Mi"
+            memory: "512Mi"
         livenessProbe:
           httpGet:
             path: /q/health/live
