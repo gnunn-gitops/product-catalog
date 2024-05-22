@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: product-catalog-cicd
 
 resources:
-- eso-token-product-catalog-doppler.yaml
 - doppler-secret-store.yaml
 - workspace-template-cm.yaml
 - gitops-network-policy.yaml
