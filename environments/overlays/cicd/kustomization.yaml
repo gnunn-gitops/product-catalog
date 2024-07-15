@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: product-catalog-cicd
 
 resources:
-- doppler-secret-store.yaml
 - workspace-template-cm.yaml
 - gitops-network-policy.yaml
 - docker-external-secret.yaml
