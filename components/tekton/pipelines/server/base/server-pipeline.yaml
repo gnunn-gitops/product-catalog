@@ -228,7 +228,7 @@ spec:
         name: send-to-webhook-slack
         kind: Task
       runAfter:
-        - acs-check-image
+        - generate-sbom
       when:
         - input: "$(tasks.acs-check-image.results.check_passed)"
           operator: in
