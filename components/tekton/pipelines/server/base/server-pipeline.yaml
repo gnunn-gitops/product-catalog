@@ -297,6 +297,8 @@ spec:
       runAfter:
         - clone-gitops-manifests
       params:
+        - name: url
+          value: "$(params.gitops_git_url)"
         - name: git_revision
           value: "$(params.gitops_git_revision)"
         - name: path
