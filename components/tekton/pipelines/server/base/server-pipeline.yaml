@@ -67,7 +67,15 @@ spec:
     - name: clone
       taskRef:
         name: git-clone
-        kind: ClusterTask
+        kind: Task
+        resolver: cluster
+        params:
+        - name: kind
+          value: task
+        - name: name
+          value: git-clone
+        - name: namespace
+          value: openshift-pipelines
       runAfter:
         - variables
       workspaces:
@@ -266,7 +274,14 @@ spec:
     - name: clone-gitops-manifests
       taskRef:
         name: git-clone
-        kind: ClusterTask
+        resolver: cluster
+        params:
+        - name: kind
+          value: task
+        - name: name
+          value: git-clone
+        - name: namespace
+          value: openshift-pipelines
       runAfter:
         - tag-dev-image
       workspaces:
