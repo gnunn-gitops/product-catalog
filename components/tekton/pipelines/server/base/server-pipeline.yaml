@@ -80,11 +80,11 @@ spec:
         - name: output
           workspace: git-source
       params:
-        - name: url
+        - name: URL
           value: "$(params.source_git_url)"
-        - name: revision
+        - name: REVISION
           value: "$(params.source_git_revision)"
-        - name: deleteExisting
+        - name:  DELETE_EXISTING
           value: "true"
     - name: generate-id
       taskRef:
@@ -285,11 +285,11 @@ spec:
         - name: output
           workspace: gitops-manifests
       params:
-        - name: url
+        - name: URL
           value: "$(params.gitops_git_url)"
-        - name: revision
+        - name: REVISION
           value: "$(params.gitops_git_revision)"
-        - name: deleteExisting
+        - name:  DELETE_EXISTING
           value: "true"
     - name: dev-update-image
       taskRef:
