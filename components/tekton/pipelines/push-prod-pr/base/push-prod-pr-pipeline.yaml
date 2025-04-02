@@ -55,19 +55,25 @@ spec:
           value: $(params.image_dest_tag)
     - name: clone
       taskRef:
-        name: git-clone
-        kind: ClusterTask
+        resolver: cluster
+        params:
+        - name: kind
+          value: task
+        - name: name
+          value: git-clone
+        - name: namespace
+          value: openshift-pipelines
       runAfter:
         - get-image-digest
       workspaces:
         - name: output
           workspace: gitops-manifests
       params:
-        - name: url
+        - name: URL
           value: "$(params.git_url)"
-        - name: revision
+        - name: REVISION
           value: "$(params.git_revision)"
-        - name: deleteExisting
+        - name: DELETE_EXISTING
           value: "true"
     - name: branch
       taskRef:
