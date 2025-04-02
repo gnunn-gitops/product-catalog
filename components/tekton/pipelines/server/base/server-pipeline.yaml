@@ -66,8 +66,6 @@ spec:
           workspace: acs-central
     - name: clone
       taskRef:
-        name: git-clone
-        kind: Task
         resolver: cluster
         params:
         - name: kind
@@ -273,7 +271,6 @@ spec:
     #       value: $(params.image_dest_url):$(tasks.generate-id.results.tag_id)
     - name: clone-gitops-manifests
       taskRef:
-        name: git-clone
         resolver: cluster
         params:
         - name: kind
