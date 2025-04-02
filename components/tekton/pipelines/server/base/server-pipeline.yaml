@@ -204,6 +204,25 @@ spec:
       workspaces:
         - name: acs-central
           workspace: acs-central
+    - name: generate-sbom
+      taskRef:
+        kind: Task
+        params:
+          - name: pathInRepo
+            value: task/acs-image-check/1.0/acs-image-sbom.yaml
+        resolver: git
+      runAfter:
+        - acs-check-image
+      params:
+        - name: image
+          value: $(params.image_dest_url)@$(tasks.build-image.results.IMAGE_DIGEST)
+      when:
+        - input: "$(workspaces.acs-central.bound)"
+          operator: in
+          values: ["true"]
+      workspaces:
+        - name: acs-central
+          workspace: acs-central
     - name: notify-on-scan-fail
       taskRef:
         name: send-to-webhook-slack
