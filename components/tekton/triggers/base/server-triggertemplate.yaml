@@ -26,7 +26,7 @@ spec:
         params:
           - name: source_git_url
             #value: $(tt.params.git-repo-url)
-            value: "https://github.com/repos/gnunn-gitops/product-catalog-server"
+            value: "https://github.com/gnunn-gitops/product-catalog-server"
           - name: source_git_revision
             value: $(tt.params.git-revision)
           - name: MAVEN_MIRROR_URL
