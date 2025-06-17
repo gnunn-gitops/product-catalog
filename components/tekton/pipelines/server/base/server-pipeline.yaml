@@ -216,14 +216,14 @@ spec:
         params:
           - name: pathInRepo
             value: task/acs-image-sbom/1.0/acs-image-sbom.yaml
-          - name: cyclonedxHostUrl
-            value: https://server.apps.hub.ocplab.com
         resolver: git
       runAfter:
         - acs-check-image
       params:
         - name: image
           value: $(params.image_dest_url)@$(tasks.build-image.results.IMAGE_DIGEST)
+        - name: cyclonedxHostUrl
+          value: https://server.apps.hub.ocplab.com
       when:
         - input: "$(workspaces.acs-central.bound)"
           operator: in
