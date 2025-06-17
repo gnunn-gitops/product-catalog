@@ -180,15 +180,15 @@ spec:
         - build-image
       params:
         - name: tuf_url
-          value: https://tuf-trusted-artifact-signer.apps.home.ocplab.com
+          value: https://tuf-trusted-artifact-signer.apps.hub.ocplab.com
         - name: oidc_issuer_url
           value: https://sso.ocplab.com/realms/ocplab
         - name: fulcio_url
-          value: https://fulcio-server-trusted-artifact-signer.apps.home.ocplab.com
+          value: https://fulcio-server-trusted-artifact-signer.apps.hub.ocplab.com
         - name: rekor_url
-          value: https://rekor-server-trusted-artifact-signer.apps.home.ocplab.com
+          value: https://rekor-server-trusted-artifact-signer.apps.hub.ocplab.com
         - name: certificate_identity
-          value: tekton-builder@ocplab.com
+          value: tekton-builder@rhdp.com
         - name: image_url
           value: $(params.image_dest_url):$(tasks.generate-id.results.tag_id)
     - name: acs-scan-image
