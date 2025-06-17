@@ -216,6 +216,8 @@ spec:
         params:
           - name: pathInRepo
             value: task/acs-image-sbom/1.0/acs-image-sbom.yaml
+          - name: cyclonedxHostUrl
+            value: https://server.apps.hub.ocplab.com
         resolver: git
       runAfter:
         - acs-check-image
