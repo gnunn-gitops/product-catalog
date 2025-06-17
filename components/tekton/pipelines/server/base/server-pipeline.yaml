@@ -190,7 +190,7 @@ spec:
         - name: certificate_identity
           value: tekton-builder@rhdp.com
         - name: image_url
-          value: $(params.image_dest_url):$(tasks.generate-id.results.tag_id)
+          value: $(params.image_dest_url)@$(tasks.build-image.results.IMAGE_DIGEST)
     - name: acs-scan-image
       taskRef:
         kind: Task
