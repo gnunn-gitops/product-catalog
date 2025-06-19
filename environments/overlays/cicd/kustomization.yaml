@@ -17,5 +17,5 @@ resources:
 - ../../../components/tekton/triggers/base
 - setup-local-credentials-job.yaml
 - acs-external-secret.yaml
-- upload-sbom-oidc.yaml
+- upload-sbom-secret.yaml
 - prod-network-policy.yaml
