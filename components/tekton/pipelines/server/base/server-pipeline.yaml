@@ -12,6 +12,8 @@ spec:
       optional: true
     - name: acs-central
       optional: true
+    - name: upload-sbom
+      optional: true
   params:
     - name: source_git_revision
       type: string
@@ -252,6 +254,8 @@ spec:
       workspaces:
         - name: acs-central
           workspace: acs-central
+        - name: upload-sbom
+          workspace: upload-sbom
     - name: notify-on-scan-fail
       taskRef:
         name: send-to-webhook-slack

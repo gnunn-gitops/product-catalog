@@ -36,6 +36,12 @@ patches:
     - op: add
       path: /spec/resourcetemplates/0/spec/workspaces/-
       value:
+          name: upload-sbom
+          secret:
+            secretName: upload-sbom
+    - op: add
+      path: /spec/resourcetemplates/0/spec/workspaces/-
+      value:
           name: slack-secret
           secret:
             secretName: slack-deployments-webhook
